@@ -2,12 +2,16 @@
   <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-input :placeholder="$t('querytable.userName')" v-model="listQuery.userName" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <!-- <el-input :placeholder="$t('querytable.department')" v-model="listQuery.department" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/> -->
+      <el-input :placeholder="$t('querytable.userCode')" v-model="listQuery.userCode" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-select v-model="listQuery.userType" :placeholder="$t('querytable.userType')" clearable style="width: 200px" class="filter-item">
         <el-option v-for="item in userTypeList" :key="item.key" :label="item.value" :value="item.key"/>
       </el-select>
+      <el-select v-model="listQuery.roleLevel" :placeholder="$t('querytable.roleLevel')" clearable style="width: 200px" class="filter-item">
+        <el-option v-for="item in roleLevelList" :key="item.key" :label="item.value" :value="item.key"/>
+      </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
-      
+            <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
+
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
     </div>
 
@@ -86,11 +90,11 @@
         <el-form-item :label="$t('table.companyAddress')">
           <el-input v-model="temp.companyAddress"/>
         </el-form-item>
-        <el-form-item :label="$t('table.companyType')">
+        <!-- <el-form-item :label="$t('table.companyType')">
           <el-select v-model="temp.companyType" class="filter-item" placeholder="请选择">
             <el-option v-for="item in companyTypeList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('table.safetyLevel')">
           <el-select v-model="temp.safetyLevel" class="filter-item" placeholder="请选择">
             <el-option v-for="item in safetyLevelList" :key="item.key" :label="item.value" :value="item.key"/>
@@ -202,6 +206,7 @@ export default {
     return {
       tableKey: 0,
       header: getHeader(),
+      roleLevelList:[],
       userTypeList:[],
       showuserTypeObj:{},
       departmentList:[],
@@ -214,6 +219,10 @@ export default {
       listLoading: true,
       userTypeQuery: {
         name:"userTypeMap",
+        type:"list"
+      },
+      roleLevelQuery: {
+        name:"roleLevelMap",
         type:"list"
       },
       sexQuery: {
@@ -230,11 +239,22 @@ export default {
         userName: null,
         userCode: null,
         userType: null,
-        department: null
+        roleLevel: null
       },
       temp: {
+        loginAccount:"",
         userName:"",
-        userName:"",
+        headImageId:"",
+        password:"",
+        nickName:"",
+        department:"",
+        roleLevel:"",
+        userType:"",
+        sex:"",
+        birthday:"",
+        phone:"",
+        wechat:"",
+        email:"",
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -251,7 +271,7 @@ export default {
     checkToken()
     this.getdataList()
     this.getuserTypeList()
-    this.getsafetyLevelList()
+    this.getroleLevelList()
     this.getsexList()
   },
   methods: {
@@ -274,13 +294,11 @@ export default {
           console.log(this.showuserTypeObj)
       })
     },
-    getsafetyLevelList() {
-      fetchTypeList(this.safetyLevelQuery,this.header).then(response => {
-        console.log(response.data.resultData.safetyLevelMap, 'fetchsafetyLevelList')
-        this.safetyLevelList = response.data.resultData.safetyLevelMap
-        this.safetyLevelList.forEach(element => {
-          this.showsafetyLevelObj[(element["key"].toString())] = element["value"]
-        });
+    getroleLevelList() {
+      fetchTypeList(this.roleLevelQuery,this.header).then(response => {
+        console.log(response.data.resultData, 'fetchcompanyTypeList')
+        this.roleLevelList = response.data.resultData.roleLevelMap
+          console.log(this.roleLevelList)
       })
     },
     getsexList() {
@@ -303,6 +321,17 @@ export default {
       this.listQuery.page = 1
       console.log(this.listQuery,"this.listQuery")
       this.getdataList()
+    },
+    resetQuery() {
+      this.listQuery = {
+        page: 1,
+        pageSize: 20,
+        userName: null,
+        userCode: null,
+        userType: null,
+        roleLevel: null
+      }
+    this.getdataList()
     },
     resetTemp() {
       this.temp = {

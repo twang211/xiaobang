@@ -11,6 +11,7 @@
         <el-option v-for="item in safetyLevelList" :key="item.key" :label="item.value" :value="item.key"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
       
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
     </div>
@@ -68,7 +69,7 @@
 
  
     <div class="pagination-container">
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+      <el-pagination :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="200px" style="width: 400px; margin-left:50px;">
@@ -317,6 +318,18 @@ export default {
       console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
+    resetQuery() {
+      this.listQuery = {
+        page: 1,
+        pageSize: 20,
+        companyName: null,
+        companyCode: null,
+        companyCorporate: null,
+        companyType: null,
+        safetyLevel: null
+      }
+    this.getdataList()
+    },
     resetTemp() {
       this.temp = {
         companyCode: "",
@@ -359,12 +372,14 @@ export default {
           createunitArticle(this.temp,this.header).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
+            
             this.$notify({
               title: '成功',
               message: '创建成功',
               type: 'success',
               duration: 2000
             })
+    this.getdataList()
           })
         }
       })
@@ -386,6 +401,8 @@ export default {
           updateUnitData(this.temp,this.header).then( response => {
             console.log(response,"updateUnitData")
             if(response.data.resultCode == "0"){
+              
+    this.getdataList()
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',

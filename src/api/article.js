@@ -115,6 +115,30 @@ export function fetchBuildData(query, buildingId, header) {
         }
     })
 }
+//删除上传文件
+export function fetchDelImg(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/file/delete',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//更新建筑物信息
+export function updateBuildData(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/building/backend/update',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
 //添加建筑信息
 export function createbuildArticle(data, header) {
     console.log(header)
@@ -122,6 +146,17 @@ export function createbuildArticle(data, header) {
         url: '/fire-service/api/building/backend/add',
         method: 'post',
         data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//单位下拉
+export function fetchUnitDownDataList(query, header) {
+    return request({
+        url: '/fire-service/api/company/backend/down-list',
+        method: 'get',
+        params: query,
         headers: {
             'Authorization': header
         }
