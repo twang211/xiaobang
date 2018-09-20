@@ -124,6 +124,35 @@ export const asyncRouterMap = [{
                 roles: [1] // or you can only set roles in sub nav
             }
         }]
+    }, {
+        path: '/equipment',
+        component: Layout,
+        redirect: 'noredirect',
+        alwaysShow: true, // will always show the root menu
+        meta: {
+            title: '设备',
+            icon: 'form',
+            roles: [1] // you can set roles in root nav
+        },
+        children: [{
+            path: 'system',
+            component: () =>
+                import ('@/views/equipment/system/index'),
+            name: '设备系统管理',
+            meta: {
+                title: '设备系统管理',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }, {
+            path: 'administration',
+            component: () =>
+                import ('@/views/equipment/administration/index'),
+            name: '设备管理',
+            meta: {
+                title: '设备管理',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }]
     },
 
     /** When your routing table is too long, you can split it into small modules**/

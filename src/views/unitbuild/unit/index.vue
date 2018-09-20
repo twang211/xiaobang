@@ -4,10 +4,10 @@
       <el-input :placeholder="$t('querytable.companyName')" v-model="listQuery.companyName" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input :placeholder="$t('querytable.companyCode')" v-model="listQuery.companyCode" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input :placeholder="$t('querytable.companyCorporate')" v-model="listQuery.companyCorporate" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-select v-model="listQuery.companyType" :placeholder="$t('querytable.companyType')" clearable style="width: 200px" class="filter-item">
+      <el-select v-model="listQuery.companyType" :placeholder="$t('querytable.companyType')" filterable clearable style="width: 200px" class="filter-item">
         <el-option v-for="item in companyTypeList" :key="item.key" :label="item.value" :value="item.key"/>
       </el-select>
-      <el-select v-model="listQuery.safetyLevel" :placeholder="$t('querytable.safetyLevel')" clearable style="width: 200px" class="filter-item">
+      <el-select v-model="listQuery.safetyLevel" :placeholder="$t('querytable.safetyLevel')" filterable clearable style="width: 200px" class="filter-item">
         <el-option v-for="item in safetyLevelList" :key="item.key" :label="item.value" :value="item.key"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
@@ -92,12 +92,12 @@
           <el-input v-model="temp.companyAddress"/>
         </el-form-item>
         <el-form-item :label="$t('table.companyType')">
-          <el-select v-model="temp.companyType" class="filter-item" placeholder="请选择">
+          <el-select v-model="temp.companyType" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in companyTypeList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.safetyLevel')">
-          <el-select v-model="temp.safetyLevel" class="filter-item" placeholder="请选择">
+          <el-select v-model="temp.safetyLevel" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in safetyLevelList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>

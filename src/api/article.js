@@ -162,6 +162,17 @@ export function fetchUnitDownDataList(query, header) {
         }
     })
 }
+//建筑下拉
+export function fetchBuildDownDataList(query, header) {
+    return request({
+        url: '/fire-service/api/building/backend/down-list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
 //人员列表
 export function fetchUserDataList(query, header) {
     return request({
@@ -174,9 +185,215 @@ export function fetchUserDataList(query, header) {
     })
 }
 
+//更新人员信息
+export function updateUserData(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/user/backend/update',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//添加人员信息
+export function createUserArticle(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/user/backend/add',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
 
 
+//查看人员信息
+export function fetchUserData(query, userId, header) {
+    return request({
+        url: '/fire-service/api/user/info/' + userId,
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
 
+//添加单位人员信息
+export function companyAddApi(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/company/backend/user/add',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//删除单位人员信息
+export function companyDelApi(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/company/backend/user/remove',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//单位人员列表
+export function fetchcompanyData(query, header) {
+    return request({
+        url: '/fire-service/api/user/company',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//设备系统列表
+export function fetchSystemDataList(query, header) {
+    return request({
+        url: '/fire-service/api/apparatus/backend/type/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//添加设备信息
+export function createSystemArticle(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/apparatus/backend/type/add',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//设备名称列表
+export function fetchNameDataList(query, header) {
+    return request({
+        url: '/fire-service/api/apparatus/backend/name/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//添加设备名称信息
+export function createNameArticle(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/apparatus/backend/name/add',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//巡查要点列表
+export function fetchCheckPointDataList(query, header) {
+    return request({
+        url: '/fire-service/api/check-point/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//添加巡查要点信息
+export function createCheckPointArticle(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/check-point/backend/add',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//更新巡查要点信息
+export function createCheckPointUpdate(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/check-point/backend/update',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//设备管理列表
+export function fetchAdminDataList(query, header) {
+    return request({
+        url: '/fire-service/api/apparatus/backend/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//添加设备管理信息
+export function createAdminArticle(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/apparatus/backend/add',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//查看设备管理信息
+export function fetchAdminData(query, header) {
+    return request({
+        url: '/fire-service/api/apparatus/backend/info',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//更新设备管理信息
+export function createAdminUpdate(data, header) {
+    console.log(header)
+    return request({
+        url: '/fire-service/api/apparatus/backend/update',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
 
 
 

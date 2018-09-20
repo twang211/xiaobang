@@ -24,14 +24,19 @@
       highlight-current-row
       style="width: 100%;min-height:1000px;">
       
-      <el-table-column :label="$t('table.userName')" align="center" width="200">
+      <el-table-column :label="$t('table.userName')" align="center" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.userName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.sex')" align="center" width="200">
+      <el-table-column :label="$t('table.userCode')" align="center" width="120">
         <template slot-scope="scope">
-          <span>{{ showsexObj[scope.row.sex] }}</span>
+          <span>{{ scope.row.userCode }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.sex')" align="center" width="90">
+        <template slot-scope="scope">
+          <span>{{ scope.row.sexName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.userType')" align="center" width="200">
@@ -68,115 +73,80 @@
 
  
     <div class="pagination-container">
-      <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.pageSize" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+      <el-pagination :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="200px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.companyCode')">
-          <el-input v-model="temp.companyCode"/>
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="200px" style="width: 90%; margin-left:50px;">
+        <el-form-item :label="$t('table.loginAccount')">
+          <el-input v-model="temp.loginAccount"/>
         </el-form-item>
-        <el-form-item :label="$t('table.companyName')">
-          <el-input v-model="temp.companyName"/>
+        <el-form-item :label="$t('table.userName')">
+          <el-input v-model="temp.userName"/>
         </el-form-item>
-        <el-form-item :label="$t('table.companyCorporate')">
-          <el-input v-model="temp.companyCorporate"/>
+        <el-form-item :label="$t('table.password')">
+          <el-input v-model="temp.password"/>
         </el-form-item>
-        <el-form-item :label="$t('table.safetyManager')">
-          <el-input v-model="temp.safetyManager"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.controlRoomPhone')">
-          <el-input v-model="temp.controlRoomPhone"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.companyAddress')">
-          <el-input v-model="temp.companyAddress"/>
-        </el-form-item>
-        <!-- <el-form-item :label="$t('table.companyType')">
-          <el-select v-model="temp.companyType" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in companyTypeList" :key="item.key" :label="item.value" :value="item.key"/>
-          </el-select>
-        </el-form-item> -->
-        <el-form-item :label="$t('table.safetyLevel')">
-          <el-select v-model="temp.safetyLevel" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in safetyLevelList" :key="item.key" :label="item.value" :value="item.key"/>
+        <el-form-item :label="$t('table.department')">
+          <el-select v-model="temp.department" filterable class="filter-item" placeholder="请选择">
+          <el-option v-for="item in departmentList" :key="item.key" :label="item.value" :value="item.value"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.isDenselyPlace')">
-          <el-select v-model="temp.isDenselyPlace" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
+       
+        <el-form-item :label="$t('table.userType')">
+          <el-select v-model="temp.userType" filterable class="filter-item" placeholder="请选择">
+          <el-option v-for="item in userTypeList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.isPublicDenselyPlace')">
-          <el-select v-model="temp.isPublicDenselyPlace" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
+        <el-form-item :label="$t('table.roleLevel')">
+          <el-select v-model="temp.roleLevel" filterable class="filter-item" placeholder="请选择">
+          <el-option v-for="item in roleLevelList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.isPublicRecreationPlace')">
-          <el-select v-model="temp.isPublicRecreationPlace" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
+        <el-form-item :label="$t('table.headImageId')">         
+          <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
+        <el-upload class="upload-demo" ref="upload" :headers="myHeaders" action="http://47.92.165.114:8999/fire-service/api/file/upload" :auto-upload="false" :on-success="upSuccess" :on-remove="handleRemove">
+              <el-button slot="trigger" size="medium" type="primary">选取文件</el-button>
+              <el-button style="margin-left: 10px;" size="medium" type="success" @click="submitUpload">确认上传</el-button>
+              <el-button style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
+            </el-upload>
+        </el-form-item>
+        <el-form-item :label="$t('table.nickName')">
+          <el-input v-model="temp.nickName"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.sex')">
+          
+          <el-select v-model="temp.sex" class="filter-item" placeholder="请选择">
+          <el-option v-for="item in sexList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.isCheckPass')">
-          <el-select v-model="temp.isCheckPass" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
+        <el-form-item :label="$t('table.birthday')">   
+          <el-date-picker v-model="temp.birthday" type="date" placeholder="请选择"/>
+
         </el-form-item>
-        </el-form-item><el-form-item :label="$t('table.referenceNumber')">
-          <el-input v-model="temp.referenceNumber"/>
-        </el-form-item>  
-        <el-form-item :label="$t('table.usedStatus')">
-          <el-select v-model="temp.usedStatus" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
+        <el-form-item :label="$t('table.phone')">
+          <el-input v-model="temp.phone"/>
         </el-form-item>
-        <el-form-item :label="$t('table.hasSafetySystem')">
-          <el-select v-model="temp.hasSafetySystem" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
+        <el-form-item :label="$t('table.wechat')">
+          <el-input v-model="temp.wechat"/>
         </el-form-item>
-        <el-form-item :label="$t('table.hasContingencyPlan')">
-          <el-select v-model="temp.hasContingencyPlan" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
+        <el-form-item :label="$t('table.email')">
+          <el-input v-model="temp.email"/>
         </el-form-item>
-        <el-form-item :label="$t('table.hasCheckRecord')">
-          <el-select v-model="temp.hasCheckRecord" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
+        <el-form-item :label="$t('table.companyId')">
+          <el-select v-model="companytemp.companyId" filterable class="filter-item" placeholder="请选择">
+          <el-option v-for="item in unitList" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
           </el-select>
+              <el-button style="margin-left: 10px;" size="medium" type="success" @click="companyAdd">添加</el-button>
         </el-form-item>
-        <el-form-item :label="$t('table.hasRegularCheck')">
-          <el-select v-model="temp.hasRegularCheck" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.hasYearCheckRecord')">
-          <el-select v-model="temp.hasYearCheckRecord" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.hasTrainRecord')">
-          <el-select v-model="temp.hasTrainRecord" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.hasManoeuvreRecord')">
-          <el-select v-model="temp.hasManoeuvreRecord" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.hasSafetyManager')">
-          <el-select v-model="temp.hasSafetyManager" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.hasSafetyFile')">
-          <el-select v-model="temp.hasSafetyFile" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('table.hasClearKeyPlace')">
-          <el-select v-model="temp.hasClearKeyPlace" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
-          </el-select>
+        <el-form-item>
+          <el-tag
+            :key="tag"
+            v-for="tag in companyList"
+            closable
+            :disable-transitions="false"
+            @close="handleClose(tag)" style="margin-left:5px">
+            {{tag.companyName}}
+          </el-tag>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -190,8 +160,9 @@
 </template>
 
 <script>
-import { fetchUserDataList, fetchTypeList, fetchsafetyLevelList, 
-fetchAllinfos, createunitArticle, fetchUnitData, updateUnitData } from '@/api/article'
+import { fetchUserDataList, fetchTypeList, 
+fetchAllinfos, createUserArticle, fetchUserData, updateUserData, fetchDelImg, 
+fetchUnitDownDataList, companyAddApi, fetchcompanyData, companyDelApi } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -204,14 +175,18 @@ export default {
   },
   data() {
     return {
+        dialogImageUrl: '',
       tableKey: 0,
       header: getHeader(),
+      myHeaders: {Authorization: getHeader()},
+      companyList:[],
+      departmentList:[],
       roleLevelList:[],
       userTypeList:[],
-      showuserTypeObj:{},
       departmentList:[],
-      showdepartmentObj:{},
-      showsexObj:{},
+      sexList:[],
+      unitList:[],
+      showunitObj:{},
       extime: '',
       list: null,
       exportlist: null,
@@ -225,9 +200,13 @@ export default {
         name:"roleLevelMap",
         type:"list"
       },
+      departmentQuery: {
+        name:"departmentMap",
+        type:"list"
+      },
       sexQuery: {
         name:"sexMap",
-        type:"map"
+        type:"list"
       },
       departmentQuery: {
         name:"departmentMap",
@@ -241,15 +220,31 @@ export default {
         userType: null,
         roleLevel: null
       },
+      companytemp: {
+        companyId:"",
+        userId:"",
+      },
       temp: {
         loginAccount:"",
         userName:"",
-        headImageId:"",
         password:"",
+        department:"",
+        userType:"",
+        roleLevel:"",
+        headImageId:"",
+        nickName:"",
+        sex:"",
+        birthday:"",
+        phone:"",
+        wechat:"",
+        email:"",
+      },
+      uptemp: {
+        userId:"",
+        userName:"",
+        headImageId:"",
         nickName:"",
         department:"",
-        roleLevel:"",
-        userType:"",
         sex:"",
         birthday:"",
         phone:"",
@@ -273,6 +268,8 @@ export default {
     this.getuserTypeList()
     this.getroleLevelList()
     this.getsexList()
+    this.getdepartmentList()
+    this.getUnitDataList()
   },
   methods: {
     getdataList() {
@@ -288,9 +285,6 @@ export default {
       fetchTypeList(this.userTypeQuery,this.header).then(response => {
         console.log(response.data.resultData, 'fetchcompanyTypeList')
         this.userTypeList = response.data.resultData.userTypeMap
-        this.userTypeList.forEach(element => {
-          this.showuserTypeObj[(element["key"].toString())] = element["value"]
-        });
           console.log(this.showuserTypeObj)
       })
     },
@@ -304,7 +298,43 @@ export default {
     getsexList() {
       fetchTypeList(this.sexQuery,this.header).then(response => {
         console.log(response.data.resultData, 'fetchsafetyLevelList')
-        this.showsexObj = response.data.resultData.sexMap
+        this.sexList = response.data.resultData.sexMap
+      })
+    },
+    getUnitDataList() {
+      fetchUnitDownDataList({},this.header).then(response => {
+        console.log(response.data.resultData, 'fetchUnitDataList')
+        this.unitList = response.data.resultData.companyList
+        this.unitList.forEach(element => {
+          this.showunitObj[(element["companyId"])] = element["companyName"]
+        });
+      })
+    },
+    getdepartmentList() {
+      fetchTypeList(this.departmentQuery,this.header).then(response => {
+        console.log(response.data.resultData, 'fetchsafetyLevelList')
+        this.departmentList = response.data.resultData.departmentMap
+      })
+    },
+    getcompanyinfo() {
+      fetchcompanyData({userId:this.temp.userId},this.header).then(response => {
+        console.log(response.data.resultData, 'fetchUserData')
+        this.companyList = response.data.resultData.companyList
+      })
+    },
+    companyAdd() {
+      this.companytemp.userId = this.temp.userId
+      companyAddApi(this.companytemp,this.header).then(response => {
+        console.log(response.data.resultData, 'fetchsafetyLevelList')
+        this.getcompanyinfo()
+      })
+    },
+    handleClose(row) {
+      this.companytemp.companyId = row.companyId
+      this.companytemp.userId = this.temp.userId
+      companyDelApi(this.companytemp,this.header).then(response => {
+        console.log(response.data.resultData, 'fetchsafetyLevelList')
+        this.getcompanyinfo()
       })
     },
     getAllinfos() {
@@ -335,30 +365,19 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        companyCode: "",
-        companyName: "",
-        companyCorporate: "",
-        safetyManager: "",
-        controlRoomPhone: "",
-        companyAddress: "",
-        companyType: "",
-        safetyLevel: "",
-        isDenselyPlace: "",
-        isPublicDenselyPlace: "",
-        isPublicRecreationPlace: "",
-        isCheckPass: "",
-        referenceNumber: "",
-        usedStatus: "",
-        hasSafetySystem: "",
-        hasContingencyPlan: "",
-        hasCheckRecord: "",
-        hasRegularCheck: "",
-        hasYearCheckRecord: "",
-        hasTrainRecord: "",
-        hasManoeuvreRecord: "",
-        hasSafetyManager: "",
-        hasSafetyFile: "",
-        hasClearKeyPlace: "",
+        loginAccount:"",
+        userName:"",
+        password:"",
+        department:"",
+        userType:"",
+        roleLevel:"",
+        headImageId:"",
+        nickName:"",
+        sex:"",
+        birthday:"",
+        phone:"",
+        wechat:"",
+        email:"",
       }
     },
     handleCreate() {
@@ -370,9 +389,10 @@ export default {
       })
     },
     createData() {
+      this.temp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createunitArticle(this.temp,this.header).then(() => {
+          createUserArticle(this.temp,this.header).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -381,14 +401,22 @@ export default {
               type: 'success',
               duration: 2000
             })
+    this.getdataList()
           })
         }
       })
     },
     handleUpdate(row) {
-      fetchUnitData({},row.companyId,this.header).then(response => {
-        console.log(response.data.resultData.companyInfo, 'fetchUnitData')
-        this.temp = response.data.resultData.companyInfo
+      fetchUserData({},row.userId,this.header).then(response => {
+        console.log(response.data.resultData, 'fetchUserData')
+        if(response.data.resultData.userInfo.headImageUri){
+          this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.userInfo.headImageUri
+        }
+        this.temp = response.data.resultData.userInfo
+        this.temp.sex = this.temp.sex.toString()
+        this.temp.userType = this.temp.userType.toString()
+        this.temp.roleLevel = this.temp.roleLevel.toString()
+        this.getcompanyinfo()
       })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -397,9 +425,19 @@ export default {
       })
     },
     updateData() {
+      this.uptemp.userId = this.temp.userId
+      this.uptemp.userName = this.temp.userName
+      this.uptemp.headImageId = this.temp.headImageId
+      this.uptemp.nickName = this.temp.nickName
+      this.uptemp.department = this.temp.department
+      this.uptemp.sex = this.temp.sex
+      this.uptemp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
+      this.uptemp.phone = this.temp.phone
+      this.uptemp.wechat = this.temp.wechat
+      this.uptemp.email = this.temp.email
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          updateUnitData(this.temp,this.header).then( response => {
+          updateUserData(this.uptemp,this.header).then( response => {
             console.log(response,"updateUnitData")
             if(response.data.resultCode == "0"){
             this.dialogFormVisible = false
@@ -409,6 +447,7 @@ export default {
               type: 'success',
               duration: 2000
             })
+    this.getdataList()
             }
           })
         }
@@ -450,7 +489,35 @@ export default {
           }
         })
       )
-    }
+    },
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    upSuccess(response) {
+      console.log(response, 999999);
+      this.temp.headImageId = response.resultData.fileDTO.fileId
+      this.dialogImageUrl = "http://47.92.165.114:8081"+response.resultData.fileDTO.fileUri
+      this.btnstatus = true;
+    },
+      handlePictureCardPreview(file) {
+        this.dialogVisible = true;
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+        
+      fetchDelImg({fileId:this.temp.headImageId},this.header).then(response => {
+        console.log(response.data.resultData, 'fetchBuildDataList')
+      this.temp.headImageId = ""
+      this.dialogImageUrl = ""
+      })
+      },
   }
 }
 </script>
+<style>
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+</style>

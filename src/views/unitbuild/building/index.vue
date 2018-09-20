@@ -90,12 +90,12 @@
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="200px" style="width: 90%; margin-left:50px;">
 
         <el-form-item :label="$t('table.companyName')">
-          <el-select v-model="temp.companyId" class="filter-item" placeholder="请选择">
+          <el-select v-model="temp.companyId" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in unitList" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.buildingType')">
-          <el-select v-model="temp.buildingType" class="filter-item" placeholder="请选择">
+          <el-select v-model="temp.buildingType" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in buildingTypeList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
@@ -119,7 +119,7 @@
               <el-button style="margin-left: 10px;" size="medium" type="success" @click="submitUpload">确认上传</el-button>
               <el-button style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
             </el-upload>
-          <el-input v-model="temp.buildingImageId"/>
+          <!-- <el-input v-model="temp.buildingImageId"/> -->
           
           <!-- <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="">
@@ -127,7 +127,7 @@
         </el-form-item>
 
         <el-form-item :label="$t('table.floorsLv')">
-          <el-select v-model="temp.floorsLv" class="filter-item" placeholder="请选择">
+          <el-select v-model="temp.floorsLv" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in floorsLvList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
