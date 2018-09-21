@@ -153,6 +153,35 @@ export const asyncRouterMap = [{
                 roles: [1] // or you can only set roles in sub nav
             }
         }]
+    }, {
+        path: '/task',
+        component: Layout,
+        redirect: 'noredirect',
+        alwaysShow: true, // will always show the root menu
+        meta: {
+            title: '任务管理',
+            icon: 'form',
+            roles: [1] // you can set roles in root nav
+        },
+        children: [{
+            path: 'distribute',
+            component: () =>
+                import ('@/views/task/distribute/index'),
+            name: '任务派发',
+            meta: {
+                title: '任务派发',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }, {
+            path: 'query',
+            component: () =>
+                import ('@/views/task/query/index'),
+            name: '任务查询',
+            meta: {
+                title: '任务查询',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }]
     },
 
     /** When your routing table is too long, you can split it into small modules**/

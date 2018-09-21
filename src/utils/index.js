@@ -353,11 +353,20 @@ export function checkToken() {
             setToken(data)
         })
     }
-    
+
 }
 export function getHeader() {
 
     const data = JSON.parse(getToken())
     const header = "Bearer " + data.userToken
     return header
+}
+export function range(start, end) {
+    const arr = [];
+    for (var i = start; i < end; i++) {
+        if (i != 0) {
+            arr.push(i);
+        }
+    }
+    return arr;
 }

@@ -224,19 +224,6 @@ pcaa: pcaa,
         buildingType: null
       },
       temp: {
-        loginAccount:"",
-        userName:"",
-        headImageId:"",
-        password:"",
-        nickName:"",
-        department:"",
-        roleLevel:"",
-        userType:"",
-        sex:"",
-        birthday:"",
-        phone:"",
-        wechat:"",
-        email:""
 
       },
       dialogFormVisible: false,
@@ -318,19 +305,6 @@ pcaa: pcaa,
     },
     resetTemp() {
       this.temp = {
-        loginAccount:"",
-        userName:"",
-        headImageId:"",
-        password:"",
-        nickName:"",
-        department:"",
-        roleLevel:"",
-        userType:"",
-        sex:"",
-        birthday:"",
-        phone:"",
-        wechat:"",
-        email:""
       }
     },
     handleCreate() {

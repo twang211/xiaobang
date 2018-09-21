@@ -151,6 +151,17 @@ export function createbuildArticle(data, header) {
         }
     })
 }
+//人员下拉
+export function fetchUserDownDataList(query, header) {
+    return request({
+        url: '/fire-service/api/user/backend/down-list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
 //单位下拉
 export function fetchUnitDownDataList(query, header) {
     return request({
@@ -396,134 +407,27 @@ export function createAdminUpdate(data, header) {
 }
 
 
-
-
-
-
-
-
-
-export function fetchAllinfos(data) {
+//任务查询列表
+export function fetchQueryDataList(query, header) {
     return request({
-        url: '/kyhadoop/getkv_thread',
-        method: 'post',
-        data
-    })
-}
-
-export function fetchAppList(data) {
-    return request({
-        url: '/kyhadoop/kvtag/taglist',
-        method: 'post',
-        data
-    })
-}
-
-export function fetchDataList(data) {
-    return request({
-        url: '/kyhadoop/grid',
-        method: 'post',
-        data
-    })
-}
-
-export function fetchList(query) {
-    return request({
-        url: '/article/list',
+        url: '/fire-service/api/task/backend/list',
         method: 'get',
-        params: query
+        params: query,
+        headers: {
+            'Authorization': header
+        }
     })
 }
 
-export function fetchArticle(id) {
+//更新设备管理信息
+export function createTaskAdd(data, header) {
+    console.log(header)
     return request({
-        url: '/article/detail',
-        method: 'get',
-        params: { id }
-    })
-}
-
-export function fetchPv(pv) {
-    return request({
-        url: '/article/pv',
-        method: 'get',
-        params: { pv }
-    })
-}
-
-export function createArticle(data) {
-    return request({
-        url: '/article/create',
+        url: '/fire-service/api/task/backend/add',
         method: 'post',
-        data
-    })
-}
-
-export function updateArticle(data) {
-    return request({
-        url: '/article/update',
-        method: 'post',
-        data
-    })
-}
-// 短信数据统计
-export function msgdataList(data) {
-    console.log(data)
-    return request({
-        url: '/sms/list',
-        method: 'post',
-        data
-    })
-}
-
-//模板列表数据
-export function msgmodalList(data) {
-    console.log(data)
-    return request({
-        url: '/sms/sendlist',
-        method: 'post',
-        data
-    })
-}
-export function updateMsgmodel(data) {
-    console.log(data)
-    return request({
-        url: '/sms/sendupdate',
-        method: 'post',
-        data
-    })
-}
-export function createMsgmodel(data) {
-    console.log(data)
-    return request({
-        url: '/sms/send',
-        method: 'post',
-        data
-    })
-}
-export function accountList(query) {
-    console.log(query)
-    return request({
-        url: '/sms/smsmultiinfo',
-        method: 'get',
-        params: query
-    })
-}
-export function getShorturl() {
-    return request({
-        url: '/sms/shorturl',
-        method: 'get'
-    })
-}
-export function getItem(id) {
-    return request({
-        url: 'sms/getsmssend/' + id,
-        method: 'post'
-    })
-}
-export function getTagitem() {
-    return request({
-        url: 'sms/tags',
-        method: 'get'
+        data,
+        headers: {
+            'Authorization': header
+        }
     })
 }
