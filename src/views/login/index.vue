@@ -110,7 +110,8 @@ export default {
         if (valid) {
           this.loading = true
           console.log(this.loginForm,"this.loginFormthis.loginFormthis.loginForm")
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+          this.$store.dispatch('LoginByUsername', this.loginForm).then(response => {
+            console.log(response,"login")
             this.loading = false
             this.$router.push({ path: '/' })
           }).catch(() => {

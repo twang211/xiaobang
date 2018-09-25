@@ -301,20 +301,43 @@ export default {
     getcompanyTypeList() {
       fetchTypeList(this.companyTypeQuery,this.header).then(response => {
         console.log(response.data.resultData.companyTypeMap, 'fetchcompanyTypeList')
+              var code = response.data.resultCode
+        if(code == 0){
         this.companyTypeList = response.data.resultData.companyTypeMap
         this.companyTypeList.forEach(element => {
           this.showcompanyTypeObj[(element["key"].toString())] = element["value"]
         });
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
           console.log(this.showcompanyTypeObj)
       })
     },
     getsafetyLevelList() {
       fetchTypeList(this.safetyLevelQuery,this.header).then(response => {
-        console.log(response.data.resultData.safetyLevelMap, 'fetchsafetyLevelList')
+        console.log(response.data.resultData.safetyLevelMap, 'fetchsafetyLevelList')              
+        var code = response.data.resultCode
+        if(code == 0){
+   
         this.safetyLevelList = response.data.resultData.safetyLevelMap
         this.safetyLevelList.forEach(element => {
           this.showsafetyLevelObj[(element["key"].toString())] = element["value"]
         });
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
       })
     },
     getexportList() {
@@ -388,20 +411,20 @@ export default {
             var code = response.data.resultCode
             if(code == 0){
               this.dialogFormVisible = false
-    this.$notify({
-        title: '成功',
-        message: '创建成功',
-        type: 'success',
-        duration: 2000
-    })
+              this.$notify({
+                  title: '成功',
+                  message: '创建成功',
+                  type: 'success',
+                  duration: 2000
+              })
               this.getdataList()
             }else{
-    this.$notify({
-        title: '失败',
-        message: response.data.resultMsg,
-        type: 'warning',
-        duration: 2000
-    })
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
               
             }
           })
@@ -429,20 +452,20 @@ export default {
             if(code == 0){
               this.dialogFormVisible = false
               
-    this.$notify({
-        title: '成功',
-        message: '更新成功',
-        type: 'success',
-        duration: 2000
-    })
+              this.$notify({
+                  title: '成功',
+                  message: '更新成功',
+                  type: 'success',
+                  duration: 2000
+              })
               this.getdataList()
             }else{
-    this.$notify({
-        title: '失败',
-        message: response.data.resultMsg,
-        type: 'warning',
-        duration: 2000
-    })
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
             }
           })
         }

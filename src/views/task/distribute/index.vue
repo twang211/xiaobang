@@ -232,9 +232,20 @@ export default {
       this.listLoading = true
       fetchBuildDataList(this.listQuery,this.header).then(response => {
         console.log(response.data.resultData, 'fetchQueryDataList')
+        var code = response.data.resultCode
+        if(code == 0){
         this.list = response.data.resultData.buildingList
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
+        }else{
+          
+    this.$notify({
+        title: '失败',
+        message: response.data.resultMsg,
+        type: 'warning',
+        duration: 2000
+    })
+        }
       })
     },
     getAllinfos() {
@@ -407,7 +418,15 @@ export default {
     },
     PostServer(row){
       createTaskAdd(row,this.header).then(response => {
-        if(response.data.resultCode != 0){
+        var code = response.data.resultCode
+        if(code == 0){
+              this.$notify({
+                  title: '成功',
+                  message: '派发成功',
+                  type: 'success',
+                  duration: 2000
+              })
+        }else{
         this.$notify({
           title: '失败',
               message: response.data.resultMsg,

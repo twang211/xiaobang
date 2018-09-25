@@ -276,9 +276,21 @@ export default {
       this.listLoading = true
       fetchUserDataList(this.listQuery,this.header).then(response => {
         console.log(response.data.resultData, 'fetchUserDataList')
+        
+        var code = response.data.resultCode
+        if(code == 0){
         this.list = response.data.resultData.userList
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
       })
     },
     getuserTypeList() {
@@ -394,6 +406,8 @@ export default {
         if (valid) {
           createUserArticle(this.temp,this.header).then(() => {
             this.list.unshift(this.temp)
+            var code = response.data.resultCode
+            if(code == 0){
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -402,6 +416,15 @@ export default {
               duration: 2000
             })
     this.getdataList()
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
           })
         }
       })
@@ -439,7 +462,8 @@ export default {
         if (valid) {
           updateUserData(this.uptemp,this.header).then( response => {
             console.log(response,"updateUnitData")
-            if(response.data.resultCode == "0"){
+            var code = response.data.resultCode
+            if(code == 0){
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -448,6 +472,13 @@ export default {
               duration: 2000
             })
     this.getdataList()
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
             }
           })
         }
@@ -494,10 +525,23 @@ export default {
       this.$refs.upload.submit();
     },
     upSuccess(response) {
-      console.log(response, 999999);
+      console.log(response, 999999);     
+      var code = response.resultCode
+            if(code == 0){
       this.temp.headImageId = response.resultData.fileDTO.fileId
       this.dialogImageUrl = "http://47.92.165.114:8081"+response.resultData.fileDTO.fileUri
       this.btnstatus = true;
+            }else{
+              this.temp.headImageId = ""
+              this.dialogImageUrl = ""
+            this.btnstatus = false;
+              this.$notify({
+                  title: '失败',
+                  message: response.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+            }
     },
       handlePictureCardPreview(file) {
         this.dialogVisible = true;
@@ -507,8 +551,18 @@ export default {
         
       fetchDelImg({fileId:this.temp.headImageId},this.header).then(response => {
         console.log(response.data.resultData, 'fetchBuildDataList')
+            var code = response.data.resultCode
+            if(code == 0){
       this.temp.headImageId = ""
       this.dialogImageUrl = ""
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+            }
       })
       },
   }

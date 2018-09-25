@@ -338,8 +338,19 @@ export default {
       this.listLoading = true
       fetchSystemDataList(this.listQuery,this.header).then(response => {
         console.log(response.data.resultData, 'fetchUserDataList')
+        var code = response.data.resultCode
+        if(code == 0){
         this.list = response.data.resultData.typeList
       this.listLoading = false
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
       })
     },
     getkindList() {
@@ -403,6 +414,8 @@ export default {
         if (valid) {
           createNameArticle(this.nametemp,this.header).then(() => {
             this.list.unshift(this.nametemp)
+            var code = response.data.resultCode
+            if(code == 0){
             this.namedialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -411,6 +424,15 @@ export default {
               duration: 2000
             })
     this.getNamedataList()
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
           })
         }
       })
@@ -476,6 +498,8 @@ export default {
           createCheckPointArticle({checkPointList:this.postcheckpointlist},this.header).then(() => {
             this.list.unshift(this.newcheckpointlist)
             
+            var code = response.data.resultCode
+            if(code == 0){
           this.checkpointdialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -484,6 +508,15 @@ export default {
               duration: 2000
             })
     this.getCheckPointList()
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
           })
     },
     confirmEdit(row) {
@@ -540,6 +573,8 @@ export default {
         if (valid) {
           createSystemArticle(this.temp,this.header).then(() => {
             this.list.unshift(this.temp)
+            var code = response.data.resultCode
+            if(code == 0){
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -548,6 +583,15 @@ export default {
               duration: 2000
             })
     this.getdataList()
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
           })
         }
       })
@@ -570,7 +614,8 @@ export default {
         if (valid) {
           updateUserData(this.uptemp,this.header).then( response => {
             console.log(response,"updateUnitData")
-            if(response.data.resultCode == "0"){
+            var code = response.data.resultCode
+            if(code == 0){
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -579,6 +624,13 @@ export default {
               duration: 2000
             })
     this.getdataList()
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
             }
           })
         }

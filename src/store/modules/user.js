@@ -43,6 +43,7 @@ const user = {
             state.name = name
         },
         SET_AVATAR: (state, avatar) => {
+            console.log(avatar, "avataravataravataravataravatar")
             state.avatar = avatar
         },
         SET_ROLES: (state, roles) => {
@@ -85,6 +86,7 @@ const user = {
                 }
                 commit('SET_NAME', data.userInfo.userName)
                 commit('SET_USER', data.userInfo)
+                commit('SET_AVATAR', data.userInfo.headImageUri)
                 resolve(state.user)
             })
         },
@@ -144,9 +146,10 @@ const user = {
                 setToken(role)
                 getUserInfo(role).then(response => {
                     const data = response.data
-                    commit('SET_ROLES', data.roles)
-                    commit('SET_NAME', data.name)
-                    commit('SET_AVATAR', data.avatar)
+                    console.log(data, "datadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadata")
+                    commit('SET_ROLES', data.userInfo.roleLevel)
+                    commit('SET_NAME', data.userInfo.userName)
+                    commit('SET_AVATAR', data.userInfo.headImageUri)
                     commit('SET_INTRODUCTION', data.introduction)
                     resolve()
                 })

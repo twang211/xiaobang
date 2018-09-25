@@ -77,9 +77,20 @@ export default {
       this.listLoading = true
       fetchCheckRecordDataList(this.listQuery,this.header).then(response => {
         console.log(response.data.resultData, 'fetchUserDataList')
+        var code = response.data.resultCode
+        if(code == 0){
         this.list = response.data.resultData.checkRecordList
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
       })
     },
     getAllinfos() {

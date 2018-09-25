@@ -222,9 +222,20 @@ export default {
       this.listLoading = true
       fetchAdminDataList(this.listQuery,this.header).then(response => {
         console.log(response.data.resultData, 'fetchAdminDataList')
+        var code = response.data.resultCode
+        if(code == 0){
         this.list = response.data.resultData.apparatusList
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
+        }else{
+          
+    this.$notify({
+        title: '失败',
+        message: response.data.resultMsg,
+        type: 'warning',
+        duration: 2000
+    })
+        }
       })
     },
     getunitdataList() {
@@ -323,6 +334,9 @@ export default {
         if (valid) {
           createAdminArticle(this.temp,this.header).then(() => {
             this.list.unshift(this.temp)
+            
+            var code = response.data.resultCode
+            if(code == 0){
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -331,6 +345,15 @@ export default {
               duration: 2000
             })
     this.getdataList()
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
           })
         }
       })
@@ -356,8 +379,9 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           createAdminUpdate(this.temp,this.header).then( response => {
-            console.log(response,"updateUnitData")
-            if(response.data.resultCode == "0"){
+            console.log(response,"updateUnitData")  
+            var code = response.data.resultCode
+            if(code == 0){
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
@@ -366,6 +390,13 @@ export default {
               duration: 2000
             })
     this.getdataList()
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
             }
           })
         }
@@ -413,9 +444,22 @@ export default {
     },
     upSuccess(response) {
       console.log(response, 999999);
-      this.temp.apparatusImageId = response.resultData.fileDTO.fileId
-      this.dialogImageUrl = "http://47.92.165.114:8081"+response.resultData.fileDTO.fileUri
-      this.btnstatus = true;
+            var code = response.resultCode
+            if(code == 0){
+              this.temp.apparatusImageId = response.resultData.fileDTO.fileId
+              this.dialogImageUrl = "http://47.92.165.114:8081"+response.resultData.fileDTO.fileUri
+              this.btnstatus = true;
+            }else{
+              this.temp.apparatusImageId = ""
+              this.dialogImageUrl = ""
+            this.btnstatus = false;
+              this.$notify({
+                  title: '失败',
+                  message: response.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+            }
     },
       handlePictureCardPreview(file) {
         this.dialogVisible = true;
@@ -425,8 +469,18 @@ export default {
         
       fetchDelImg({fileId:this.temp.apparatusImageId},this.header).then(response => {
         console.log(response.data.resultData, 'fetchBuildDataList')
+            var code = response.data.resultCode
+            if(code == 0){
       this.temp.apparatusImageId = ""
       this.dialogImageUrl = ""
+            }else{
+              this.$notify({
+                  title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+            }
       })
       },
   }
