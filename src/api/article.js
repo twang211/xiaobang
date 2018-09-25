@@ -431,3 +431,14 @@ export function createTaskAdd(data, header) {
         }
     })
 }
+//隐患查询列表
+export function fetchCheckRecordDataList(query, header) {
+    return request({
+        url: '/fire-service/api/check-record/backend/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}

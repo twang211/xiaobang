@@ -182,6 +182,27 @@ export const asyncRouterMap = [{
                 roles: [1] // or you can only set roles in sub nav
             }
         }]
+    }, {
+        path: '/checkrecord',
+        component: Layout,
+        redirect: 'noredirect',
+        alwaysShow: false, // will always show the root menu
+        meta: {
+            title: '隐患管理',
+            icon: 'form',
+            roles: [1] // you can set roles in root nav
+        },
+        children: [{
+            path: 'check',
+            component: () =>
+                import ('@/views/checkrecord/check/index'),
+            name: '隐患查看',
+            meta: {
+                title: '隐患查看',
+                icon: 'form',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }]
     },
 
     /** When your routing table is too long, you can split it into small modules**/

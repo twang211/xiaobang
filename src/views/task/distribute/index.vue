@@ -407,7 +407,6 @@ export default {
     },
     PostServer(row){
       createTaskAdd(row,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchsafetyLevelList')
         if(response.data.resultCode != 0){
         this.$notify({
           title: '失败',

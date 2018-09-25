@@ -281,9 +281,21 @@ export default {
       this.listLoading = true
       fetchUnitDataList(this.listQuery,this.header).then(response => {
         console.log(response.data.resultData, 'fetchUnitDataList')
+        var code = response.data.resultCode
+        if(code == 0){
+
         this.list = response.data.resultData.companyList
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
+        }else{
+          
+    this.$notify({
+        title: '失败',
+        message: response.data.resultMsg,
+        type: 'warning',
+        duration: 2000
+    })
+        }
       })
     },
     getcompanyTypeList() {
@@ -369,17 +381,29 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createunitArticle(this.temp,this.header).then(() => {
+          createunitArticle(this.temp,this.header).then(response => {
+
             this.list.unshift(this.temp)
-            this.dialogFormVisible = false
             
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
-    this.getdataList()
+            var code = response.data.resultCode
+            if(code == 0){
+              this.dialogFormVisible = false
+    this.$notify({
+        title: '成功',
+        message: '创建成功',
+        type: 'success',
+        duration: 2000
+    })
+              this.getdataList()
+            }else{
+    this.$notify({
+        title: '失败',
+        message: response.data.resultMsg,
+        type: 'warning',
+        duration: 2000
+    })
+              
+            }
           })
         }
       })
@@ -400,16 +424,25 @@ export default {
         if (valid) {
           updateUnitData(this.temp,this.header).then( response => {
             console.log(response,"updateUnitData")
-            if(response.data.resultCode == "0"){
+            
+            var code = response.data.resultCode
+            if(code == 0){
+              this.dialogFormVisible = false
               
-    this.getdataList()
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
-            })
+    this.$notify({
+        title: '成功',
+        message: '更新成功',
+        type: 'success',
+        duration: 2000
+    })
+              this.getdataList()
+            }else{
+    this.$notify({
+        title: '失败',
+        message: response.data.resultMsg,
+        type: 'warning',
+        duration: 2000
+    })
             }
           })
         }
