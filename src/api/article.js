@@ -442,3 +442,25 @@ export function fetchCheckRecordDataList(query, header) {
         }
     })
 }
+//保养查询列表
+export function fetchUpkeepDataList(query, header) {
+    return request({
+        url: '/fire-service/api/upkeep-record/backend/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//维修查询列表
+export function fetchWorkrecordDataList(query, header) {
+    return request({
+        url: '/fire-service/api/work-record/backend/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}

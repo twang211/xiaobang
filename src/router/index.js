@@ -203,6 +203,62 @@ export const asyncRouterMap = [{
                 roles: [1] // or you can only set roles in sub nav
             }
         }]
+    }, {
+        path: '/report',
+        component: Layout,
+        redirect: 'noredirect',
+        alwaysShow: false, // will always show the root menu
+        meta: {
+            title: '报表管理',
+            icon: 'form',
+            roles: [1] // you can set roles in root nav
+        },
+        children: [{
+            path: 'buildcheck',
+            component: () =>
+                import ('@/views/report/buildcheck/index'),
+            name: '消防设施巡查',
+            meta: {
+                title: '消防设施巡查',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }, {
+            path: 'publicinfo',
+            component: () =>
+                import ('@/views/report/publicinfo/index'),
+            name: '公共区域消防巡查',
+            meta: {
+                title: '建筑公共区域消防巡查',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }, {
+            path: 'upkeep',
+            component: () =>
+                import ('@/views/report/upkeep/index'),
+            name: '消防设施维护保养',
+            meta: {
+                title: '消防设施维护保养',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }, {
+            path: 'testing',
+            component: () =>
+                import ('@/views/report/testing/index'),
+            name: '消防设施检测',
+            meta: {
+                title: '消防设施检测',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }, {
+            path: 'workrecord',
+            component: () =>
+                import ('@/views/report/workrecord/index'),
+            name: '消防设施故障维修',
+            meta: {
+                title: '消防设施故障维修',
+                roles: [1] // or you can only set roles in sub nav
+            }
+        }]
     },
 
     /** When your routing table is too long, you can split it into small modules**/

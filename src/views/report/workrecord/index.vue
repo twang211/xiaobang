@@ -1,9 +1,7 @@
 <template>
-  <div class="app-container calendar-list-container">
-    <div class="filter-container">            
-      <el-input :placeholder="$t('querytable.apparatusCode')" v-model="listQuery.apparatusCode" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-            <el-input :placeholder="$t('querytable.apparatusUuid')" v-model="listQuery.apparatusUuid" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-            <el-input :placeholder="$t('querytable.apparatusName')" v-model="listQuery.apparatusName" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+        <div class="app-container calendar-list-container">
+    <div class="filter-container">
+            <el-input :placeholder="$t('querytable.workUserName')" v-model="listQuery.workUserName" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
       <el-select v-model="listQuery.companyId" class="filter-item" filterable placeholder="单位名称">
         <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
@@ -11,15 +9,6 @@
       <el-select v-model="listQuery.buildingId" class="filter-item" filterable placeholder="建筑名称">
         <el-option v-for="item in buildlist" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId"/>
       </el-select>
-      <el-date-picker v-model="listQuery.queryDateFrom" type="date" placeholder="开始时间"/>
-      <el-date-picker v-model="listQuery.queryDateTo" type="date" placeholder="结束时间"/>
-       <el-select v-model="listQuery.isPass" :placeholder="$t('querytable.isPass')" clearable style="width: 120px" class="filter-item" placeholder="是否合格">
-
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      
-            </el-select>
-       <el-select v-model="listQuery.isAmend" :placeholder="$t('querytable.isAmend')" clearable style="width: 120px" class="filter-item" placeholder="是否处理">
-
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      </el-select>
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
       <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
@@ -34,7 +23,8 @@
       fit
       highlight-current-row
       style="width: 100%;min-height:1000px;">
-         <el-table-column :label="$t('table.companyName')" align="center" width="150">
+      
+      <el-table-column :label="$t('table.companyName')" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
@@ -54,49 +44,40 @@
           <span>{{ scope.row.apparatusUuid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" width="120">
+      <el-table-column :label="$t('table.lookTime')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusCode }}</span>
+          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.fireAreaCode')" align="center" width="120">
+      <el-table-column :label="$t('table.troubleDesc')" align="center" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.fireAreaCode }}</span>
+          <span>{{ scope.row.troubleDesc }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isPass')" align="center" width="90">
+      <el-table-column :label="$t('table.workTime')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isPass] }}</span>
+          <span>{{ scope.row.workTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isAmend')" align="center" width="90">
+      <el-table-column :label="$t('table.workUserAutographUri')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isAmend] }}</span>
+          <img  :src="scope.row.workUserAutographUri" class="avatar">
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isFinish')" align="center" width="90">
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isFinish] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center" width="150">
-        <template slot-scope="scope">
-          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-        </template>
-      </el-table-column>
- 
       <el-table-column :label="$t('table.config')" align="center" width="150">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
+
  
     <div class="pagination-container">
       <el-pagination :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
 
-    <el-dialog title="详情" :visible.sync="dialogFormVisible" width="90%">
+  <el-dialog title="详情" :visible.sync="dialogFormVisible" width="90%">
+      
              <div class="app-container calendar-list-container">
     <el-table
       v-loading="listLoading"
@@ -106,7 +87,8 @@
       fit
       highlight-current-row
       style="width: 100%;min-height:1000px;">
-         <el-table-column :label="$t('table.companyName')" align="center" width="150">
+      
+      <el-table-column :label="$t('table.companyName')" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
@@ -126,49 +108,40 @@
           <span>{{ scope.row.apparatusUuid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" width="120">
+      <el-table-column :label="$t('table.lookTime')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusCode }}</span>
+          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.fireAreaCode')" align="center" width="120">
+      <el-table-column :label="$t('table.troubleDesc')" align="center" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.fireAreaCode }}</span>
+          <span>{{ scope.row.troubleDesc }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isPass')" align="center" width="90">
+      <el-table-column :label="$t('table.workTime')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isPass] }}</span>
+          <span>{{ scope.row.workTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isAmend')" align="center" width="90">
+      <el-table-column :label="$t('table.workUserAutographUri')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isAmend] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.isFinish')" align="center" width="90">
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isFinish] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center" width="150">
-        <template slot-scope="scope">
-          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <img  :src="scope.row.workUserAutographUri" class="avatar">
         </template>
       </el-table-column>
     </el-table>
-       </div>
-        </el-dialog>
+             </div>
+    </el-dialog>
   </div>
+
 </template>
 
 <script>
-import { fetchCheckRecordDataList,fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList } from '@/api/article'
+import { fetchWorkrecordDataList, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
 export default {
-  name: 'User',
+  name: 'Workrecord',
   directives: {
     waves
   },
@@ -181,7 +154,6 @@ export default {
       myHeaders: {Authorization: getHeader()},
       extime: '',
       list: null,
-      infos: [],
       unitlist: null,
       buildlist: null,
       userlist: null,
@@ -190,32 +162,29 @@ export default {
       exportlist: null,
       total: null,
       listLoading: true,
+      userTypeQuery: {
+        name:"userTypeMap",
+        type:"list"
+      },
       listQuery: {
         page: 1,
         pageSize: 20,
         companyId: null,
         buildingId: null,
-        apparatusName: null,
-        checkUserId: null,
-        checkUserType: null,
-        isPass: 0,
-        isAmend: null,
-        apparatusCode: null,
-        apparatusUuId: null,
-        queryDateFrom: null,
-        queryDateTo: null,
+        workUserName: null,
       },
-      selectType: [{ label: '是', key: 1 }, { label: '否', key: 0 }],
-      checkType:["否","是"],
       exportQuery: {},
+      showReviewer: false,
       infos: [],
       dialogFormVisible: false,
-      showReviewer: false
+      checkType:["否","是"],
+      selectType: [{ label: '是', key: 1 }, { label: '否', key: 0 }],
     }
   },
   created() {
     checkToken()
     this.getdataList()
+    this.getuserTypeList()
     this.getunitdataList()
     this.getbuilddataList()
     this.getuserdataList()
@@ -223,22 +192,38 @@ export default {
   methods: {
     getdataList() {
       this.listLoading = true
-      fetchCheckRecordDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
+      fetchWorkrecordDataList(this.listQuery,this.header).then(response => {
+        console.log(response.data.resultData, 'fetchQueryDataList')
         var code = response.data.resultCode
         if(code == 0){
-        this.list = response.data.resultData.taskDetailList
+        this.list = response.data.resultData.recordList
+        this.list.forEach(element => {
+          if(element.workUserAutographUri){
+
+            element.workUserAutographUri = "http://47.92.165.114:8081"+element.workUserAutographUri
+          }
+        });
+        console.log(this.list,"this.list ")
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
         }else{
           
-          this.$notify({
-              title: '失败',
-              message: response.data.resultMsg,
-              type: 'warning',
-              duration: 2000
-          })
+    this.$notify({
+        title: '失败',
+        message: response.data.resultMsg,
+        type: 'warning',
+        duration: 1500
+    })
         }
+      })
+    },
+    getuserTypeList() {
+      fetchTypeList(this.userTypeQuery,this.header).then(response => {
+        console.log(response.data.resultData, 'fetchcompanyTypeList')
+        this.userTypeList = response.data.resultData.userTypeMap
+        this.userTypeList.forEach(element => {
+          this.showuserTypeObj[element["key"]] = element["value"]
+        });
       })
     },
     getunitdataList() {
@@ -259,6 +244,12 @@ export default {
         this.userlist = response.data.resultData.userList
       })
     },
+    lookInfos(row){
+      this.infos = []
+      this.dialogFormVisible = true
+      this.infos.push(row) 
+      console.log(row,"lookInfoslookInfoslookInfos")
+    },
     getAllinfos() {
     },
     getexportList() {
@@ -269,14 +260,13 @@ export default {
       //   this.listLoading = false
       // })
     },
-    lookInfos(row){
-      this.infos = []
-      this.dialogFormVisible = true
-      this.infos.push(row) 
-      console.log(row,"scope.rowscope.row")
-    },
     handleFilter() {
       this.listQuery.page = 1
+      if(this.listQuery.queryDateFrom &&this.listQuery.queryDateTo ){
+
+        this.listQuery.queryDateFrom = parseTime(this.listQuery.queryDateFrom, '{y}-{m}-{d}')
+      this.listQuery.queryDateTo = parseTime(this.listQuery.queryDateTo, '{y}-{m}-{d}')
+      }
       console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
@@ -286,15 +276,7 @@ export default {
         pageSize: 20,
         companyId: null,
         buildingId: null,
-        apparatusName: null,
-        checkUserId: null,
-        checkUserType: null,
-        isPass: 0,
-        isAmend: null,
-        apparatusCode: null,
-        apparatusUuId: null,
-        queryDateFrom: null,
-        queryDateTo: null,
+        workUserName: null,
       }
     this.getdataList()
     },
@@ -338,3 +320,11 @@ export default {
   }
 }
 </script>
+
+<style>
+  .avatar {    width: 50%;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+</style>
