@@ -84,6 +84,7 @@ const user = {
                 } else {
                     reject('getInfo: roles must be a non-null array !')
                 }
+                commit('SET_TOKEN', data)
                 commit('SET_NAME', data.userInfo.userName)
                 commit('SET_USER', data.userInfo)
                 commit('SET_AVATAR', data.userInfo.headImageUri)
@@ -112,7 +113,7 @@ const user = {
         }) {
             console.log(state, "statestatestatestatestatestate")
 
-            const data = JSON.parse(state.token)
+            const data = state.token
             const header = "Bearer " + data.userToken
             return new Promise((resolve, reject) => {
                 logout(header).then(() => {
