@@ -343,14 +343,24 @@ export function uniqueArr(arr) {
 export function checkToken() {
 
     const data = JSON.parse(getToken())
+    console.log(data, "22222222222222")
     const timestamp = new Date().getTime()
     const header = "Bearer " + data.userToken
+    console.log(timestamp, data.tokenExpireTime)
+    console.log(timestamp > data.tokenExpireTime)
     if (timestamp > data.tokenExpireTime) {
+        this.$store.dispatch('LogOut').then(() => {
+            location.reload() // In order to re-instantiate the vue-router object to avoid bugs
+        })
+    } else {
+
         fetchToken({}, header).then(response => {
-            const datas = response.data.resultData
-            data.userToken = response.data.resultData.userToken
-            data.tokenExpireTime = response.data.resultData.tokenExpireTime
-            setToken(data)
+            const datas = response.data
+            if (datas.resultCode == 0) {
+                data.userToken = datas.resultData.userToken
+                data.tokenExpireTime = datas.resultData.tokenExpireTime
+                setToken(data)
+            }
         })
     }
 

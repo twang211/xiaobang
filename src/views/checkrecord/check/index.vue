@@ -33,7 +33,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;min-height:1000px;">
+      style="width: 100%;">
          <el-table-column :label="$t('table.companyName')" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
@@ -93,7 +93,7 @@
     </el-table>
  
     <div class="pagination-container">
-      <el-pagination :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
+      <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
 
     <el-dialog title="详情" :visible.sync="dialogFormVisible" width="90%">

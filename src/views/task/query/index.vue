@@ -28,7 +28,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;min-height:1000px;">
+      style="width: 100%;">
       
       <el-table-column :label="$t('table.taskName')" align="center" width="150">
         <template slot-scope="scope">
@@ -69,7 +69,7 @@
 
  
     <div class="pagination-container">
-      <el-pagination :current-page="listQuery.page" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
+      <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
 
   </div>
