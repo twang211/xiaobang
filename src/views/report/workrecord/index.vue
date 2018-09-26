@@ -24,47 +24,47 @@
       highlight-current-row
       style="width: 100%;">
       
-      <el-table-column :label="$t('table.companyName')" align="center" width="150">
+      <el-table-column :label="$t('table.companyName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingName')" align="center" width="150">
+      <el-table-column :label="$t('table.buildingName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" width="150">
+      <el-table-column :label="$t('table.apparatusName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" width="240">
+      <el-table-column :label="$t('table.apparatusUuid')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusUuid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.lookTime')" align="center" width="150">
+      <el-table-column :label="$t('table.lookTime')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.troubleDesc')" align="center" width="120">
+      <el-table-column :label="$t('table.troubleDesc')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.troubleDesc }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.workTime')" align="center" width="150">
+      <el-table-column :label="$t('table.workTime')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.workTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.workUserAutographUri')" align="center" width="150">
+      <el-table-column :label="$t('table.workUserAutographUri')" align="center">
         <template slot-scope="scope">
           <img  :src="scope.row.workUserAutographUri" class="avatar">
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" width="150">
+      <el-table-column :label="$t('table.config')" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
@@ -88,27 +88,27 @@
       highlight-current-row
       style="width: 100%">
       
-      <el-table-column :label="$t('table.workRecordId')" align="center" width="150">
+      <el-table-column :label="$t('table.workRecordId')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.workRecordId }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.workMethod')" align="center" width="150">
+      <el-table-column :label="$t('table.workMethod')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.workMethod }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.safetyPrecautions')" align="center" width="150">
+      <el-table-column :label="$t('table.safetyPrecautions')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.safetyPrecautions }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.lookTime')" align="center" width="150">
+      <el-table-column :label="$t('table.lookTime')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.workTime')" align="center" width="150">
+      <el-table-column :label="$t('table.workTime')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.workTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
@@ -153,7 +153,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         companyId: null,
         buildingId: null,
         workUserName: null,
@@ -178,7 +178,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchWorkrecordDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchQueryDataList')
         var code = response.data.resultCode
         if(code == 0){
         this.list = response.data.resultData.recordList
@@ -188,7 +187,6 @@ export default {
             element.workUserAutographUri = "http://47.92.165.114:8081"+element.workUserAutographUri
           }
         });
-        console.log(this.list,"this.list ")
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
         }else{
@@ -204,7 +202,6 @@ export default {
     },
     getuserTypeList() {
       fetchTypeList(this.userTypeQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchcompanyTypeList')
         this.userTypeList = response.data.resultData.userTypeMap
         this.userTypeList.forEach(element => {
           this.showuserTypeObj[element["key"]] = element["value"]
@@ -213,28 +210,23 @@ export default {
     },
     getunitdataList() {
       fetchUnitDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.unitlist = response.data.resultData.companyList
       })
     },
     getbuilddataList() {
       fetchBuildDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.buildlist = response.data.resultData.buildingList
       })
     },
     getuserdataList() {
       fetchUserDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.userlist = response.data.resultData.userList
       })
     },
     lookInfos(row){
-      console.log(row)
       this.infos = []
       this.dialogFormVisible = true
       fetchWorkRecordData({workRecordId:row.workRecordId},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         var code = response.data.resultCode
         if(code == 0){
           
@@ -255,7 +247,6 @@ export default {
           })
         }
       })
-      console.log(row,"lookInfoslookInfoslookInfos")
     },
     getAllinfos() {
     },
@@ -274,13 +265,12 @@ export default {
         this.listQuery.queryDateFrom = parseTime(this.listQuery.queryDateFrom, '{y}-{m}-{d}')
       this.listQuery.queryDateTo = parseTime(this.listQuery.queryDateTo, '{y}-{m}-{d}')
       }
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         companyId: null,
         buildingId: null,
         workUserName: null,
@@ -288,12 +278,10 @@ export default {
     this.getdataList()
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },

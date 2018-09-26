@@ -6,7 +6,6 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
  * @param route
  */
 function hasPermission(roles, route) {
-    console.log(roles, route)
     if (route.meta && route.meta.roles) {
         return route.meta.roles.indexOf(roles) >= 0
     } else {
@@ -47,7 +46,6 @@ const permission = {
         GenerateRoutes({ commit }, data) {
             return new Promise(resolve => {
                 const { roles } = data
-                console.log(roles, "rolesrolesroles")
 
                 let accessedRouters
                     //TODO: 菜单权限管理，后台传回菜单数据

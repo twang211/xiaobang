@@ -337,7 +337,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchSystemDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         var code = response.data.resultCode
         if(code == 0){
         this.list = response.data.resultData.typeList
@@ -355,26 +354,21 @@ export default {
     },
     getkindList() {
       fetchTypeList(this.kindQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchTypeList')
         this.kindList = response.data.resultData.apparatusKindMap
         this.kindList.forEach(element => {
           this.showkindObj[(element["key"].toString())] = element["value"]
         });
-        console.log(this.showkindObj, 'this.showkindObj')
       })
     },
     getperiodTypeList() {
       fetchTypeList(this.periodTypeQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchTypeList')
         this.periodTypeList = response.data.resultData.periodTypeMap
         this.periodTypeList.forEach(element => {
           this.showperiodTypeObj[(element["key"].toString())] = element["value"]
         });
-        console.log(this.showperiodTypeObj, 'this.showkindObj')
       })
     },
     editNameInfo(row,name) {
-      console.log(row,"editNameInfoeditNameInfo")
       this.systeminfo = row
       this.activeName = name
       this.getNamedataList()
@@ -383,14 +377,12 @@ export default {
       this.listLoading = true
       this.namelistQuery.apparatusTypeId =this.systeminfo.typeId
       fetchNameDataList(this.namelistQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         this.namelist = response.data.resultData.nameList
         // this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
       })
     },
     namehandleFilter() {
-      console.log(this.namelistQuery,"this.listQuery")
       this.getNamedataList()
     },
     resetnameQuery() {
@@ -438,7 +430,6 @@ export default {
       })
     },
       checkPoint(row,name) {
-        console.log(row,"checkPoint")
         this.nameinfo = row
         this.activeName = name
         this.getCheckPointList()
@@ -446,7 +437,6 @@ export default {
       getCheckPointList() {
       this.checkpointQuery.nameId =this.nameinfo.nameId
       fetchCheckPointDataList(this.checkpointQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchCheckPointDataList')
         this.checkpointlist = response.data.resultData.checkPointList
         
         this.checkpointlist.forEach(element => {
@@ -460,7 +450,6 @@ export default {
       this.getCheckPointList()
     },
     checkpointhandleFilter() {
-      console.log(this.namelistQuery,"this.listQuery")
       this.getCheckPointList()
     },
     checkpointhandleCreate() {
@@ -470,12 +459,10 @@ export default {
     checkpointhandleAdd() {
       this.newcheckpointlist.push({"type":this.checkpointtemp})
         this.newcheckpointlist.forEach(element => {
-            console.log(element)
             element.edit = true
         });
     },
     checkpointcreateData() {
-        console.log(this.newcheckpointlist," this.newcheckpointlist")
         this.postcheckpointlist = []
 
         
@@ -485,7 +472,6 @@ export default {
         // activeStatus:"1",
         var posttemp = {}
         for (let [key, value] of Object.entries(this.newcheckpointlist)) {
-            console.log(key, value);
             value.edit = null
             value.type = null
             posttemp.checkPoint = value.checkPoint
@@ -544,7 +530,6 @@ export default {
       // })
     },
     handleFilter() {
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
@@ -598,7 +583,6 @@ export default {
     },
     handleUpdate(row) {
       fetchUserData({},row.userId,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserData')
         if(response.data.resultData.userInfo.headImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.userInfo.headImageUri
         }
@@ -613,7 +597,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateUserData(this.uptemp,this.header).then( response => {
-            console.log(response,"updateUnitData")
             var code = response.data.resultCode
             if(code == 0){
             this.dialogFormVisible = false
@@ -637,12 +620,10 @@ export default {
       })
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },

@@ -28,7 +28,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         companyId: null,
         buildingId: null,
         apparatusName: null,
@@ -54,7 +54,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchCheckRecordDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         this.list = response.data.resultData.checkRecordList
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
@@ -63,7 +62,7 @@ export default {
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         companyId: null,
         buildingId: null,
         apparatusName: null,

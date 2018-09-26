@@ -8,7 +8,6 @@ import {
 
 //更新token
 export function fetchToken(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/auth/token/refresh',
         method: 'post',
@@ -57,7 +56,6 @@ export function fetchUnitDataList(query, header) {
 
 //添加单位信息
 export function createunitArticle(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/company/backend/add',
         method: 'post',
@@ -82,7 +80,6 @@ export function fetchUnitData(query, companyId, header) {
 
 //更新单位信息
 export function updateUnitData(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/company/backend/update',
         method: 'post',
@@ -117,7 +114,6 @@ export function fetchBuildData(query, buildingId, header) {
 }
 //删除上传文件
 export function fetchDelImg(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/file/delete',
         method: 'post',
@@ -129,7 +125,6 @@ export function fetchDelImg(data, header) {
 }
 //更新建筑物信息
 export function updateBuildData(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/building/backend/update',
         method: 'post',
@@ -141,7 +136,6 @@ export function updateBuildData(data, header) {
 }
 //添加建筑信息
 export function createbuildArticle(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/building/backend/add',
         method: 'post',
@@ -198,7 +192,6 @@ export function fetchUserDataList(query, header) {
 
 //更新人员信息
 export function updateUserData(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/user/backend/update',
         method: 'post',
@@ -210,7 +203,6 @@ export function updateUserData(data, header) {
 }
 //添加人员信息
 export function createUserArticle(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/user/backend/add',
         method: 'post',
@@ -236,7 +228,6 @@ export function fetchUserData(query, userId, header) {
 
 //添加单位人员信息
 export function companyAddApi(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/company/backend/user/add',
         method: 'post',
@@ -249,7 +240,6 @@ export function companyAddApi(data, header) {
 
 //删除单位人员信息
 export function companyDelApi(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/company/backend/user/remove',
         method: 'post',
@@ -286,7 +276,6 @@ export function fetchSystemDataList(query, header) {
 
 //添加设备信息
 export function createSystemArticle(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/apparatus/backend/type/add',
         method: 'post',
@@ -310,7 +299,6 @@ export function fetchNameDataList(query, header) {
 
 //添加设备名称信息
 export function createNameArticle(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/apparatus/backend/name/add',
         method: 'post',
@@ -334,7 +322,6 @@ export function fetchCheckPointDataList(query, header) {
 
 //添加巡查要点信息
 export function createCheckPointArticle(data, header) {
-    console.log(header)
     return request({
         url: '/fire-service/api/check-point/backend/add',
         method: 'post',
@@ -347,7 +334,7 @@ export function createCheckPointArticle(data, header) {
 
 //更新巡查要点信息
 export function createCheckPointUpdate(data, header) {
-    console.log(header)
+    
     return request({
         url: '/fire-service/api/check-point/backend/update',
         method: 'post',
@@ -371,7 +358,7 @@ export function fetchAdminDataList(query, header) {
 
 //添加设备管理信息
 export function createAdminArticle(data, header) {
-    console.log(header)
+    
     return request({
         url: '/fire-service/api/apparatus/backend/add',
         method: 'post',
@@ -395,7 +382,7 @@ export function fetchAdminData(query, header) {
 
 //更新设备管理信息
 export function createAdminUpdate(data, header) {
-    console.log(header)
+    
     return request({
         url: '/fire-service/api/apparatus/backend/update',
         method: 'post',
@@ -421,7 +408,7 @@ export function fetchQueryDataList(query, header) {
 
 //更新设备管理信息
 export function createTaskAdd(data, header) {
-    console.log(header)
+    
     return request({
         url: '/fire-service/api/task/backend/add',
         method: 'post',

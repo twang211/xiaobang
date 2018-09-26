@@ -43,7 +43,6 @@ const user = {
             state.name = name
         },
         SET_AVATAR: (state, avatar) => {
-            console.log(avatar, "avataravataravataravataravatar")
             state.avatar = avatar
         },
         SET_ROLES: (state, roles) => {
@@ -62,7 +61,6 @@ const user = {
             const username = userInfo.loginAccount.trim()
             return new Promise((resolve, reject) => {
                 loginByUsername(username, userInfo.password, userInfo.beFrom).then(response => {
-                    console.log("8888", response.data.resultData)
                     setToken(response.data.resultData)
                     resolve()
                 }).catch(error => {
@@ -78,7 +76,6 @@ const user = {
         }) {
             return new Promise((resolve, reject) => {
                 const data = JSON.parse(getToken())
-                console.log(data, "datadatadatadatadatadatadatadatadatadata")
                 if (data.userInfo.roleLevel) { // 验证返回的roles是否是一个非空数组
                     commit('SET_ROLES', data.userInfo.roleLevel)
                 } else {
@@ -111,7 +108,6 @@ const user = {
             commit,
             state
         }) {
-            console.log(state, "statestatestatestatestatestate")
 
             const data = state.token
             const header = "Bearer " + data.userToken
@@ -147,7 +143,6 @@ const user = {
                 setToken(role)
                 getUserInfo(role).then(response => {
                     const data = response.data
-                    console.log(data, "datadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadata")
                     commit('SET_ROLES', data.userInfo.roleLevel)
                     commit('SET_NAME', data.userInfo.userName)
                     commit('SET_AVATAR', data.userInfo.headImageUri)

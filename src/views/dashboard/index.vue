@@ -23,7 +23,6 @@ export default {
     ])
   },
   created() {
-    console.log(this.roles,"++++++")
     // if (!this.roles.includes('admin')) {
     //   this.currentRole = 'editorDashboard'
     // }

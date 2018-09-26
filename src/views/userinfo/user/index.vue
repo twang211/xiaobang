@@ -24,47 +24,47 @@
       highlight-current-row
       style="width: 100%;">
       
-      <el-table-column :label="$t('table.userName')" align="center" width="120">
+      <el-table-column :label="$t('table.userName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.userName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.userCode')" align="center" width="120">
+      <el-table-column :label="$t('table.userCode')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.userCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.sex')" align="center" width="90">
+      <el-table-column :label="$t('table.sex')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.sexName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.userType')" align="center" width="200">
+      <el-table-column :label="$t('table.userType')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.userTypeName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.roleLevel')" align="center" width="200">
+      <el-table-column :label="$t('table.roleLevel')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.roleLevelName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.department')" align="center" width="200">
+      <el-table-column :label="$t('table.department')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.department }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.phone')" align="center" width="200">
+      <el-table-column :label="$t('table.phone')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.phone }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.email')" align="center" width="200">
+      <el-table-column :label="$t('table.email')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" width="200">
+      <el-table-column :label="$t('table.config')" align="center" >
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
         </template>
@@ -214,7 +214,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         userName: null,
         userCode: null,
         userType: null,
@@ -275,7 +275,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchUserDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         
         var code = response.data.resultCode
         if(code == 0){
@@ -295,27 +294,21 @@ export default {
     },
     getuserTypeList() {
       fetchTypeList(this.userTypeQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchcompanyTypeList')
         this.userTypeList = response.data.resultData.userTypeMap
-          console.log(this.showuserTypeObj)
       })
     },
     getroleLevelList() {
       fetchTypeList(this.roleLevelQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchcompanyTypeList')
         this.roleLevelList = response.data.resultData.roleLevelMap
-          console.log(this.roleLevelList)
       })
     },
     getsexList() {
       fetchTypeList(this.sexQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchsafetyLevelList')
         this.sexList = response.data.resultData.sexMap
       })
     },
     getUnitDataList() {
       fetchUnitDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUnitDataList')
         this.unitList = response.data.resultData.companyList
         this.unitList.forEach(element => {
           this.showunitObj[(element["companyId"])] = element["companyName"]
@@ -324,20 +317,17 @@ export default {
     },
     getdepartmentList() {
       fetchTypeList(this.departmentQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchsafetyLevelList')
         this.departmentList = response.data.resultData.departmentMap
       })
     },
     getcompanyinfo() {
       fetchcompanyData({userId:this.temp.userId},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserData')
         this.companyList = response.data.resultData.companyList
       })
     },
     companyAdd() {
       this.companytemp.userId = this.temp.userId
       companyAddApi(this.companytemp,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchsafetyLevelList')
         this.getcompanyinfo()
       })
     },
@@ -345,7 +335,6 @@ export default {
       this.companytemp.companyId = row.companyId
       this.companytemp.userId = this.temp.userId
       companyDelApi(this.companytemp,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchsafetyLevelList')
         this.getcompanyinfo()
       })
     },
@@ -361,13 +350,12 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         userName: null,
         userCode: null,
         userType: null,
@@ -431,7 +419,6 @@ export default {
     },
     handleUpdate(row) {
       fetchUserData({},row.userId,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserData')
         if(response.data.resultData.userInfo.headImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.userInfo.headImageUri
         }
@@ -461,7 +448,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateUserData(this.uptemp,this.header).then( response => {
-            console.log(response,"updateUnitData")
             var code = response.data.resultCode
             if(code == 0){
             this.dialogFormVisible = false
@@ -485,12 +471,10 @@ export default {
       })
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },
@@ -525,7 +509,6 @@ export default {
       this.$refs.upload.submit();
     },
     upSuccess(response) {
-      console.log(response, 999999);     
       var code = response.resultCode
             if(code == 0){
       this.temp.headImageId = response.resultData.fileDTO.fileId
@@ -547,10 +530,8 @@ export default {
         this.dialogVisible = true;
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
         
       fetchDelImg({fileId:this.temp.headImageId},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchBuildDataList')
             var code = response.data.resultCode
             if(code == 0){
       this.temp.headImageId = ""

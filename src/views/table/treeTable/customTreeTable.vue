@@ -2,7 +2,7 @@
   <div class="app-container">
 
     <el-tag style="margin-bottom:20px;">
-      <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
+      <a href="" target="_blank">Documentation</a>
     </el-tag>
 
     <tree-table :data="data" :eval-func="func" :eval-args="args" :expand-all="expandAll" border>

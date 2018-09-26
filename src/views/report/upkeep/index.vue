@@ -31,48 +31,48 @@
       highlight-current-row
       style="width: 100%;">
       
-      <el-table-column :label="$t('table.companyName')" align="center" width="150">
+      <el-table-column :label="$t('table.companyName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingName')" align="center" width="150">
+      <el-table-column :label="$t('table.buildingName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" width="150">
+      <el-table-column :label="$t('table.apparatusName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" width="240">
+      <el-table-column :label="$t('table.apparatusUuid')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusUuid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.upkeepContent')" align="center" width="120">
+      <el-table-column :label="$t('table.upkeepContent')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.upkeepContent }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.upkeepPeriod')" align="center" width="90">
+      <el-table-column :label="$t('table.upkeepPeriod')" align="center" >
         <template slot-scope="scope">
           <span>{{ showperiodTypeObj[scope.row.upkeepPeriod] }}</span>
         </template>
       </el-table-column>
    
-      <el-table-column :label="$t('table.createTime')" align="center" width="150">
+      <el-table-column :label="$t('table.createTime')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.upkeepUserAutographUri')" align="center" width="150">
+      <el-table-column :label="$t('table.upkeepUserAutographUri')" align="center" >
         <template slot-scope="scope">
           <img  :src="scope.row.upkeepUserAutographUri" class="avatar">
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" width="150">
+      <el-table-column :label="$t('table.config')" align="center" >
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
@@ -96,43 +96,43 @@
       style="width: 100%">
       
       
-      <el-table-column :label="$t('table.companyName')" align="center" width="150">
+      <el-table-column :label="$t('table.companyName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingName')" align="center" width="150">
+      <el-table-column :label="$t('table.buildingName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" width="150">
+      <el-table-column :label="$t('table.apparatusName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" width="240">
+      <el-table-column :label="$t('table.apparatusUuid')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusUuid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.upkeepContent')" align="center" width="120">
+      <el-table-column :label="$t('table.upkeepContent')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.upkeepContent }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.upkeepPeriod')" align="center" width="90">
+      <el-table-column :label="$t('table.upkeepPeriod')" align="center" >
         <template slot-scope="scope">
           <span>{{ showperiodTypeObj[scope.row.upkeepPeriod] }}</span>
         </template>
       </el-table-column>
    
-      <el-table-column :label="$t('table.createTime')" align="center" width="150">
+      <el-table-column :label="$t('table.createTime')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.upkeepUserAutographUri')" align="center" width="150">
+      <el-table-column :label="$t('table.upkeepUserAutographUri')" align="center" >
         <template slot-scope="scope">
           <img  :src="scope.row.upkeepUserAutographUri" class="avatar">
         </template>
@@ -183,7 +183,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         companyId: null,
         buildingId: null,
         apparatusName: null,
@@ -211,7 +211,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchUpkeepDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchQueryDataList')
         var code = response.data.resultCode
         if(code == 0){
         this.list = response.data.resultData.upkeepRecordList
@@ -221,7 +220,6 @@ export default {
             element.checkUserAutographUri = "http://47.92.165.114:8081"+element.upkeepUserAutographUri
           }
         });
-        console.log(this.list,"this.list ")
         this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
         }else{
@@ -237,7 +235,6 @@ export default {
     },
     getuserTypeList() {
       fetchTypeList(this.userTypeQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchcompanyTypeList')
         this.userTypeList = response.data.resultData.userTypeMap
         this.userTypeList.forEach(element => {
           this.showuserTypeObj[element["key"]] = element["value"]
@@ -246,19 +243,16 @@ export default {
     },
     getunitdataList() {
       fetchUnitDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.unitlist = response.data.resultData.companyList
       })
     },
     getbuilddataList() {
       fetchBuildDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.buildlist = response.data.resultData.buildingList
       })
     },
     getuserdataList() {
       fetchUserDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.userlist = response.data.resultData.userList
       })
     },
@@ -274,7 +268,6 @@ export default {
       this.infos = []
       this.dialogFormVisible = true
       fetchUpkeepRecordData({upkeepRecordId:row.upkeepRecordId},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         var code = response.data.resultCode
         if(code == 0){
           
@@ -295,7 +288,6 @@ export default {
           })
         }
       })
-      console.log(row,"lookInfoslookInfoslookInfos")
     },
     getAllinfos() {
     },
@@ -314,13 +306,12 @@ export default {
         this.listQuery.queryDateFrom = parseTime(this.listQuery.queryDateFrom, '{y}-{m}-{d}')
       this.listQuery.queryDateTo = parseTime(this.listQuery.queryDateTo, '{y}-{m}-{d}')
       }
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         companyId: null,
         buildingId: null,
         apparatusName: null,
@@ -330,12 +321,10 @@ export default {
     this.getdataList()
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },

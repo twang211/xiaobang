@@ -9,7 +9,6 @@ import {
 import { fetchToken } from '@/api/article'
 
 export function parseTime(time, cFormat) {
-    console.log(time)
     if (arguments.length === 0) {
         return null
     }
@@ -212,7 +211,6 @@ export function scrollTo(element, to, duration) {
     const difference = to - element.scrollTop
     const perTick = (difference / duration) * 10
     setTimeout(() => {
-        console.log(new Date())
         element.scrollTop = element.scrollTop + perTick
         if (element.scrollTop === to) return
         scrollTo(element, to, duration - 10)
@@ -343,11 +341,8 @@ export function uniqueArr(arr) {
 export function checkToken() {
 
     const data = JSON.parse(getToken())
-    console.log(data, "22222222222222")
     const timestamp = new Date().getTime()
     const header = "Bearer " + data.userToken
-    console.log(timestamp, data.tokenExpireTime)
-    console.log(timestamp > data.tokenExpireTime)
     if (timestamp > data.tokenExpireTime) {
         this.$store.dispatch('LogOut').then(() => {
             location.reload() // In order to re-instantiate the vue-router object to avoid bugs

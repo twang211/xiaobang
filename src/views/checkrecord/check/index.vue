@@ -34,58 +34,58 @@
       fit
       highlight-current-row
       style="width: 100%;">
-         <el-table-column :label="$t('table.companyName')" align="center" width="150">
+         <el-table-column :label="$t('table.companyName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingName')" align="center" width="150">
+      <el-table-column :label="$t('table.buildingName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" width="150">
+      <el-table-column :label="$t('table.apparatusName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" width="240">
+      <el-table-column :label="$t('table.apparatusUuid')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusUuid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" width="120">
+      <el-table-column :label="$t('table.apparatusCode')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.fireAreaCode')" align="center" width="120">
+      <el-table-column :label="$t('table.fireAreaCode')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.fireAreaCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isPass')" align="center" width="90">
+      <el-table-column :label="$t('table.isPass')" align="center" >
         <template slot-scope="scope">
           <span>{{ checkType[scope.row.isPass] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isAmend')" align="center" width="90">
+      <el-table-column :label="$t('table.isAmend')" align="center" >
         <template slot-scope="scope">
           <span>{{ checkType[scope.row.isAmend] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isFinish')" align="center" width="90">
+      <el-table-column :label="$t('table.isFinish')" align="center">
         <template slot-scope="scope">
           <span>{{ checkType[scope.row.isFinish] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center" width="150">
+      <el-table-column :label="$t('table.finishTime')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
  
-      <el-table-column :label="$t('table.config')" align="center" width="150">
+      <el-table-column :label="$t('table.config')" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
@@ -192,7 +192,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         companyId: null,
         buildingId: null,
         apparatusName: null,
@@ -224,7 +224,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchCheckRecordDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         var code = response.data.resultCode
         if(code == 0){
         this.list = response.data.resultData.taskDetailList
@@ -243,19 +242,16 @@ export default {
     },
     getunitdataList() {
       fetchUnitDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.unitlist = response.data.resultData.companyList
       })
     },
     getbuilddataList() {
       fetchBuildDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.buildlist = response.data.resultData.buildingList
       })
     },
     getuserdataList() {
       fetchUserDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.userlist = response.data.resultData.userList
       })
     },
@@ -274,7 +270,6 @@ export default {
       this.dialogFormVisible = true
       
       fetchCheckRecordData({taskDetailId:row.taskDetailId},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         var code = response.data.resultCode
         if(code == 0){
           
@@ -291,17 +286,15 @@ export default {
           })
         }
       })
-      console.log(row,"scope.rowscope.row")
     },
     handleFilter() {
       this.listQuery.page = 1
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         companyId: null,
         buildingId: null,
         apparatusName: null,
@@ -317,12 +310,10 @@ export default {
     this.getdataList()
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },

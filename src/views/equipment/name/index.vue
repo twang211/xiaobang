@@ -111,7 +111,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchNameDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         this.list = response.data.resultData.nameList
         // this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
@@ -119,7 +118,6 @@ export default {
     },
     getSystemdataList() {
       fetchSystemDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserDataList')
         this.typeList = response.data.resultData.typeList
       })
     },
@@ -134,7 +132,6 @@ export default {
       // })
     },
     handleFilter() {
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
@@ -177,7 +174,6 @@ export default {
     },
     handleUpdate(row) {
       fetchUserData({},row.userId,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserData')
         if(response.data.resultData.userInfo.headImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.userInfo.headImageUri
         }
@@ -192,7 +188,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateUserData(this.uptemp,this.header).then( response => {
-            console.log(response,"updateUnitData")
             if(response.data.resultCode == "0"){
             this.dialogFormVisible = false
             this.$notify({
@@ -208,12 +203,10 @@ export default {
       })
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },

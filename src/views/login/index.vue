@@ -106,19 +106,15 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
-        console.log(valid)
         if (valid) {
           this.loading = true
-          console.log(this.loginForm,"this.loginFormthis.loginFormthis.loginForm")
           this.$store.dispatch('LoginByUsername', this.loginForm).then(response => {
-            console.log(response,"login")
             this.loading = false
             this.$router.push({ path: '/' })
           }).catch(() => {
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -147,7 +143,6 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss">
   /* 修复input 背景不协调 和光标变色 */
-  /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
   $bg:#283443;
   $light_gray:#eee;

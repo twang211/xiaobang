@@ -203,7 +203,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         buildingName: null,
       },
       temp: {
@@ -231,7 +231,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchBuildDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchQueryDataList')
         var code = response.data.resultCode
         if(code == 0){
         this.list = response.data.resultData.buildingList
@@ -260,13 +259,12 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         buildingName: null,
       }
     this.getdataList()
@@ -278,16 +276,13 @@ export default {
       }
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleChangeCurrent(val) {
-      console.log(val,"handleChangeCurrent")
       this.buildinfo = val
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },
@@ -319,7 +314,6 @@ export default {
       )
     },
     nextPush(){
-      console.log(this.buildinfo,"this.buildinfo")
       if(this.buildinfo){
       this.activeName = "distribute"
       this.resetdistributetemp()
@@ -329,7 +323,6 @@ export default {
     },
     getuserdataList() {
       fetchUserDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.userlist = response.data.resultData.userList
         this.userlist.forEach(element => {
             this.showuserObj[element["userId"]] = element["userName"]
@@ -382,19 +375,15 @@ export default {
       }
     },
     postInfo(){
-      console.log(this.AllArr,"PostArr this.AllArrthis.AllArrthis.AllArrthis.AllArrthis.AllArrthis.AllArr")
       var usersIdList = []        
       // var usersId = this.userlist        
       var pArr = []
 
    
         this.userlist.forEach((uitem, uindex, array) => {
-            console.log(this.AllArr) 
             uitem.aboutFloors = null
             this.AllArr.forEach(function(Aitem, Aindex, array) {
-              console.log( uitem, Aitem)
               if(uitem.userId == Aitem.value){
-                console.log(uitem.listitem,"uitem.listitem")
                 // uitem.listitem.push(Aitem.key)
                 if(!uitem.aboutFloors){
                   uitem.aboutFloors =  Aitem.key
@@ -410,9 +399,7 @@ export default {
             uitem.buildingId = this.buildinfo.buildingId
             uitem.taskExecuteUserId = uitem.userId
         });      
-        console.log(this.userlist,"userlistuserlist")
         this.PostArr = this.userlist
-        console.log(pArr,"PostArr")
         this.activeName = "over"
           
     },

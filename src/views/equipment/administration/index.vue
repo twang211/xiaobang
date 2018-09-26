@@ -36,32 +36,32 @@
           <span>{{ scope.row.apparatusUuid }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" width="200">
+      <el-table-column :label="$t('table.apparatusCode')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusNameId')" align="center" width="200">
+      <el-table-column :label="$t('table.apparatusNameId')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusTypeId')" align="center" width="200">
+      <el-table-column :label="$t('table.apparatusTypeId')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusTypeName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.companyId')" align="center" width="200">
+      <el-table-column :label="$t('table.companyId')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingId')" align="center" width="200">
+      <el-table-column :label="$t('table.buildingId')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" width="200">
+      <el-table-column :label="$t('table.config')" align="center" >
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
         </template>
@@ -176,7 +176,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         apparatusUuid: null,
         apparatusCode: null,
         apparatusNameId: null,
@@ -221,7 +221,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchAdminDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         var code = response.data.resultCode
         if(code == 0){
         this.list = response.data.resultData.apparatusList
@@ -240,37 +239,30 @@ export default {
     },
     getunitdataList() {
       fetchUnitDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.unitlist = response.data.resultData.companyList
       })
     },
     getbuilddataList() {
       fetchBuildDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.buildlist = response.data.resultData.buildingList
       })
     },
     getsystemdataList() {
       fetchSystemDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.systemlist = response.data.resultData.typeList
       })
     },
     getkindList() {
       fetchTypeList(this.kindQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchTypeList')
         this.kindList = response.data.resultData.apparatusKindMap
         this.kindList.forEach(element => {
           this.showkindObj[(element["key"].toString())] = element["value"]
         });
-        console.log(this.showkindObj, 'this.showkindObj')
       })
     },
     changeSystem(value) {
-      console.log(value)
       this.namelist = []
       fetchNameDataList({apparatusTypeId:value},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.namelist = response.data.resultData.nameList
       })
     },
@@ -286,13 +278,12 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         apparatusUuid: null,
         apparatusCode: null,
         apparatusNameId: null,
@@ -360,7 +351,6 @@ export default {
     },
     handleUpdate(row) {
       fetchAdminData({apparatusId:row.apparatusId},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUserData')
         if(response.data.resultData.apparatusInfo.apparatusImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.apparatusInfo.apparatusImageUri
         }
@@ -379,7 +369,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           createAdminUpdate(this.temp,this.header).then( response => {
-            console.log(response,"updateUnitData")  
             var code = response.data.resultCode
             if(code == 0){
             this.dialogFormVisible = false
@@ -403,12 +392,10 @@ export default {
       })
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },
@@ -443,7 +430,6 @@ export default {
       this.$refs.upload.submit();
     },
     upSuccess(response) {
-      console.log(response, 999999);
             var code = response.resultCode
             if(code == 0){
               this.temp.apparatusImageId = response.resultData.fileDTO.fileId
@@ -465,10 +451,8 @@ export default {
         this.dialogVisible = true;
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
         
       fetchDelImg({fileId:this.temp.apparatusImageId},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchBuildDataList')
             var code = response.data.resultCode
             if(code == 0){
       this.temp.apparatusImageId = ""

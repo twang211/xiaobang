@@ -13,10 +13,10 @@ module.exports = {
         proxyTable: {
             '/fire-service/*': {
                 target: 'http://47.92.165.114:8999/fire-service/',
-                pathRewrite: { '^/kyhadoop/': '' },
+                pathRewrite: { '^/fire-service/': '' },
                 secure: false,
                 bypass: function(req, res, proxyOptions) {
-                    console.log('proxy for browser request.' + req.toString());
+                    // console.log('proxy for browser request.' + req.toString());
                 }
             }
         },

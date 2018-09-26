@@ -30,37 +30,37 @@
       highlight-current-row
       style="width: 100%;">
       
-      <el-table-column :label="$t('table.taskName')" align="center" width="150">
+      <el-table-column :label="$t('table.taskName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.taskName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.taskCode')" align="center" width="200">
+      <el-table-column :label="$t('table.taskCode')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.taskCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.taskPeriodType')" align="center" width="200">
+      <el-table-column :label="$t('table.taskPeriodType')" align="center" >
         <template slot-scope="scope">
           <span>{{ showperiodTypeObj[scope.row.taskPeriodType] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.companyId')" align="center" width="200">
+      <el-table-column :label="$t('table.companyId')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingId')" align="center" width="200">
+      <el-table-column :label="$t('table.buildingId')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.taskStatus')" align="center" width="200">
+      <el-table-column :label="$t('table.taskStatus')" align="center" >
         <template slot-scope="scope">
           <span>{{ showtaskStatusObj[scope.row.taskStatus] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.taskExecuteUserName')" align="center" width="200">
+      <el-table-column :label="$t('table.taskExecuteUserName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.taskExecuteUserName }}</span>
         </template>
@@ -114,7 +114,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         taskName: null,
         taskCode: null,
         taskPeriodType: null,
@@ -154,7 +154,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchQueryDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchQueryDataList')
         var code = response.data.resultCode
         if(code == 0){
         this.list = response.data.resultData.taskList
@@ -189,13 +188,11 @@ export default {
     },
     getunitdataList() {
       fetchUnitDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.unitlist = response.data.resultData.companyList
       })
     },
     getbuilddataList() {
       fetchBuildDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchAdminDataList')
         this.buildlist = response.data.resultData.buildingList
       })
     },
@@ -211,13 +208,12 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         taskName: null,
         taskCode: null,
         taskPeriodType: null,
@@ -229,12 +225,10 @@ export default {
     this.getdataList()
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },

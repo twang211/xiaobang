@@ -25,57 +25,57 @@
       highlight-current-row
       style="width: 100%;">
       
-      <el-table-column :label="$t('table.buildingName')" align="center" width="200">
+      <el-table-column :label="$t('table.buildingName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingCode')" align="center" width="120">
+      <el-table-column :label="$t('table.buildingCode')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.buildingCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingType')" align="center" width="160">
+      <el-table-column :label="$t('table.buildingType')" align="center" >
         <template slot-scope="scope">
           <span>{{ showbuildingTypeObj[scope.row.buildingType] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.totalFloors')" align="center" width="90">
+      <el-table-column :label="$t('table.totalFloors')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.totalFloors }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.tasks')" align="center" width="200">
+      <el-table-column :label="$t('table.tasks')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.tasks }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.patrolAvgTime')" align="center" width="120">
+      <el-table-column :label="$t('table.patrolAvgTime')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.patrolAvgTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.province')" align="center" width="90">
+      <el-table-column :label="$t('table.province')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.province }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.city')" align="center" width="90">
+      <el-table-column :label="$t('table.city')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.city }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.county')" align="center" width="90">
+      <el-table-column :label="$t('table.county')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.county }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.companyId')" align="center" width="200">
+      <el-table-column :label="$t('table.companyId')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" width="200">
+      <el-table-column :label="$t('table.config')" align="center" >
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
         </template>
@@ -170,16 +170,10 @@ import { fetchBuildDataList, fetchTypeList,
 fetchAllinfos, fetchUnitDownDataList, createbuildArticle,fetchBuildData, updateBuildData, fetchDelImg } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { pca, pcaa } from 'area-data' // v5 or higher
-import 'vue-area-linkage/dist/index.css' // v2 or higher
-import VueAreaLinkage from 'vue-area-linkage'
 import { parseTime, checkToken, getHeader } from '@/utils'
 
-Vue.use(VueAreaLinkage)
 export default {
   name: 'Building',
-  components: {
-    VueAreaLinkage
-  },
   directives: {
     waves
   },
@@ -217,7 +211,7 @@ pcaa: pcaa,
       },
       listQuery: {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         buildingName: null,
         buildingCode: null,
         companyId: null,
@@ -248,7 +242,6 @@ pcaa: pcaa,
     getdataList() {
       this.listLoading = true
       fetchBuildDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchBuildDataList')
         
         var code = response.data.resultCode
         if(code == 0){
@@ -268,13 +261,11 @@ pcaa: pcaa,
     },
     getUnitDataList() {
       fetchUnitDownDataList({},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUnitDataList')
         this.unitList = response.data.resultData.companyList
       })
     },
     getbuildingTypeList() {
       fetchTypeList(this.buildingTypeQuery,this.header).then(response => {
-        console.log(response.data.resultData.buildingTypeMap, 'fetchTypeList')
         this.buildingTypeList = response.data.resultData.buildingTypeMap
         this.buildingTypeList.forEach(element => {
           this.showbuildingTypeObj[(element["key"].toString())] = element["value"]
@@ -283,7 +274,6 @@ pcaa: pcaa,
     },
     getfloorsLvList() {
       fetchTypeList(this.floorsLvQuery,this.header).then(response => {
-        console.log(response.data.resultData.floorsLvQuery, 'fetchTypeList')
         this.floorsLvList = response.data.resultData.floorsLvMap
         this.floorsLvList.forEach(element => {
           this.showfloorsLvObj[(element["key"].toString())] = element["value"]
@@ -300,14 +290,12 @@ pcaa: pcaa,
     },
     handleFilter() {
       this.listQuery.page = 1
-      console.log(this.placeholders,"this.listQuery")
-      console.log(this.selected,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         buildingName: null,
         buildingCode: null,
         companyId: null,
@@ -330,7 +318,6 @@ pcaa: pcaa,
       })
     },
     createData() {
-      console.log(this.temp,"this.temp")
       this.temp.province = this.selected[0]
       this.temp.city = this.selected[1]
       this.temp.county = this.selected[2]
@@ -363,7 +350,6 @@ pcaa: pcaa,
     },
     handleUpdate(row) {
       fetchBuildData({},row.buildingId,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchBuildData')
         if(response.data.resultData.buildingInfo.buildingImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.buildingInfo.buildingImageUri
         }
@@ -372,7 +358,6 @@ pcaa: pcaa,
         this.placeholders.push(this.temp.province)
         this.placeholders.push(this.temp.city)
         this.placeholders.push(this.temp.county)
-        console.log(this.placeholders,"this.placeholders")
       })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -381,11 +366,9 @@ pcaa: pcaa,
       })
     },
     updateData() {
-        console.log(this.temp,"this.temp")
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateBuildData(this.temp,this.header).then( response => {
-            console.log(response,"updateBuildData")
             
             var code = response.data.resultCode
             if(code == 0){
@@ -410,12 +393,10 @@ pcaa: pcaa,
       })
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },
@@ -439,7 +420,6 @@ pcaa: pcaa,
       this.$refs.upload.submit();
     },
     upSuccess(response) {
-      console.log( response, 999999);
             var code = response.resultCode
             if(code == 0){
             this.temp.buildingImageId = response.resultData.fileDTO.fileId
@@ -461,10 +441,8 @@ pcaa: pcaa,
         this.dialogVisible = true;
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
         
       fetchDelImg({fileId:this.temp.buildingImageId},this.header).then(response => {
-        console.log(response.data.resultData, 'fetchBuildDataList')
             var code = response.data.resultCode
             if(code == 0){
               this.temp.buildingImageId = ""

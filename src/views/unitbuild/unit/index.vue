@@ -25,42 +25,42 @@
       highlight-current-row
       style="width: 100%;">
       
-      <el-table-column :label="$t('table.companyName')" align="center" width="200">
+      <el-table-column :label="$t('table.companyName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.companyCorporate')" align="center" width="200">
+      <el-table-column :label="$t('table.companyCorporate')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.companyCorporate }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.safetyManager')" align="center" width="200">
+      <el-table-column :label="$t('table.safetyManager')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.safetyManager }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.controlRoomPhone')" align="center" width="200">
+      <el-table-column :label="$t('table.controlRoomPhone')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.controlRoomPhone }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.companyAddress')" align="center" width="200">
+      <el-table-column :label="$t('table.companyAddress')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyAddress }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.companyType')" align="center" width="200">
+      <el-table-column :label="$t('table.companyType')" align="center" >
         <template slot-scope="scope">
           <span>{{ showcompanyTypeObj[scope.row.companyType] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.safetyLevel')" align="center" width="200">
+      <el-table-column :label="$t('table.safetyLevel')" align="center">
         <template slot-scope="scope">
           <span>{{ showsafetyLevelObj[scope.row.safetyLevel] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" width="200">
+      <el-table-column :label="$t('table.config')" align="center" >
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
         </template>
@@ -280,7 +280,6 @@ export default {
     getdataList() {
       this.listLoading = true
       fetchUnitDataList(this.listQuery,this.header).then(response => {
-        console.log(response.data.resultData, 'fetchUnitDataList')
         var code = response.data.resultCode
         if(code == 0){
 
@@ -300,7 +299,6 @@ export default {
     },
     getcompanyTypeList() {
       fetchTypeList(this.companyTypeQuery,this.header).then(response => {
-        console.log(response.data.resultData.companyTypeMap, 'fetchcompanyTypeList')
               var code = response.data.resultCode
         if(code == 0){
         this.companyTypeList = response.data.resultData.companyTypeMap
@@ -316,12 +314,10 @@ export default {
               duration: 2000
           })
         }
-          console.log(this.showcompanyTypeObj)
       })
     },
     getsafetyLevelList() {
       fetchTypeList(this.safetyLevelQuery,this.header).then(response => {
-        console.log(response.data.resultData.safetyLevelMap, 'fetchsafetyLevelList')              
         var code = response.data.resultCode
         if(code == 0){
    
@@ -350,7 +346,6 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      console.log(this.listQuery,"this.listQuery")
       this.getdataList()
     },
     resetQuery() {
@@ -433,7 +428,6 @@ export default {
     },
     handleUpdate(row) {
       fetchUnitData({},row.companyId,this.header).then(response => {
-        console.log(response.data.resultData.companyInfo, 'fetchUnitData')
         this.temp = response.data.resultData.companyInfo
       })
       this.dialogStatus = 'update'
@@ -446,7 +440,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateUnitData(this.temp,this.header).then( response => {
-            console.log(response,"updateUnitData")
             
             var code = response.data.resultCode
             if(code == 0){
@@ -472,12 +465,10 @@ export default {
       })
     },
     handleSizeChange(val) {
-      console.log(val,"skip")
       this.listQuery.skip = val
       this.getdataList()
     },
     handleCurrentChange(val) {
-      console.log(val,"page")
       this.listQuery.page = val
       this.getdataList()
     },
