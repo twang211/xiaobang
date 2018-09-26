@@ -86,26 +86,21 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;min-height:1000px;">
+      style="width: 100%">
       
-      <el-table-column :label="$t('table.companyName')" align="center" width="150">
+      <el-table-column :label="$t('table.workRecordId')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.companyName }}</span>
+          <span>{{ scope.row.workRecordId }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingName')" align="center" width="150">
+      <el-table-column :label="$t('table.workMethod')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.buildingName }}</span>
+          <span>{{ scope.row.workMethod }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" width="150">
+      <el-table-column :label="$t('table.safetyPrecautions')" align="center" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" width="240">
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusUuid }}</span>
+          <span>{{ scope.row.safetyPrecautions }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.lookTime')" align="center" width="150">
@@ -113,19 +108,9 @@
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.troubleDesc')" align="center" width="120">
-        <template slot-scope="scope">
-          <span>{{ scope.row.troubleDesc }}</span>
-        </template>
-      </el-table-column>
       <el-table-column :label="$t('table.workTime')" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.workTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.workUserAutographUri')" align="center" width="150">
-        <template slot-scope="scope">
-          <img  :src="scope.row.workUserAutographUri" class="avatar">
         </template>
       </el-table-column>
     </el-table>
@@ -136,7 +121,7 @@
 </template>
 
 <script>
-import { fetchWorkrecordDataList, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
+import { fetchWorkrecordDataList,fetchWorkRecordData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -245,9 +230,31 @@ export default {
       })
     },
     lookInfos(row){
+      console.log(row)
       this.infos = []
       this.dialogFormVisible = true
-      this.infos.push(row) 
+      fetchWorkRecordData({workRecordId:row.workRecordId},this.header).then(response => {
+        console.log(response.data.resultData, 'fetchUserDataList')
+        var code = response.data.resultCode
+        if(code == 0){
+          
+          if(response.data.resultData.workRecordInfo.workUserAutographUri){
+
+            response.data.resultData.workRecordInfo.workUserAutographUri = "http://47.92.165.114:8081"+response.data.resultData.workRecordInfo.workUserAutographUri
+          }
+      this.infos.push(response.data.resultData.workRecordInfo) 
+        // this.list = response.data.resultData.taskDetailInfo
+      this.listLoading = false
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
+      })
       console.log(row,"lookInfoslookInfoslookInfos")
     },
     getAllinfos() {

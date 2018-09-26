@@ -105,7 +105,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;min-height:1000px;">
+      style="width: 100%">
          <el-table-column :label="$t('table.companyName')" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
@@ -131,9 +131,9 @@
           <span>{{ scope.row.apparatusCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.fireAreaCode')" align="center" width="120">
+      <el-table-column :label="$t('table.taskPeriodType')" align="center" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.fireAreaCode }}</span>
+          <span>{{ scope.row.checkPeriodName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.isPass')" align="center" width="90">
@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import { fetchCheckRecordDataList,fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList } from '@/api/article'
+import { fetchCheckRecordDataList,fetchCheckRecordData,fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -272,7 +272,25 @@ export default {
     lookInfos(row){
       this.infos = []
       this.dialogFormVisible = true
-      this.infos.push(row) 
+      
+      fetchCheckRecordData({taskDetailId:row.taskDetailId},this.header).then(response => {
+        console.log(response.data.resultData, 'fetchUserDataList')
+        var code = response.data.resultCode
+        if(code == 0){
+          
+      this.infos.push(response.data.resultData.taskDetailInfo) 
+        // this.list = response.data.resultData.taskDetailInfo
+      this.listLoading = false
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
+      })
       console.log(row,"scope.rowscope.row")
     },
     handleFilter() {

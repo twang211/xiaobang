@@ -237,6 +237,9 @@ export default {
         workTime: '维修时间',
         workUserAutographUri: '维修人员',
         isFinish: '是否结束',
+        workRecordId: '维修ID',
+        workMethod: '维修方法',
+        safetyPrecautions: '安全措施',
 
         index: '序号',
         next: '下一步',

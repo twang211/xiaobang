@@ -93,7 +93,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;min-height:1000px;">
+      style="width: 100%">
       
       
       <el-table-column :label="$t('table.companyName')" align="center" width="150">
@@ -145,7 +145,7 @@
 </template>
 
 <script>
-import { fetchUpkeepDataList, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
+import { fetchUpkeepDataList,fetchUpkeepRecordData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -273,7 +273,28 @@ export default {
     lookInfos(row){
       this.infos = []
       this.dialogFormVisible = true
-      this.infos.push(row) 
+      fetchUpkeepRecordData({upkeepRecordId:row.upkeepRecordId},this.header).then(response => {
+        console.log(response.data.resultData, 'fetchUserDataList')
+        var code = response.data.resultCode
+        if(code == 0){
+          
+          if(response.data.resultData.upkeepRecordInfo.upkeepUserAutographUri){
+
+            response.data.resultData.upkeepRecordInfo.upkeepUserAutographUri = "http://47.92.165.114:8081"+response.data.resultData.upkeepRecordInfo.upkeepUserAutographUri
+          }
+      this.infos.push(response.data.resultData.upkeepRecordInfo) 
+        // this.list = response.data.resultData.taskDetailInfo
+      this.listLoading = false
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
+      })
       console.log(row,"lookInfoslookInfoslookInfos")
     },
     getAllinfos() {

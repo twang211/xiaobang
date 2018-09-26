@@ -113,7 +113,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;min-height:1000px;">
+      style="width: 100%;">
       
       <el-table-column :label="$t('table.companyName')" align="center" width="150">
         <template slot-scope="scope">
@@ -179,7 +179,7 @@
 </template>
 
 <script>
-import { fetchCheckRecordDataList, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
+import { fetchCheckRecordDataList,fetchCheckRecordData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -299,8 +299,29 @@ export default {
     },
     lookInfos(row){
       this.infos = []
-      this.dialogFormVisible = true
-      this.infos.push(row) 
+      this.dialogFormVisible = true    
+      fetchCheckRecordData({taskDetailId:row.taskDetailId},this.header).then(response => {
+        console.log(response.data.resultData, 'fetchUserDataList')
+        var code = response.data.resultCode
+        if(code == 0){
+          
+          if(response.data.resultData.taskDetailInfo.checkUserAutographUri){
+
+            response.data.resultData.taskDetailInfo.checkUserAutographUri = "http://47.92.165.114:8081"+response.data.resultData.taskDetailInfo.checkUserAutographUri
+          }
+      this.infos.push(response.data.resultData.taskDetailInfo) 
+        // this.list = response.data.resultData.taskDetailInfo
+      this.listLoading = false
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
+      })
       console.log(row,"lookInfoslookInfoslookInfos")
     },
     getAllinfos() {
