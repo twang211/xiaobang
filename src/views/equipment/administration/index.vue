@@ -335,16 +335,16 @@ export default {
               type: 'success',
               duration: 2000
             })
-    this.getdataList()
             }else{
               this.$notify({
-                  title: '失败',
+                title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',
                   duration: 2000
               })
               
             }
+    this.getdataList()
           })
         }
       })
@@ -378,15 +378,15 @@ export default {
               type: 'success',
               duration: 2000
             })
-    this.getdataList()
             }else{
               this.$notify({
-                  title: '失败',
+                title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',
                   duration: 2000
               })
             }
+    this.getdataList()
           })
         }
       })

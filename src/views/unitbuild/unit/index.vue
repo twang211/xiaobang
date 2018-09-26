@@ -30,6 +30,11 @@
           <span>{{ scope.row.companyName }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('table.companyCode')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.companyCode }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.companyCorporate')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.companyCorporate }}</span>
@@ -412,7 +417,6 @@ export default {
                   type: 'success',
                   duration: 2000
               })
-              this.getdataList()
             }else{
               this.$notify({
                   title: '失败',
@@ -422,6 +426,7 @@ export default {
               })
               
             }
+              this.getdataList()
           })
         }
       })
@@ -429,6 +434,7 @@ export default {
     handleUpdate(row) {
       fetchUnitData({},row.companyId,this.header).then(response => {
         this.temp = response.data.resultData.companyInfo
+        this.temp.usedStatus = parseInt(this.temp.usedStatus)
       })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -451,15 +457,15 @@ export default {
                   type: 'success',
                   duration: 2000
               })
-              this.getdataList()
             }else{
               this.$notify({
-                  title: '失败',
+                title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',
                   duration: 2000
               })
             }
+              this.getdataList()
           })
         }
       })
