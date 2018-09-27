@@ -89,6 +89,38 @@
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="200px" style="width: 90%; margin-left:50px;">
 
+        <el-form-item :label="$t('table.buildingName')">
+          <el-input v-model="temp.buildingName"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.buildingCode')">  
+          <template v-if="dialogStatus == 'create'">
+          <el-input v-model="temp.buildingCode"/>
+          </template>
+          <span v-else>{{ temp.buildingCode }}</span>
+        </el-form-item>
+        <el-form-item :label="$t('table.buildingImageId')">
+          <el-upload
+            class="avatar-uploader"
+            action="http://47.92.165.114:8999/fire-service/api/file/upload"
+            :headers="myHeaders"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess">
+            <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+              <el-button class="uploadBtn" style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
+          <!-- <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
+        <el-upload class="upload-demo" ref="upload" :headers="myHeaders" action="http://47.92.165.114:8999/fire-service/api/file/upload" :auto-upload="false" :on-success="upSuccess" :on-remove="handleRemove">
+              <el-button slot="trigger" size="medium" type="primary">选取文件</el-button>
+              <el-button style="margin-left: 10px;" size="medium" type="success" @click="submitUpload">确认上传</el-button>
+              <el-button style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
+            </el-upload> -->
+          <!-- <el-input v-model="temp.buildingImageId"/> -->
+          
+          <!-- <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog> -->
+        </el-form-item>
         <el-form-item :label="$t('table.companyName')">
           <el-select v-model="temp.companyId" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in unitList" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
@@ -100,30 +132,14 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.province')">
+          <template v-if="dialogStatus == 'create'">
           <area-select style="line-height: 1;" type='text' :placeholders="placeholders" :level='2' v-model="selected" :data="pcaa">
 </area-select>
+          </template>
+          <span v-else>{{ temp.province }}-{{ temp.city }}-{{ temp.county }}</span>
         </el-form-item>
         <el-form-item :label="$t('table.address')">
           <el-input v-model="temp.address"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.buildingName')">
-          <el-input v-model="temp.buildingName"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.buildingCode')">
-          <el-input v-model="temp.buildingCode"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.buildingImageId')">
-          <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
-        <el-upload class="upload-demo" ref="upload" :headers="myHeaders" action="http://47.92.165.114:8999/fire-service/api/file/upload" :auto-upload="false" :on-success="upSuccess" :on-remove="handleRemove">
-              <el-button slot="trigger" size="medium" type="primary">选取文件</el-button>
-              <el-button style="margin-left: 10px;" size="medium" type="success" @click="submitUpload">确认上传</el-button>
-              <el-button style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
-            </el-upload>
-          <!-- <el-input v-model="temp.buildingImageId"/> -->
-          
-          <!-- <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog> -->
         </el-form-item>
 
         <el-form-item :label="$t('table.floorsLv')">
@@ -132,22 +148,25 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.upFloors')">
-          <el-input v-model="temp.upFloors"/>
+          <el-input v-model="temp.upFloors" style="width: 20%"/>
         </el-form-item>
         <el-form-item :label="$t('table.downFloors')">
-          <el-input v-model="temp.downFloors"/>
+          <el-input v-model="temp.downFloors" style="width: 20%"/>
         </el-form-item>
-        <el-form-item :label="$t('table.tasks')">
-          <el-input v-model="temp.tasks"/>
+        <el-form-item :label="$t('table.totalFloors')" v-if="dialogStatus == 'update'">
+          <span>{{ temp.totalFloors }}</span>
+        </el-form-item>
+        <el-form-item :label="$t('table.tasks')" v-if="dialogStatus == 'update'">
+          <span>{{ temp.tasks }}</span>
         </el-form-item>
         <el-form-item :label="$t('table.patrolAvgTime')">
-          <el-input v-model="temp.patrolAvgTime"/>
+          <el-input v-model="temp.patrolAvgTime" style="width: 20%"/>分钟
         </el-form-item>
-        <el-form-item :label="$t('table.patrolLastTime')">
-          <el-date-picker v-model="temp.patrolLastTime" type="datetime" :placeholder="$t('table.patrolLastTime')"/>
+        <el-form-item :label="$t('table.patrolLastTime')" v-if="dialogStatus == 'update'">
+          <span>{{ temp.patrolLastTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </el-form-item>
-        <el-form-item :label="$t('table.patrolNextTime')">
-          <el-date-picker v-model="temp.patrolNextTime" type="datetime" :placeholder="$t('table.patrolNextTime')"/>
+        <el-form-item :label="$t('table.patrolNextTime')" v-if="dialogStatus == 'update'">
+          <span>{{ temp.patrolNextTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </el-form-item>
         <el-form-item :label="$t('table.note')">
           <el-input v-model="temp.note"/>
@@ -171,6 +190,10 @@ fetchAllinfos, fetchUnitDownDataList, createbuildArticle,fetchBuildData, updateB
 import waves from '@/directive/waves' // 水波纹指令
 import { pca, pcaa } from 'area-data' // v5 or higher
 import { parseTime, checkToken, getHeader } from '@/utils'
+import 'vue-area-linkage/dist/index.css'; // v2 or higher
+import VueAreaLinkage from 'vue-area-linkage';
+
+Vue.use(VueAreaLinkage)
 
 export default {
   name: 'Building',
@@ -183,8 +206,8 @@ export default {
     return {
         dialogImageUrl: '',
         dialogVisible: false,
-pca: pca,
-pcaa: pcaa,
+      pca: pca,
+      pcaa: pcaa,
       selected: [],
       placeholders: ["请选择", "请选择", "请选择"],
       tableKey: 0,
@@ -218,7 +241,6 @@ pcaa: pcaa,
         buildingType: null
       },
       temp: {
-
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -323,7 +345,7 @@ pcaa: pcaa,
       this.temp.county = this.selected[2]
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createbuildArticle(this.temp,this.header).then(() => {
+          createbuildArticle(this.temp,this.header).then(response => {
             this.list.unshift(this.temp)
             var code = response.data.resultCode
             if(code == 0){
@@ -354,10 +376,10 @@ pcaa: pcaa,
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.buildingInfo.buildingImageUri
         }
         this.temp = response.data.resultData.buildingInfo
-        this.placeholders = []
-        this.placeholders.push(this.temp.province)
-        this.placeholders.push(this.temp.city)
-        this.placeholders.push(this.temp.county)
+        // this.placeholders = []
+        // this.placeholders.push(this.temp.province)
+        // this.placeholders.push(this.temp.city)
+        // this.placeholders.push(this.temp.county)
       })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -366,6 +388,9 @@ pcaa: pcaa,
       })
     },
     updateData() {
+      // this.temp.province = this.selected[0]
+      // this.temp.city = this.selected[1]
+      // this.temp.county = this.selected[2]
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateBuildData(this.temp,this.header).then( response => {
@@ -419,7 +444,7 @@ pcaa: pcaa,
     submitUpload() {
       this.$refs.upload.submit();
     },
-    upSuccess(response) {
+    handleAvatarSuccess(response) {
             var code = response.resultCode
             if(code == 0){
             this.temp.buildingImageId = response.resultData.fileDTO.fileId
@@ -472,9 +497,30 @@ pcaa: pcaa,
 }
 </script>
 <style>
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
   .avatar {
     width: 178px;
     height: 178px;
     display: block;
   }
+  .uploadBtn{    position: absolute;
+    left: 28%;
+    top: 0;}
 </style>

@@ -392,7 +392,7 @@ export default {
       this.temp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createUserArticle(this.temp,this.header).then(() => {
+          createUserArticle(this.temp,this.header).then(response => {
             this.list.unshift(this.temp)
             var code = response.data.resultCode
             if(code == 0){

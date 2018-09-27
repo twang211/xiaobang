@@ -178,13 +178,35 @@
       </el-table-column>
       <el-table-column align="center" label="Actions" width="400">
         <template slot-scope="scope">            
-          <el-button v-if="scope.row.edit" class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(scope.row)">取消</el-button>
-          <el-button v-if="scope.row.edit" type="success" size="small" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)">保存</el-button>
-          <el-button v-else type="primary" size="small" icon="el-icon-edit" @click="scope.row.edit=!scope.row.edit">修改</el-button>
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="checkpointUpdate(scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
 
+        <el-dialog :title="textMap[dialogStatus]" :visible.sync="UpdatedialogFormVisible">
+      <el-form ref="dataForm" :model="updateinfos" label-position="left" label-width="200px" style="width: 90%; margin-left:50px;">
+        <el-form-item :label="$t('table.checkPoint')">
+          <el-input v-model="updateinfos.checkPoint"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.checkReminder')">
+          <el-input v-model="updateinfos.checkReminder"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.periodType')">
+          <el-select v-model="updateinfos.periodType" class="filter-item" placeholder="请选择">
+            <el-option v-for="item in periodTypeList" :key="item.key" :label="item.value" :value="item.key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.activeStatus')">
+          <el-select v-model="updateinfos.activeStatus" class="filter-item" placeholder="请选择">
+            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="updateinfosdialogFormVisible">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="updateinfosData">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="checkpointdialogFormVisible" width="70%">
        <div class="app-container calendar-list-container">
     <div class="filter-container">
@@ -267,6 +289,7 @@ export default {
       extime: '',
       list: null,
       namelist: null,
+      updateinfos: {},
       checkpointlist: null,
       newcheckpointlist: [],
       postcheckpointlist: [],
@@ -315,6 +338,7 @@ export default {
       },
       dialogFormVisible: false,
       namedialogFormVisible: false,
+      UpdatedialogFormVisible: false,
       checkpointdialogFormVisible: false,
       dialogStatus: '',
       selectType: [{ label: '是', key: "1" }, { label: '否', key: "0" }],
@@ -404,7 +428,7 @@ export default {
       this.nametemp.typeId =this.systeminfo.typeId
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createNameArticle(this.nametemp,this.header).then(() => {
+          createNameArticle(this.nametemp,this.header).then(response => {
             this.list.unshift(this.nametemp)
             var code = response.data.resultCode
             if(code == 0){
@@ -438,10 +462,7 @@ export default {
       this.checkpointQuery.nameId =this.nameinfo.nameId
       fetchCheckPointDataList(this.checkpointQuery,this.header).then(response => {
         this.checkpointlist = response.data.resultData.checkPointList
-        
-        this.checkpointlist.forEach(element => {
-          element.edit = false
-        });
+       
       this.listLoading = false
       })
     },    
@@ -470,8 +491,8 @@ export default {
         // checkReminder:"",
         // periodType:"1",
         // activeStatus:"1",
-        var posttemp = {}
         for (let [key, value] of Object.entries(this.newcheckpointlist)) {
+        var posttemp = {}
             value.edit = null
             value.type = null
             posttemp.checkPoint = value.checkPoint
@@ -479,9 +500,9 @@ export default {
             posttemp.periodType = value.periodType
             posttemp.activeStatus = value.activeStatus
             posttemp.apparatusNameId = this.nameinfo.nameId
-      this.postcheckpointlist.push(posttemp)
+            this.postcheckpointlist.push(posttemp)
         }
-          createCheckPointArticle({checkPointList:this.postcheckpointlist},this.header).then(() => {
+          createCheckPointArticle({checkPointList:this.postcheckpointlist},this.header).then(response => {
             this.list.unshift(this.newcheckpointlist)
             
             var code = response.data.resultCode
@@ -505,21 +526,36 @@ export default {
     this.getCheckPointList()
           })
     },
-    confirmEdit(row) {
-          createCheckPointUpdate(row,this.header).then(() => {
-            row.edit = false
+    checkpointUpdate(row) {
+      this.updateinfos = row
+      this.dialogStatus = 'update'
+      this.UpdatedialogFormVisible = true
+    },
+    updateinfosData() {
+          createCheckPointUpdate(this.updateinfos,this.header).then(response => {
+            var code = response.data.resultCode
+            if(code == 0){
+              this.UpdatedialogFormVisible = false
             this.$notify({
               title: '成功',
               message: '修改成功',
               type: 'success',
               duration: 2000
             })
+            }else{
+              this.$notify({
+                title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+            }
     this.getCheckPointList()
           })
     },
-    cancelEdit(row) {
-      row.edit = false
-    this.getCheckPointList()
+    updateinfosdialogFormVisible() {
+        this.UpdatedialogFormVisible = false
+        this.getCheckPointList()
     },
     getexportList() {
       // this.listLoading = true
@@ -556,7 +592,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createSystemArticle(this.temp,this.header).then(() => {
+          createSystemArticle(this.temp,this.header).then(response => {
             this.list.unshift(this.temp)
             var code = response.data.resultCode
             if(code == 0){

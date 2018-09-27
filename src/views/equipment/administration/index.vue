@@ -323,7 +323,7 @@ export default {
       this.temp.kind = parseInt(this.temp.kind)
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createAdminArticle(this.temp,this.header).then(() => {
+          createAdminArticle(this.temp,this.header).then(response => {
             this.list.unshift(this.temp)
             
             var code = response.data.resultCode

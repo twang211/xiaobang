@@ -79,7 +79,10 @@
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="200px" style="width: 400px; margin-left:50px;">
         <el-form-item :label="$t('table.companyCode')">
+          <template v-if="dialogStatus == 'create'">
           <el-input v-model="temp.companyCode"/>
+          </template>
+          <span v-else>{{ temp.companyCode }}</span>
         </el-form-item>
         <el-form-item :label="$t('table.companyName')">
           <el-input v-model="temp.companyName"/>
