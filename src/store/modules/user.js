@@ -61,8 +61,11 @@ const user = {
             const username = userInfo.loginAccount.trim()
             return new Promise((resolve, reject) => {
                 loginByUsername(username, userInfo.password, userInfo.beFrom).then(response => {
-                    setToken(response.data.resultData)
-                    resolve()
+                    var code = response.data.resultCode
+                    if (code == 0) {
+                        setToken(response.data.resultData)
+                    }
+                    resolve(response.data)
                 }).catch(error => {
                     reject(error)
                 })

@@ -372,6 +372,7 @@ export default {
     },
     handleUpdate(row) {
       fetchBuildData({},row.buildingId,this.header).then(response => {
+        this.dialogImageUrl = ""
         if(response.data.resultData.buildingInfo.buildingImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.buildingInfo.buildingImageUri
         }

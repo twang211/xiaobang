@@ -6,9 +6,9 @@
 
     <div class="right-menu">
 
-      <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
+      <!-- <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
         <screenfull class="screenfull right-menu-item"/>
-      </el-tooltip>
+      </el-tooltip> -->
 
       <!-- <lang-select class="international right-menu-item"/> -->
 

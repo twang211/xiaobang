@@ -103,12 +103,22 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.headImageId')">         
-          <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
+          <!-- <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
         <el-upload class="upload-demo" ref="upload" :headers="myHeaders" action="http://47.92.165.114:8999/fire-service/api/file/upload" :auto-upload="false" :on-success="upSuccess" :on-remove="handleRemove">
               <el-button slot="trigger" size="medium" type="primary">选取文件</el-button>
               <el-button style="margin-left: 10px;" size="medium" type="success" @click="submitUpload">确认上传</el-button>
               <el-button style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
-            </el-upload>
+            </el-upload> -->
+            <el-upload
+            class="avatar-uploader"
+            action="http://47.92.165.114:8999/fire-service/api/file/upload"
+            :headers="myHeaders"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess">
+            <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+              <el-button class="uploadBtn" style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
         </el-form-item>
         <el-form-item :label="$t('table.nickName')">
           <el-input v-model="temp.nickName"/>
@@ -419,6 +429,7 @@ export default {
     },
     handleUpdate(row) {
       fetchUserData({},row.userId,this.header).then(response => {
+        this.dialogImageUrl =""
         if(response.data.resultData.userInfo.headImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.userInfo.headImageUri
         }
@@ -508,7 +519,7 @@ export default {
     submitUpload() {
       this.$refs.upload.submit();
     },
-    upSuccess(response) {
+    handleAvatarSuccess(response) {
       var code = response.resultCode
             if(code == 0){
       this.temp.headImageId = response.resultData.fileDTO.fileId

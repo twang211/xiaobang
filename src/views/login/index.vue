@@ -1,34 +1,34 @@
 <template>
   <div class="login-container">
 
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm"  class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
-        <lang-select class="set-language"/>
+        <!-- <lang-select class="set-language"/> -->
       </div>
 
-      <el-form-item prop="loginAccount">
+      <el-form-item >
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
         <el-input
           v-model="loginForm.loginAccount"
-          :placeholder="$t('login.loginAccount')"
+          :placeholder="$t('table.loginAccount')"
           name="loginAccount"
           type="text"
           auto-complete="on"
         />
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item >
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
         <el-input
           :type="passwordType"
           v-model="loginForm.password"
-          :placeholder="$t('login.password')"
+          :placeholder="$t('table.password')"
           name="password"
           auto-complete="on"
           @keyup.enter.native="handleLogin" />
@@ -37,7 +37,7 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <el-button  type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
 
     </el-form>
 
@@ -68,22 +68,11 @@ export default {
         callback()
       // }
     }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      }else {
-        callback()
-      }
-    }
     return {
       loginForm: {
-        loginAccount: 'sysadmin',
+        loginAccount: '',
         password: '',
         beFrom: 'backend'
-      },
-      loginRules: {
-        loginAccount: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
       loading: false,
@@ -109,8 +98,19 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('LoginByUsername', this.loginForm).then(response => {
-            this.loading = false
-            this.$router.push({ path: '/' })
+            console.log(response,"response")
+            
+            var code = response.resultCode
+            if (code == 0) {
+              this.loading = false
+              this.$router.push({ path: '/' })
+            }else{
+              console.log(response.resultMsg)
+              this.$message({
+                message: response.resultMsg,
+                type: 'warning'
+              });
+            }
           }).catch(() => {
             this.loading = false
           })
