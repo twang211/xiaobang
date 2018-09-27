@@ -132,11 +132,11 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.province')">
-          <template v-if="dialogStatus == 'create'">
+          <!-- <template v-if="dialogStatus == 'create'"> -->
           <area-select style="line-height: 1;" type='text' :placeholders="placeholders" :level='2' v-model="selected" :data="pcaa">
 </area-select>
-          </template>
-          <span v-else>{{ temp.province }}-{{ temp.city }}-{{ temp.county }}</span>
+          <!-- </template>
+          <span v-else>{{ temp.province }}-{{ temp.city }}-{{ temp.county }}</span> -->
         </el-form-item>
         <el-form-item :label="$t('table.address')">
           <el-input v-model="temp.address"/>
@@ -376,10 +376,10 @@ export default {
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.buildingInfo.buildingImageUri
         }
         this.temp = response.data.resultData.buildingInfo
-        // this.placeholders = []
-        // this.placeholders.push(this.temp.province)
-        // this.placeholders.push(this.temp.city)
-        // this.placeholders.push(this.temp.county)
+        this.placeholders = []
+        this.placeholders.push(this.temp.province)
+        this.placeholders.push(this.temp.city)
+        this.placeholders.push(this.temp.county)
       })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -388,9 +388,9 @@ export default {
       })
     },
     updateData() {
-      // this.temp.province = this.selected[0]
-      // this.temp.city = this.selected[1]
-      // this.temp.county = this.selected[2]
+      this.temp.province = this.selected[0]
+      this.temp.city = this.selected[1]
+      this.temp.county = this.selected[2]
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateBuildData(this.temp,this.header).then( response => {
