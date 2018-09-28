@@ -343,11 +343,9 @@ export function checkToken() {
     const data = JSON.parse(getToken())
     const timestamp = new Date().getTime()
     const header = "Bearer " + data.userToken
-
     if (timestamp > data.tokenExpireTime) {
-        this.$store.dispatch('LogOut').then(() => {
-            location.reload() // In order to re-instantiate the vue-router object to avoid bugs
-        })
+        removeToken()
+        location.reload() // In order to re-instantiate the vue-router object to avoid bugs
     } else {
         fetchToken({}, header).then(response => {
             const datas = response.data

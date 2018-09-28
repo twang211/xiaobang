@@ -21,6 +21,7 @@ service.interceptors.request.use(
     },
     error => {
         removeToken()
+        location.reload()
             // Do something with request error
         Promise.reject(error)
     }
@@ -69,6 +70,7 @@ service.interceptors.response.use(
             duration: 5 * 1000
         })
         removeToken()
+        location.reload()
         return Promise.reject(error)
     }
 )
