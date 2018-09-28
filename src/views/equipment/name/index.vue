@@ -151,6 +151,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
+        this.dialogImageUrl = ""
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -174,6 +175,7 @@ export default {
     },
     handleUpdate(row) {
       fetchUserData({},row.userId,this.header).then(response => {
+        this.dialogImageUrl = ""
         if(response.data.resultData.userInfo.headImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.userInfo.headImageUri
         }

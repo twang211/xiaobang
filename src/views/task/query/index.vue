@@ -28,7 +28,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;">
+      style="width: 100%;min-height:600px">
       
       <el-table-column :label="$t('table.taskName')" align="center" >
         <template slot-scope="scope">

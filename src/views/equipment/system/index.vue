@@ -21,7 +21,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;">
+      style="width: 100%;min-height:600px">
       
       <el-table-column :label="$t('table.typeName')" align="center" width="350">
         <template slot-scope="scope">
@@ -40,6 +40,10 @@
       </el-table-column>
       
     </el-table>
+    
+    <div class="pagination-container">
+      <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize"  :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
+    </div>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="200px" style="width: 90%; margin-left:50px;">
 
@@ -315,6 +319,8 @@ export default {
         apparatusName: null,
       },
       listQuery: {
+        page: 1,
+        pageSize: 10,
         apparatusTypeName: null,
         kind: null,
       },
@@ -364,6 +370,7 @@ export default {
         var code = response.data.resultCode
         if(code == 0){
         this.list = response.data.resultData.typeList
+        this.total = response.data.resultData.pageInfo.totalCounts
       this.listLoading = false
         }else{
           
@@ -615,18 +622,6 @@ export default {
     this.getdataList()
           })
         }
-      })
-    },
-    handleUpdate(row) {
-      fetchUserData({},row.userId,this.header).then(response => {
-        if(response.data.resultData.userInfo.headImageUri){
-          this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.userInfo.headImageUri
-        }
-      })
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
       })
     },
     updateData() {

@@ -29,7 +29,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;">
+      style="width: 100%;min-height:600px">
             
       <el-table-column :label="$t('table.apparatusUuid')" align="center" width="350">
         <template slot-scope="scope">
@@ -72,11 +72,9 @@
     <div class="pagination-container">
       <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize"  :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
-        <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="200px" style="width: 90%; margin-left:50px;">
-        <el-form-item :label="$t('table.apparatusUuid')">
-          <el-input v-model="temp.apparatusUuid"/>
-        </el-form-item>
+        <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="50%" top="5px">
+      <el-form ref="dataForm" label-width="200px" style="width: 100%;" :model="temp"  class="demo-form-inline">
+        
       <el-form-item :label="$t('table.apparatusImageId')">         
           <!-- <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
         <el-upload class="upload-demo" ref="upload" :headers="myHeaders" action="http://47.92.165.114:8999/fire-service/api/file/upload" :auto-upload="false" :on-success="upSuccess" :on-remove="handleRemove">
@@ -95,50 +93,95 @@
           </el-upload>
               <el-button class="uploadBtn" style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
         </el-form-item>
+        
+            <el-row>
+          <el-col :span="12">
+            <el-form-item :label="$t('table.apparatusUuid')">
+              <el-input v-model="temp.apparatusUuid"/>
+            </el-form-item>
+            </el-col>
+          <el-col :span="12">
+          <el-form-item :label="$t('table.kind')">
+            <el-select v-model="temp.kind" class="filter-item" filterable placeholder="设备分类">
+                  <el-option v-for="item in kindList" :key="item.key" :label="item.value" :value="item.key"/>
+                </el-select>
+              </el-form-item>
+            </el-col>
+        </el-row>
+
+            <el-row>
+          <el-col :span="12">
           <el-form-item :label="$t('table.apparatusTypeId')">
             <el-select v-model="temp.apparatusTypeId" @change="changeSystem" class="filter-item" filterable placeholder="设备类别">
         <el-option v-for="item in systemlist" :key="item.typeId" :label="item.typeName" :value="item.typeId"/>
       </el-select>
         </el-form-item>
+            </el-col>
+          <el-col :span="12">
           <el-form-item :label="$t('table.apparatusNameId')">
    
       <el-select v-model="temp.apparatusNameId"  class="filter-item" filterable placeholder="设备名称">
         <el-option v-for="item in namelist" :key="item.nameId" :label="item.apparatusName" :value="item.nameId"/>
       </el-select>
         </el-form-item>
+            </el-col>
+        </el-row>
+
+            <el-row>
+          <el-col :span="12">
           <el-form-item :label="$t('table.companyId')">
     <el-select v-model="temp.companyId" class="filter-item" filterable placeholder="关联单位">
         <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
       </el-select>
         </el-form-item>
+            </el-col>
+          <el-col :span="12">
           <el-form-item :label="$t('table.buildingId')">
       <el-select v-model="temp.buildingId" class="filter-item" filterable placeholder="关联建筑">
         <el-option v-for="item in buildlist" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId"/>
       </el-select>
         </el-form-item>
+            </el-col>
+        </el-row>
+
+            <el-row>
+          <el-col :span="12">
         <el-form-item :label="$t('table.buildingNo')">
           <el-input v-model="temp.buildingNo"/>
         </el-form-item>
+            </el-col>
+          <el-col :span="12">
         <el-form-item :label="$t('table.floor')">
           <el-input v-model="temp.floor"/>
         </el-form-item>
+            </el-col>
+        </el-row>
+
+            <el-row>
+          <el-col :span="12">
         <el-form-item :label="$t('table.fireAreaCode')">
           <el-input v-model="temp.fireAreaCode"/>
         </el-form-item>
+            </el-col>
+          <el-col :span="12">
         <el-form-item :label="$t('table.roomNo')">
           <el-input v-model="temp.roomNo"/>
         </el-form-item>
+            </el-col>
+        </el-row>
+
+            <el-row>
+          <el-col :span="12">
         <el-form-item :label="$t('table.apparatusAddress')">
           <el-input v-model="temp.apparatusAddress"/>
         </el-form-item>
+            </el-col>
+          <el-col :span="12">
         <el-form-item :label="$t('table.apparatusStatus')">
           <el-input v-model="temp.apparatusStatus"/>
         </el-form-item>
-          <el-form-item :label="$t('table.kind')">
-       <el-select v-model="temp.kind" class="filter-item" filterable placeholder="设备分类">
-            <el-option v-for="item in kindList" :key="item.key" :label="item.value" :value="item.key"/>
-          </el-select>
-        </el-form-item>
+            </el-col>
+        </el-row>
       </el-form>        
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -323,6 +366,7 @@ export default {
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'
+        this.dialogImageUrl = ""
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -483,9 +527,30 @@ export default {
 </script>
 
 <style>
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
   .avatar {
     width: 178px;
     height: 178px;
     display: block;
   }
+  .uploadBtn{    position: absolute;
+    left: 28%;
+    top: 0;}
 </style>

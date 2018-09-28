@@ -22,7 +22,7 @@
     highlight-current-row
       border
       fit
-      style="width: 100%;"
+      style="width: 100%;min-height:600px"
       @current-change="handleChangeCurrent">
     <el-table-column
     :label="$t('table.index')" align="center"

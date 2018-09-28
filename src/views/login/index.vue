@@ -18,6 +18,8 @@
           name="loginAccount"
           type="text"
           auto-complete="on"
+          @focus="$event.target.placeholder = ''"
+          @blur="$event.target.placeholder = $t('table.loginAccount')"
         />
       </el-form-item>
 
@@ -31,6 +33,8 @@
           :placeholder="$t('table.password')"
           name="password"
           auto-complete="on"
+          @focus="$event.target.placeholder = ''"
+          @blur="$event.target.placeholder = $t('table.password')"
           @keyup.enter.native="handleLogin" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
@@ -86,6 +90,10 @@ export default {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    f(e){
+      e.target.placeholder = ""
+      console.log(e.target.placeholder,"2222222222")
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
