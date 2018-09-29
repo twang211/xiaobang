@@ -1,11 +1,10 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">            
-      <el-input :placeholder="$t('querytable.apparatusCode')" v-model="listQuery.apparatusCode" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-            <el-input :placeholder="$t('querytable.apparatusUuid')" v-model="listQuery.apparatusUuid" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
             <el-input :placeholder="$t('querytable.apparatusName')" v-model="listQuery.apparatusName" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input :placeholder="$t('querytable.apparatusCode')" v-model="listQuery.apparatusCode" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
-      <el-select v-model="listQuery.companyId" class="filter-item" filterable placeholder="单位名称">
+      <el-select v-model="listQuery.companyId" @change="changeCompany" class="filter-item" filterable placeholder="单位名称">
         <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
       </el-select>
       <el-select v-model="listQuery.buildingId" class="filter-item" filterable placeholder="建筑名称">
@@ -13,10 +12,7 @@
       </el-select>
       <el-date-picker v-model="listQuery.queryDateFrom" type="date" placeholder="开始时间"/>
       <el-date-picker v-model="listQuery.queryDateTo" type="date" placeholder="结束时间"/>
-       <el-select v-model="listQuery.isPass" :placeholder="$t('querytable.isPass')" clearable style="width: 120px" class="filter-item" placeholder="是否合格">
 
-            <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      
-            </el-select>
        <el-select v-model="listQuery.isAmend" :placeholder="$t('querytable.isAmend')" clearable style="width: 120px" class="filter-item" placeholder="是否处理">
 
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      </el-select>
@@ -34,6 +30,16 @@
       fit
       highlight-current-row
       style="width: 100%;min-height:600px">
+      <el-table-column :label="$t('table.apparatusName')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.apparatusName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.apparatusCode')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.apparatusCode }}</span>
+        </template>
+      </el-table-column>
          <el-table-column :label="$t('table.companyName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
@@ -44,44 +50,19 @@
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" >
+      <el-table-column :label="$t('table.apparatusAddress')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusName }}</span>
+          <span>{{ scope.row.apparatusAddress }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center">
+      <el-table-column :label="$t('table.checkUserName')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusUuid }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusCode }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.fireAreaCode')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.fireAreaCode }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.isPass')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isPass] }}</span>
+          <span>{{ scope.row.checkUserName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.isAmend')" align="center" >
         <template slot-scope="scope">
           <span>{{ checkType[scope.row.isAmend] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.isFinish')" align="center">
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isFinish] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
  
@@ -106,54 +87,24 @@
       fit
       highlight-current-row
       style="width: 100%">
-         <el-table-column :label="$t('table.companyName')" align="center" width="150">
+      <el-table-column :label="$t('table.checkPoint')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.companyName }}</span>
+          <span>{{ scope.row.checkPoint }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.buildingName')" align="center" width="150">
+      <el-table-column :label="$t('table.errorDescription')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.buildingName }}</span>
+          <span>{{ scope.row.errorDescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" width="150">
+      <el-table-column :label="$t('table.spotHandling')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusName }}</span>
+          <span>{{ scope.row.spotHandling }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" width="240">
+      <el-table-column :label="$t('table.reportingConditions')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusUuid }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" width="120">
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusCode }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.taskPeriodType')" align="center" width="120">
-        <template slot-scope="scope">
-          <span>{{ scope.row.checkPeriodName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.isPass')" align="center" width="90">
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isPass] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.isAmend')" align="center" width="90">
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isAmend] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.isFinish')" align="center" width="90">
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isFinish] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center" width="150">
-        <template slot-scope="scope">
-          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span>{{ scope.row.reportingConditions }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -217,7 +168,6 @@ export default {
     checkToken()
     this.getdataList()
     this.getunitdataList()
-    this.getbuilddataList()
     this.getuserdataList()
   },
   methods: {
@@ -245,8 +195,10 @@ export default {
         this.unitlist = response.data.resultData.companyList
       })
     },
-    getbuilddataList() {
-      fetchBuildDownDataList({},this.header).then(response => {
+    changeCompany(value) {
+      
+      this.buildlist = []
+      fetchBuildDownDataList({companyId:value},this.header).then(response => {
         this.buildlist = response.data.resultData.buildingList
       })
     },
@@ -268,12 +220,11 @@ export default {
     lookInfos(row){
       this.infos = []
       this.dialogFormVisible = true
-      
       fetchCheckRecordData({taskDetailId:row.taskDetailId},this.header).then(response => {
         var code = response.data.resultCode
         if(code == 0){
           
-      this.infos.push(response.data.resultData.taskDetailInfo) 
+      this.infos = response.data.resultData.troubleList
         // this.list = response.data.resultData.taskDetailInfo
       this.listLoading = false
         }else{

@@ -336,7 +336,7 @@ export default {
       })
     },
     changeCompany(value) {
-      console.log(value,"valuevalue")
+      
       this.buildlist = []
       fetchBuildDownDataList({companyId:value},this.header).then(response => {
         this.buildlist = response.data.resultData.buildingList

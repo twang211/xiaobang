@@ -2,7 +2,6 @@
         <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-input :placeholder="$t('querytable.taskName')" v-model="listQuery.taskName" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input :placeholder="$t('querytable.taskCode')" v-model="listQuery.taskCode" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input :placeholder="$t('querytable.taskExecuteUserName')" v-model="listQuery.taskExecuteUserName" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-select v-model="listQuery.taskPeriodType" class="filter-item" filterable placeholder="任务周期">
         <el-option v-for="item in periodTypeList" :key="item.key" :label="item.value" :value="item.key"/>
@@ -10,7 +9,7 @@
       <el-select v-model="listQuery.taskStatus" class="filter-item" filterable placeholder="任务状态">
         <el-option v-for="item in taskStatusList" :key="item.key" :label="item.value" :value="item.key"/>
       </el-select>     
-      <el-select v-model="listQuery.companyId" class="filter-item" filterable placeholder="关联单位">
+      <el-select v-model="listQuery.companyId" @change="changeCompany" class="filter-item" filterable placeholder="关联单位">
         <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
       </el-select>
       <el-select v-model="listQuery.buildingId" class="filter-item" filterable placeholder="关联建筑">
@@ -35,14 +34,19 @@
           <span>{{ scope.row.taskName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.taskCode')" align="center" >
+      <el-table-column :label="$t('table.taskExecuteUserName')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.taskCode }}</span>
+          <span>{{ scope.row.taskExecuteUserName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.taskPeriodType')" align="center" >
         <template slot-scope="scope">
-          <span>{{ showperiodTypeObj[scope.row.taskPeriodType] }}</span>
+          <span>{{ scope.row.taskPeriodTypeName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.taskStatus')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ showtaskStatusObj[scope.row.taskStatus] }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.companyId')" align="center" >
@@ -55,14 +59,14 @@
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.taskStatus')" align="center" >
+      <el-table-column :label="$t('table.aboutFloors')" align="center" >
         <template slot-scope="scope">
-          <span>{{ showtaskStatusObj[scope.row.taskStatus] }}</span>
+          <span>{{ scope.row.aboutFloors }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.taskExecuteUserName')" align="center" >
+      <el-table-column :label="$t('table.config')" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.taskExecuteUserName }}</span>
+          <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,12 +76,50 @@
       <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
 
+    <el-dialog title="详情" :visible.sync="dialogFormVisible" width="90%">
+             <div class="app-container calendar-list-container">
+    <el-table
+      v-loading="listLoading"
+      :key="tableKey"
+      :data="infos"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%">
+      <el-table-column :label="$t('table.tempo')" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.tempo * 100 }}%</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.apparatusCount')" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.apparatusCount }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.troubleCount')" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.troubleCount }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.taskBeginTime')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.taskBeginTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.taskFinishTime')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.taskFinishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+        </template>
+      </el-table-column>
+    </el-table>
+       </div>
+        </el-dialog>
   </div>
 
 </template>
 
 <script>
-import { fetchQueryDataList, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList} from '@/api/article'
+import { fetchQueryDataList, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchTaskData} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -95,6 +137,7 @@ export default {
       myHeaders: {Authorization: getHeader()},
       extime: '',
       list: null,
+      infos: [],
       unitlist: null,
       buildlist: null,
       periodTypeList:[],
@@ -104,6 +147,7 @@ export default {
       exportlist: null,
       total: null,
       listLoading: true,
+      dialogFormVisible: false,
       periodTypeQuery: {
         name:"periodTypeMap",
         type:"list"
@@ -116,7 +160,6 @@ export default {
         page: 1,
         pageSize: 10,
         taskName: null,
-        taskCode: null,
         taskPeriodType: null,
         companyId: null,
         buildingId: null,
@@ -148,7 +191,6 @@ export default {
     this.getperiodTypeList()
     this.gettaskStatusList()
     this.getunitdataList()
-    this.getbuilddataList()
   },
   methods: {
     getdataList() {
@@ -191,9 +233,34 @@ export default {
         this.unitlist = response.data.resultData.companyList
       })
     },
-    getbuilddataList() {
-      fetchBuildDownDataList({},this.header).then(response => {
+    changeCompany(value) {
+      
+      this.buildlist = []
+      fetchBuildDownDataList({companyId:value},this.header).then(response => {
         this.buildlist = response.data.resultData.buildingList
+      })
+    },
+    lookInfos(row){
+      this.infos = []
+      this.dialogFormVisible = true
+      fetchTaskData({taskId:row.taskId},this.header).then(response => {
+        var code = response.data.resultCode
+        if(code == 0){
+          
+      // this.infos = response.data.resultData.taskInfo
+      
+      this.infos.push(response.data.resultData.taskInfo) 
+        // this.list = response.data.resultData.taskDetailInfo
+      this.listLoading = false
+        }else{
+          
+          this.$notify({
+              title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+        }
       })
     },
     getAllinfos() {

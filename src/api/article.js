@@ -334,7 +334,7 @@ export function createCheckPointArticle(data, header) {
 
 //更新巡查要点信息
 export function createCheckPointUpdate(data, header) {
-    
+
     return request({
         url: '/fire-service/api/check-point/backend/update',
         method: 'post',
@@ -358,7 +358,7 @@ export function fetchAdminDataList(query, header) {
 
 //添加设备管理信息
 export function createAdminArticle(data, header) {
-    
+
     return request({
         url: '/fire-service/api/apparatus/backend/add',
         method: 'post',
@@ -382,7 +382,7 @@ export function fetchAdminData(query, header) {
 
 //更新设备管理信息
 export function createAdminUpdate(data, header) {
-    
+
     return request({
         url: '/fire-service/api/apparatus/backend/update',
         method: 'post',
@@ -408,7 +408,7 @@ export function fetchQueryDataList(query, header) {
 
 //更新设备管理信息
 export function createTaskAdd(data, header) {
-    
+
     return request({
         url: '/fire-service/api/task/backend/add',
         method: 'post',
@@ -429,10 +429,32 @@ export function fetchCheckRecordDataList(query, header) {
         }
     })
 }
+//任务查询详情
+export function fetchTaskData(query, header) {
+    return request({
+        url: '/fire-service/api/task/backend/info',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
 //隐患查询详情
 export function fetchCheckRecordData(query, header) {
     return request({
-        url: '/fire-service/api/check-record/backend/info',
+        url: '/fire-service/api/check-record/backend/trouble/info',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//设备巡查查询详情
+export function fetchCheckRecordInfosData(query, header) {
+    return request({
+        url: '/fire-service/api/check-record/backend/info/detail',
         method: 'get',
         params: query,
         headers: {

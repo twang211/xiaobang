@@ -1,12 +1,11 @@
 <template>
         <div class="app-container calendar-list-container">
     <div class="filter-container">
-            <el-input :placeholder="$t('querytable.apparatusCode')" v-model="listQuery.apparatusCode" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-            <el-input :placeholder="$t('querytable.apparatusUuid')" v-model="listQuery.apparatusUuid" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
             <el-input :placeholder="$t('querytable.apparatusName')" v-model="listQuery.apparatusName" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+            <el-input :placeholder="$t('querytable.apparatusCode')" v-model="listQuery.apparatusCode" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
-      <el-select v-model="listQuery.companyId" class="filter-item" filterable placeholder="单位名称">
-        <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
+      <el-select v-model="listQuery.companyId" @change="changeCompany" class="filter-item" filterable placeholder="单位名称">
+        <el-option v-for="item in unitlist"  :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
       </el-select>
       <el-select v-model="listQuery.buildingId" class="filter-item" filterable placeholder="建筑名称">
         <el-option v-for="item in buildlist" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId"/>
@@ -37,6 +36,16 @@
       highlight-current-row
       style="width: 100%;min-height:600px">
       
+      <el-table-column :label="$t('table.apparatusName')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.apparatusName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.apparatusCode')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.apparatusCode }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.companyName')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
@@ -47,19 +56,9 @@
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" >
+      <el-table-column :label="$t('table.apparatusAddress')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusUuid }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusCode }}</span>
+          <span>{{ scope.row.apparatusAddress }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.isPass')" align="center" >
@@ -72,24 +71,9 @@
           <span>{{ checkType[scope.row.isAmend] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.checkUserName')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.checkUserName }}</span>
-        </template>
-      </el-table-column>
       <el-table-column :label="$t('table.checkUserAutographUri')" align="center" >
         <template slot-scope="scope">
           <img  :src="scope.row.checkUserAutographUri" class="avatar">
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.checkUserType')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ showuserTypeObj[scope.row.checkUserType] }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.config')" align="center" >
@@ -113,29 +97,10 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;">     <el-table-column :label="$t('table.companyName')" align="center" >
+      style="width: 100%;">     
+      <el-table-column :label="$t('table.checkPoint')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.companyName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.buildingName')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.buildingName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusUuid }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusCode }}</span>
+          <span>{{ scope.row.checkPoint }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.isPass')" align="center" >
@@ -148,24 +113,19 @@
           <span>{{ checkType[scope.row.isAmend] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center" >
+      <el-table-column :label="$t('table.errorDescription')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span>{{ scope.row.errorDescription }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.checkUserName')" align="center" >
+      <el-table-column :label="$t('table.spotHandling')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.checkUserName }}</span>
+          <span>{{ scope.row.spotHandling }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.checkUserAutographUri')" align="center" >
+      <el-table-column :label="$t('table.reportingConditions')" align="center" >
         <template slot-scope="scope">
-          <img  :src="scope.row.checkUserAutographUri" class="avatar">
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.checkUserType')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ showuserTypeObj[scope.row.checkUserType] }}</span>
+          <span>{{ scope.row.reportingConditions }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -177,7 +137,7 @@
 </template>
 
 <script>
-import { fetchCheckRecordDataList,fetchCheckRecordData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
+import { fetchCheckRecordDataList,fetchCheckRecordInfosData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -212,14 +172,13 @@ export default {
         pageSize: 10,
         isFinish: 1,
         kind: 1,
-        isPass: 0,
+        checkUserType: 2,
         apparatusCode: null,
         apparatusUuId: null,
         apparatusName: null,
         companyId: null,
         buildingId: null,
         checkUserId: null,
-        checkUserType: 2,
         isAmend: null,
         queryDateFrom: null,
         queryDateTo: null,
@@ -237,7 +196,6 @@ export default {
     this.getdataList()
     this.getuserTypeList()
     this.getunitdataList()
-    this.getbuilddataList()
     this.getuserdataList()
   },
   methods: {
@@ -279,8 +237,10 @@ export default {
         this.unitlist = response.data.resultData.companyList
       })
     },
-    getbuilddataList() {
-      fetchBuildDownDataList({},this.header).then(response => {
+    changeCompany(value) {
+      
+      this.buildlist = []
+      fetchBuildDownDataList({companyId:value},this.header).then(response => {
         this.buildlist = response.data.resultData.buildingList
       })
     },
@@ -314,14 +274,13 @@ export default {
         pageSize: 10,
         isFinish: 1,
         kind: 1,
-        isPass: 0,
+        checkUserType: 2,
         apparatusCode: null,
         apparatusUuId: null,
         apparatusName: null,
         companyId: null,
         buildingId: null,
         checkUserId: null,
-        checkUserType: 2,
         isAmend: null,
         queryDateFrom: null,
         queryDateTo: null,
@@ -332,15 +291,18 @@ export default {
       this.infos = []
       this.dialogFormVisible = true
       
-      fetchCheckRecordData({taskDetailId:row.taskDetailId},this.header).then(response => {
+      fetchCheckRecordInfosData({taskDetailId:row.taskDetailId},this.header).then(response => {
         var code = response.data.resultCode
         if(code == 0){
           
-          if(response.data.resultData.taskDetailInfo.checkUserAutographUri){
+      this.infos = response.data.resultData.detailList
+      
+        // this.infos.forEach(element => {
+        //   if(element.checkUserAutographUri){
 
-            response.data.resultData.taskDetailInfo.checkUserAutographUri = "http://47.92.165.114:8081"+response.data.resultData.taskDetailInfo.checkUserAutographUri
-          }
-      this.infos.push(response.data.resultData.taskDetailInfo) 
+        //     element.checkUserAutographUri = "http://47.92.165.114:8081"+element.checkUserAutographUri
+        //   }
+        // });
         // this.list = response.data.resultData.taskDetailInfo
       this.listLoading = false
         }else{

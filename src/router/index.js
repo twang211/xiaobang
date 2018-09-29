@@ -217,45 +217,45 @@ export const asyncRouterMap = [{
             path: 'buildcheck',
             component: () =>
                 import ('@/views/report/buildcheck/index'),
-            name: '消防设施巡查',
+            name: '设备巡查表',
             meta: {
-                title: '消防设施巡查',
+                title: '设备巡查表',
                 roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'publicinfo',
             component: () =>
                 import ('@/views/report/publicinfo/index'),
-            name: '公共区域消防巡查',
+            name: '公共区域巡查表',
             meta: {
-                title: '建筑公共区域消防巡查',
+                title: '公共区域巡查表',
                 roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'upkeep',
             component: () =>
                 import ('@/views/report/upkeep/index'),
-            name: '消防设施维护保养',
+            name: '维护保养表',
             meta: {
-                title: '消防设施维护保养',
+                title: '维护保养表',
                 roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'testing',
             component: () =>
                 import ('@/views/report/testing/index'),
-            name: '消防设施检测',
+            name: '设备检查表',
             meta: {
-                title: '消防设施检测',
+                title: '设备检查表',
                 roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'workrecord',
             component: () =>
                 import ('@/views/report/workrecord/index'),
-            name: '消防设施故障维修',
+            name: '设备维修表',
             meta: {
-                title: '消防设施故障维修',
+                title: '设备维修表',
                 roles: [1, 2] // or you can only set roles in sub nav
             }
         }]
