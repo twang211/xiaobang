@@ -60,6 +60,12 @@
           <span>{{ scope.row.checkUserName }}</span>
         </template>
       </el-table-column>
+   
+      <el-table-column :label="$t('table.finishTime')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.isAmend')" align="center" >
         <template slot-scope="scope">
           <span>{{ checkType[scope.row.isAmend] }}</span>
