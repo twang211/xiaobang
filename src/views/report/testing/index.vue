@@ -170,8 +170,6 @@ export default {
       listQuery: {
         page: 1,
         pageSize: 10,
-        isFinish: 1,
-        kind: 2,
         apparatusCode: null,
         apparatusUuId: null,
         apparatusName: null,
@@ -294,8 +292,6 @@ export default {
       this.listQuery = {
         page: 1,
         pageSize: 10,
-        isFinish: 1,
-        kind: 2,
         apparatusCode: null,
         apparatusUuId: null,
         apparatusName: null,

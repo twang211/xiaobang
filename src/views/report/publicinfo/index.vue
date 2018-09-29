@@ -170,7 +170,6 @@ export default {
       listQuery: {
         page: 1,
         pageSize: 10,
-        isFinish: 1,
         kind: 2,
         checkUserType: 2,
         apparatusCode: null,
@@ -294,7 +293,6 @@ export default {
       this.listQuery = {
         page: 1,
         pageSize: 10,
-        isFinish: 1,
         kind: 2,
         checkUserType: 2,
         apparatusCode: null,
