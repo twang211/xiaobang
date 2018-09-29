@@ -1,12 +1,11 @@
 <template>
         <div class="app-container calendar-list-container">
     <div class="filter-container">
-            <el-input :placeholder="$t('querytable.apparatusCode')" v-model="listQuery.apparatusCode" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-            <el-input :placeholder="$t('querytable.apparatusUuid')" v-model="listQuery.apparatusUuid" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
             <el-input :placeholder="$t('querytable.apparatusName')" v-model="listQuery.apparatusName" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+            <el-input :placeholder="$t('querytable.apparatusCode')" v-model="listQuery.apparatusCode" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
 
-      <el-select v-model="listQuery.companyId" class="filter-item" filterable placeholder="单位名称">
-        <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
+      <el-select v-model="listQuery.companyId" @change="changeCompany" class="filter-item" filterable placeholder="单位名称">
+        <el-option v-for="item in unitlist"  :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
       </el-select>
       <el-select v-model="listQuery.buildingId" class="filter-item" filterable placeholder="建筑名称">
         <el-option v-for="item in buildlist" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId"/>
@@ -27,8 +26,7 @@
       <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
 
     </div>
-
-    <el-table
+ <el-table
       v-loading="listLoading"
       :key="tableKey"
       :data="list"
@@ -37,24 +35,9 @@
       highlight-current-row
       style="width: 100%;min-height:600px">
       
-      <el-table-column :label="$t('table.companyName')" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.companyName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.buildingName')" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.buildingName }}</span>
-        </template>
-      </el-table-column>
       <el-table-column :label="$t('table.apparatusName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusUuid }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.apparatusCode')" align="center" >
@@ -62,61 +45,7 @@
           <span>{{ scope.row.apparatusCode }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.isPass')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isPass] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.isAmend')" align="center">
-        <template slot-scope="scope">
-          <span>{{ checkType[scope.row.isAmend] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.checkUserName')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.checkUserName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.checkUserAutographUri')" align="center" >
-        <template slot-scope="scope">
-          <img  :src="scope.row.checkUserAutographUri" class="avatar">
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.checkUserType')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ showuserTypeObj[scope.row.checkUserType] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" >
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
- 
-    <div class="pagination-container">
-      <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
-    </div>
-        <el-dialog title="详情" :visible.sync="dialogFormVisible" width="90%">
-      
-             <div class="app-container calendar-list-container">
-    <el-table
-      v-loading="listLoading"
-      :key="tableKey"
-      :data="infos"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;">
-      
-      
-      <el-table-column :label="$t('table.companyName')" align="center" >
+      <el-table-column :label="$t('table.companyName')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.companyName }}</span>
         </template>
@@ -126,22 +55,12 @@
           <span>{{ scope.row.buildingName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusName')" align="center" >
+      <el-table-column :label="$t('table.apparatusAddress')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.apparatusName }}</span>
+          <span>{{ scope.row.apparatusAddress }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.apparatusUuid')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusUuid }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.apparatusCode')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.apparatusCode }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.isPass')" align="center">
+      <el-table-column :label="$t('table.isPass')" align="center" >
         <template slot-scope="scope">
           <span>{{ checkType[scope.row.isPass] }}</span>
         </template>
@@ -151,24 +70,62 @@
           <span>{{ checkType[scope.row.isAmend] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.finishTime')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.finishTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.checkUserName')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.checkUserName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.checkUserAutographUri')" align="center">
+      <el-table-column :label="$t('table.checkUserAutographUri')" align="center" >
         <template slot-scope="scope">
           <img  :src="scope.row.checkUserAutographUri" class="avatar">
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.checkUserType')" align="center" >
+      <el-table-column :label="$t('table.config')" align="center" >
         <template slot-scope="scope">
-          <span>{{ showuserTypeObj[scope.row.checkUserType] }}</span>
+          <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+
+ 
+    <div class="pagination-container">
+      <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
+    </div>
+    <el-dialog title="详情" :visible.sync="dialogFormVisible" width="90%">
+      
+             <div class="app-container calendar-list-container">
+    <el-table
+      v-loading="listLoading"
+      :key="tableKey"
+      :data="infos"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;">     
+      <el-table-column :label="$t('table.checkPoint')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.checkPoint }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.isPass')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ checkType[scope.row.isPass] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.isAmend')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ checkType[scope.row.isAmend] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.errorDescription')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.errorDescription }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.spotHandling')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.spotHandling }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.reportingConditions')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.reportingConditions }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -180,7 +137,7 @@
 </template>
 
 <script>
-import { fetchCheckRecordDataList,fetchCheckRecordData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
+import { fetchCheckRecordDataList,fetchCheckRecordInfosData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -215,7 +172,6 @@ export default {
         pageSize: 10,
         isFinish: 1,
         kind: 2,
-        isPass: 0,
         apparatusCode: null,
         apparatusUuId: null,
         apparatusName: null,
@@ -240,7 +196,6 @@ export default {
     this.getdataList()
     this.getuserTypeList()
     this.getunitdataList()
-    this.getbuilddataList()
     this.getuserdataList()
   },
   methods: {
@@ -282,8 +237,10 @@ export default {
         this.unitlist = response.data.resultData.companyList
       })
     },
-    getbuilddataList() {
-      fetchBuildDownDataList({},this.header).then(response => {
+    changeCompany(value) {
+      
+      this.buildlist = []
+      fetchBuildDownDataList({companyId:value},this.header).then(response => {
         this.buildlist = response.data.resultData.buildingList
       })
     },
@@ -295,15 +252,12 @@ export default {
     lookInfos(row){
       this.infos = []
       this.dialogFormVisible = true    
-      fetchCheckRecordData({taskDetailId:row.taskDetailId},this.header).then(response => {
+      
+      fetchCheckRecordInfosData({taskDetailId:row.taskDetailId},this.header).then(response => {
         var code = response.data.resultCode
         if(code == 0){
           
-          if(response.data.resultData.taskDetailInfo.checkUserAutographUri){
-
-            response.data.resultData.taskDetailInfo.checkUserAutographUri = "http://47.92.165.114:8081"+response.data.resultData.taskDetailInfo.checkUserAutographUri
-          }
-      this.infos.push(response.data.resultData.taskDetailInfo) 
+      this.infos = response.data.resultData.detailList
         // this.list = response.data.resultData.taskDetailInfo
       this.listLoading = false
         }else{
@@ -342,7 +296,6 @@ export default {
         pageSize: 10,
         isFinish: 1,
         kind: 2,
-        isPass: 0,
         apparatusCode: null,
         apparatusUuId: null,
         apparatusName: null,
