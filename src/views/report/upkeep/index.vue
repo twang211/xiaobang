@@ -217,7 +217,7 @@ export default {
         this.list.forEach(element => {
           if(element.upkeepUserAutographUri){
 
-            element.checkUserAutographUri = "http://47.92.165.114:8081"+element.upkeepUserAutographUri
+            element.upkeepUserAutographUri = "http://47.92.165.114:8081"+element.upkeepUserAutographUri
           }
         });
         this.total = response.data.resultData.pageInfo.totalCounts
