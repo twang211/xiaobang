@@ -73,7 +73,7 @@
       <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize"  :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="50%" top="5px">
-      <el-form ref="dataForm" label-width="200px" style="width: 100%;" :model="temp"  class="demo-form-inline">
+      <el-form ref="dataForm" :rules="rules" label-width="200px" style="width: 100%;" :model="temp"  class="demo-form-inline">
         
       <el-form-item :label="$t('table.apparatusImageId')">         
           <!-- <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
@@ -146,12 +146,12 @@
 
             <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.buildingNo')">
+        <el-form-item :label="$t('table.buildingNo')" prop="buildingNo">
           <el-input v-model="temp.buildingNo"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.floor')">
+        <el-form-item :label="$t('table.floor')" prop="floor">
           <el-input v-model="temp.floor"/>
         </el-form-item>
             </el-col>
@@ -159,12 +159,12 @@
 
             <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.fireAreaCode')">
+        <el-form-item :label="$t('table.fireAreaCode')" prop="fireAreaCode">
           <el-input v-model="temp.fireAreaCode"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.roomNo')">
+        <el-form-item :label="$t('table.roomNo')" prop="roomNo">
           <el-input v-model="temp.roomNo"/>
         </el-form-item>
             </el-col>
@@ -172,7 +172,7 @@
 
             <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.apparatusAddress')">
+        <el-form-item :label="$t('table.apparatusAddress')" v-if="dialogStatus == 'update'">
           <el-input v-model="temp.apparatusAddress"/>
         </el-form-item>
             </el-col>
@@ -207,6 +207,16 @@ export default {
   filters: {
   },
   data() {
+      var checkNum = (rule, value, callback) => {
+        console.log(Number.isInteger(parseInt(value)))
+        setTimeout(() => {
+          if (!Number.isInteger(parseInt(value))) {
+            callback(new Error('请输入数字值'));
+          } else {
+              callback();
+          }
+        }, 1000);
+      }
     return {
         dialogImageUrl: '',
       tableKey: 0,
@@ -238,19 +248,6 @@ export default {
         buildingId: null,
       },
       temp: {
-        apparatusUuid: "",
-        apparatusNameId: "",
-        apparatusImageId: "",
-        apparatusTypeId: "",
-        companyId: "",
-        buildingId: "",
-        buildingNo: "",
-        floor: "",
-        fireAreaCode: "",
-        roomNo: "",
-        apparatusAddress: "",
-        apparatusStatus: "",
-        kind: "",
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -259,7 +256,26 @@ export default {
         create: '添加'
       },
       exportQuery: {},
-      showReviewer: false
+      showReviewer: false,
+    
+      rules: {
+        buildingNo: [
+            { validator: checkNum, trigger: 'blur' },
+            { max: 2, message: '长度最大2个字符', trigger: 'blur' }
+        ],
+        floor: [
+            { validator: checkNum, trigger: 'blur' },
+            { max: 2, message: '长度最大2个字符', trigger: 'blur' }
+        ],
+        fireAreaCode: [
+            { validator: checkNum, trigger: 'blur' },
+            { max: 2, message: '长度最大2个字符', trigger: 'blur' }
+        ],
+        roomNo: [
+            { validator: checkNum, trigger: 'blur' },
+            { max: 4, message: '长度最大4个字符', trigger: 'blur' }
+        ],
+      }
     }
   },
   created() {
@@ -348,19 +364,6 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        apparatusUuid: "",
-        apparatusNameId: "",
-        apparatusImageId: "",
-        apparatusTypeId: "",
-        companyId: "",
-        buildingId: "",
-        buildingNo: "",
-        floor: "",
-        fireAreaCode: "",
-        roomNo: "",
-        apparatusAddress: "",
-        apparatusStatus: "",
-        kind: "",
       }
     },
     handleCreate() {
@@ -373,8 +376,8 @@ export default {
       })
     },
     createData() {
-      this.temp.floor = parseInt(this.temp.floor)
-      this.temp.kind = parseInt(this.temp.kind)
+      // this.temp.floor = parseInt(this.temp.floor)
+      // this.temp.kind = parseInt(this.temp.kind)
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           createAdminArticle(this.temp,this.header).then(response => {

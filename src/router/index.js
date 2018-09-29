@@ -82,7 +82,7 @@ export const asyncRouterMap = [{
         meta: {
             title: '单位及建筑物',
             icon: 'form',
-            roles: [1] // you can set roles in root nav
+            roles: [1, 2] // you can set roles in root nav
         },
         children: [{
             path: 'unit',
@@ -91,7 +91,7 @@ export const asyncRouterMap = [{
             name: '单位管理',
             meta: {
                 title: '单位管理',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'building',
@@ -100,7 +100,7 @@ export const asyncRouterMap = [{
             name: '建筑物管理',
             meta: {
                 title: '建筑物管理',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }]
     }, {
@@ -111,7 +111,7 @@ export const asyncRouterMap = [{
         meta: {
             title: '人员管理',
             icon: 'form',
-            roles: [1] // you can set roles in root nav
+            roles: [1, 2] // you can set roles in root nav
         },
         children: [{
             path: 'user',
@@ -121,7 +121,7 @@ export const asyncRouterMap = [{
             meta: {
                 title: '人员管理',
                 icon: 'form',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }]
     }, {
@@ -132,7 +132,7 @@ export const asyncRouterMap = [{
         meta: {
             title: '设备',
             icon: 'form',
-            roles: [1] // you can set roles in root nav
+            roles: [1, 2] // you can set roles in root nav
         },
         children: [{
             path: 'system',
@@ -141,7 +141,7 @@ export const asyncRouterMap = [{
             name: '设备系统管理',
             meta: {
                 title: '设备系统管理',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'administration',
@@ -150,7 +150,7 @@ export const asyncRouterMap = [{
             name: '设备管理',
             meta: {
                 title: '设备管理',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }]
     }, {
@@ -161,7 +161,7 @@ export const asyncRouterMap = [{
         meta: {
             title: '任务管理',
             icon: 'form',
-            roles: [1] // you can set roles in root nav
+            roles: [1, 2] // you can set roles in root nav
         },
         children: [{
             path: 'distribute',
@@ -170,7 +170,7 @@ export const asyncRouterMap = [{
             name: '任务派发',
             meta: {
                 title: '任务派发',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'query',
@@ -179,7 +179,7 @@ export const asyncRouterMap = [{
             name: '任务查询',
             meta: {
                 title: '任务查询',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }]
     }, {
@@ -190,7 +190,7 @@ export const asyncRouterMap = [{
         meta: {
             title: '隐患管理',
             icon: 'form',
-            roles: [1] // you can set roles in root nav
+            roles: [1, 2] // you can set roles in root nav
         },
         children: [{
             path: 'check',
@@ -200,7 +200,7 @@ export const asyncRouterMap = [{
             meta: {
                 title: '隐患查看',
                 icon: 'form',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }]
     }, {
@@ -211,7 +211,7 @@ export const asyncRouterMap = [{
         meta: {
             title: '报表管理',
             icon: 'form',
-            roles: [1] // you can set roles in root nav
+            roles: [1, 2] // you can set roles in root nav
         },
         children: [{
             path: 'buildcheck',
@@ -220,7 +220,7 @@ export const asyncRouterMap = [{
             name: '消防设施巡查',
             meta: {
                 title: '消防设施巡查',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'publicinfo',
@@ -229,7 +229,7 @@ export const asyncRouterMap = [{
             name: '公共区域消防巡查',
             meta: {
                 title: '建筑公共区域消防巡查',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'upkeep',
@@ -238,7 +238,7 @@ export const asyncRouterMap = [{
             name: '消防设施维护保养',
             meta: {
                 title: '消防设施维护保养',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'testing',
@@ -247,7 +247,7 @@ export const asyncRouterMap = [{
             name: '消防设施检测',
             meta: {
                 title: '消防设施检测',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }, {
             path: 'workrecord',
@@ -256,7 +256,7 @@ export const asyncRouterMap = [{
             name: '消防设施故障维修',
             meta: {
                 title: '消防设施故障维修',
-                roles: [1] // or you can only set roles in sub nav
+                roles: [1, 2] // or you can only set roles in sub nav
             }
         }]
     },
