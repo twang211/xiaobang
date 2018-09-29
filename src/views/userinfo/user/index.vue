@@ -439,7 +439,6 @@ export default {
       })
     },
     createData() {
-      console.log("111111111111111")
       this.temp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {

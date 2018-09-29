@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-input :placeholder="$t('querytable.apparatusUuid')" v-model="listQuery.apparatusUuid" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input :placeholder="$t('querytable.apparatusCode')" v-model="listQuery.apparatusCode" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-select v-model="listQuery.companyId" class="filter-item" filterable placeholder="关联单位">
+      <el-select v-model="listQuery.companyId" @change="changeCompany" class="filter-item" filterable placeholder="关联单位">
         <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
       </el-select>
       <el-select v-model="listQuery.buildingId" class="filter-item" filterable placeholder="关联建筑">
@@ -130,7 +130,7 @@
             <el-row>
           <el-col :span="12">
           <el-form-item :label="$t('table.companyId')">
-    <el-select v-model="temp.companyId" class="filter-item" filterable placeholder="关联单位">
+    <el-select v-model="temp.companyId" @change="changeCompany" class="filter-item" filterable placeholder="关联单位">
         <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
       </el-select>
         </el-form-item>
@@ -282,7 +282,7 @@ export default {
     checkToken()
     this.getdataList()
     this.getunitdataList()
-    this.getbuilddataList()
+    // this.getbuilddataList()
     this.getsystemdataList()
     this.getkindList()
   },
@@ -311,11 +311,11 @@ export default {
         this.unitlist = response.data.resultData.companyList
       })
     },
-    getbuilddataList() {
-      fetchBuildDownDataList({},this.header).then(response => {
-        this.buildlist = response.data.resultData.buildingList
-      })
-    },
+    // getbuilddataList() {
+    //   fetchBuildDownDataList({},this.header).then(response => {
+    //     this.buildlist = response.data.resultData.buildingList
+    //   })
+    // },
     getsystemdataList() {
       fetchSystemDataList({},this.header).then(response => {
         this.systemlist = response.data.resultData.typeList
@@ -333,6 +333,13 @@ export default {
       this.namelist = []
       fetchNameDataList({apparatusTypeId:value},this.header).then(response => {
         this.namelist = response.data.resultData.nameList
+      })
+    },
+    changeCompany(value) {
+      console.log(value,"valuevalue")
+      this.buildlist = []
+      fetchBuildDownDataList({companyId:value},this.header).then(response => {
+        this.buildlist = response.data.resultData.buildingList
       })
     },
     getAllinfos() {
