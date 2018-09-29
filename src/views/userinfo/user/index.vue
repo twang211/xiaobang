@@ -189,7 +189,7 @@
         </el-form-item>
         <el-form-item>
           <el-tag
-            :key="tag"
+            :key="tag.companyId"
             v-for="tag in companyList"
             closable
             :disable-transitions="false"
@@ -228,7 +228,7 @@ export default {
       tableKey: 0,
       header: getHeader(),
       myHeaders: {Authorization: getHeader()},
-      companyList:[],
+      companyList:null,
       departmentList:[],
       roleLevelList:[],
       userTypeList:[],
