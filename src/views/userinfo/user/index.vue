@@ -439,12 +439,17 @@ export default {
       })
     },
     createData() {
-      this.temp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
+      if(this.temp.birthday){
+
+        this.temp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
+      }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           createUserArticle(this.temp,this.header).then(response => {
             this.list.unshift(this.temp)
             var code = response.data.resultCode
+            console.log(response.data,"22222")
+            console.log(code,"22222")
             if(code == 0){
             this.dialogFormVisible = false
             this.$notify({
@@ -492,7 +497,10 @@ export default {
       this.uptemp.nickName = this.temp.nickName
       this.uptemp.department = this.temp.department
       this.uptemp.sex = this.temp.sex
-      this.uptemp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
+      if(this.uptemp.birthday){
+
+        this.uptemp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
+      }
       this.uptemp.phone = this.temp.phone
       this.uptemp.wechat = this.temp.wechat
       this.uptemp.email = this.temp.email

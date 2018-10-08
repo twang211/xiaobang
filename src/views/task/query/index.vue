@@ -71,14 +71,14 @@
       </el-table-column>
       <el-table-column :label="$t('table.auditing')" align="center" width="320">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.taskSatus == 5" type="primary" size="mini" @click="passPost(scope.row)">{{ $t('table.pass') }}</el-button>
-          <el-button v-if="scope.row.taskSatus == 5" type="primary" size="mini" @click="rejectPost(scope.row)">{{ $t('table.reject') }}</el-button>
-          <el-button v-if="scope.row.taskSatus == 6" type="primary" size="mini" @click="distributePost(scope.row)">{{ $t('table.distribute') }}</el-button>
-          <el-button v-if="scope.row.taskSatus == 0" type="primary" size="mini" @click="cancelPost(scope.row)">{{ $t('table.cancel') }}</el-button>
-          <el-tag type="info" v-if="scope.row.taskSatus != 5">{{ $t('table.pass') }}</el-tag>
-          <el-tag type="info" v-if="scope.row.taskSatus != 5">{{ $t('table.reject') }}</el-tag>
-          <el-tag type="info" v-if="scope.row.taskSatus != 6">{{ $t('table.distribute') }}</el-tag>
-          <el-tag type="info" v-if="scope.row.taskSatus != 0">{{ $t('table.cancel') }}</el-tag>
+          <el-button v-if="scope.row.taskStatus == 5" type="primary" size="mini" @click="passPost(scope.row)">{{ $t('table.pass') }}</el-button>
+          <el-tag type="info" v-if="scope.row.taskStatus != 5">{{ $t('table.pass') }}</el-tag>
+          <el-button v-if="scope.row.taskStatus == 5" type="primary" size="mini" @click="rejectPost(scope.row)">{{ $t('table.reject') }}</el-button>
+          <el-tag type="info" v-if="scope.row.taskStatus != 5">{{ $t('table.reject') }}</el-tag>
+          <el-button v-if="scope.row.taskStatus == 6" type="primary" size="mini" @click="distributePost(scope.row)">{{ $t('table.distribute') }}</el-button>
+          <el-tag type="info" v-if="scope.row.taskStatus != 6">{{ $t('table.distribute') }}</el-tag>
+          <el-button v-if="scope.row.taskStatus == 0" type="primary" size="mini" @click="cancelPost(scope.row)">{{ $t('table.cancel') }}</el-button>
+          <el-tag type="info" v-if="scope.row.taskStatus != 0">{{ $t('table.cancel') }}</el-tag>
         </template>
       </el-table-column>
     </el-table>
