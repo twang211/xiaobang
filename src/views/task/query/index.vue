@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.taskStatus')" align="center" >
         <template slot-scope="scope">
-          <span>{{ showtaskStatusObj[scope.row.taskStatus] }}</span>
+          <span>{{ scope.row.taskStatusName }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.companyId')" align="center" >
