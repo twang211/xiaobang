@@ -248,6 +248,7 @@ export default {
         troubleCount: '隐患发现数目',
         taskBeginTime: '任务开始时间',
         taskFinishTime: '任务结束时间',
+        taskUser: '执行人',
 
         index: '序号',
         next: '下一步',
@@ -258,6 +259,11 @@ export default {
         confirm: '确 定',
         config: '查看编辑',
         look: '查看详情',
+        auditing: '审核状态',
+        pass: '通过',
+        reject: '驳回',
+        distribute: '转发',
+        cancel: '取消',
     },
     errorLog: {
         tips: '请点击右上角bug小图标',

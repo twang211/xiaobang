@@ -506,3 +506,54 @@ export function fetchWorkRecordData(query, header) {
         }
     })
 }
+
+//任务通过
+export function taskPassPost(data, header) {
+
+    return request({
+        url: '/fire-service/api/task/backend/turn-confirm',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//任务驳回
+export function taskRejectPost(data, header) {
+
+    return request({
+        url: '/fire-service/api/task/backend/turn-down',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+
+//任务转发
+export function taskDistributePost(data, header) {
+
+    return request({
+        url: '/fire-service/api/task/backend/turn-execute',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//任务取消
+export function taskCancelPost(data, header) {
+
+    return request({
+        url: '/fire-service/api/task/backend/cancel',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}

@@ -76,7 +76,7 @@
               <div class="app-container calendar-list-container">
     <div class="filter-container">
 
-      <el-date-picker v-model="distributetemp.taskOnTime" type="date" placeholder="派发时间"/>
+      <el-date-picker v-model="distributetemp.taskOnTime" type="datetime" placeholder="派发时间"/>
             <el-select v-model="distributetemp.taskPeriodType" class="filter-item" filterable placeholder="任务类型">
         <el-option v-for="item in periodTypeList" :key="item.key" :label="item.value" :value="item.key"/>
       </el-select>
@@ -342,6 +342,10 @@ export default {
 
     },
     previewInfo(){
+      console.log(this.distributetemp.taskOnTime)
+      console.log(this.distributetemp.taskPeriodType)
+      if(this.distributetemp.taskOnTime && this.distributetemp.taskPeriodType){
+
       var mul = this.multipleSelection
       var len = this.multipleSelection.length
       if(len > parseInt(this.buildinfo.totalFloors)){
@@ -373,6 +377,15 @@ export default {
             }
         this.activeName = "floors"
       }
+      }else{
+
+        this.$notify({
+          title: '失败',
+              message: '派发时间/任务类型不能为空！',
+              type: 'warning',
+              duration: 2000
+            })
+      }
     },
     postInfo(){
       var usersIdList = []        
@@ -394,7 +407,7 @@ export default {
               }
             });
             uitem.taskPeriodType = this.distributetemp.taskPeriodType
-            uitem.taskOnTime = parseTime(this.distributetemp.taskOnTime, '{y}-{m}-{d}')
+            uitem.taskOnTime = parseTime(this.distributetemp.taskOnTime, '{y}-{m}-{d} {h}:{i}:{s}')
             uitem.companyId = this.buildinfo.companyId
             uitem.buildingId = this.buildinfo.buildingId
             uitem.taskExecuteUserId = uitem.userId

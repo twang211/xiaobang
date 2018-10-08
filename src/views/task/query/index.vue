@@ -69,12 +69,39 @@
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('table.auditing')" align="center" width="320">
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.taskSatus == 5" type="primary" size="mini" @click="passPost(scope.row)">{{ $t('table.pass') }}</el-button>
+          <el-button v-if="scope.row.taskSatus == 5" type="primary" size="mini" @click="rejectPost(scope.row)">{{ $t('table.reject') }}</el-button>
+          <el-button v-if="scope.row.taskSatus == 6" type="primary" size="mini" @click="distributePost(scope.row)">{{ $t('table.distribute') }}</el-button>
+          <el-button v-if="scope.row.taskSatus == 0" type="primary" size="mini" @click="cancelPost(scope.row)">{{ $t('table.cancel') }}</el-button>
+          <el-tag type="info" v-if="scope.row.taskSatus != 5">{{ $t('table.pass') }}</el-tag>
+          <el-tag type="info" v-if="scope.row.taskSatus != 5">{{ $t('table.reject') }}</el-tag>
+          <el-tag type="info" v-if="scope.row.taskSatus != 6">{{ $t('table.distribute') }}</el-tag>
+          <el-tag type="info" v-if="scope.row.taskSatus != 0">{{ $t('table.cancel') }}</el-tag>
+        </template>
+      </el-table-column>
     </el-table>
 
  
     <div class="pagination-container">
       <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
+
+    <el-dialog title="任务转发" :visible.sync="distributedialogFormVisible" width="30%">
+
+      <el-form ref="dataForm"  :model="distributeQuery" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+            <el-form-item :label="$t('table.taskUser')">
+          <el-select v-model="distributeQuery.executeUserId" class="filter-item" filterable placeholder="请选择">
+            <el-option v-for="item in userlist" :key="item.userId" :label="item.userName" :value="item.userId"/>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="distributedialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="distributeSendPost">{{ $t('table.distribute') }}</el-button>
+      </div>
+        </el-dialog>
 
     <el-dialog title="详情" :visible.sync="dialogFormVisible" width="90%">
              <div class="app-container calendar-list-container">
@@ -119,7 +146,8 @@
 </template>
 
 <script>
-import { fetchQueryDataList, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchTaskData} from '@/api/article'
+import { fetchQueryDataList, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchTaskData,
+taskPassPost,taskRejectPost,taskDistributePost,taskCancelPost,fetchUserDownDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -137,6 +165,7 @@ export default {
       myHeaders: {Authorization: getHeader()},
       extime: '',
       list: null,
+      userlist: null,
       infos: [],
       unitlist: null,
       buildlist: null,
@@ -151,6 +180,10 @@ export default {
       periodTypeQuery: {
         name:"periodTypeMap",
         type:"list"
+      },
+      distributeQuery: {
+        taskId:"",
+        executeUserId:""
       },
       taskStatusQuery: {
         name:"taskStatusMap",
@@ -182,7 +215,8 @@ export default {
         email:"",
       },
       exportQuery: {},
-      showReviewer: false
+      showReviewer: false,
+      distributedialogFormVisible: false
     }
   },
   created() {
@@ -240,6 +274,15 @@ export default {
         this.buildlist = response.data.resultData.buildingList
       })
     },
+    getuserdataList() {
+      fetchUserDownDataList({},this.header).then(response => {
+        this.userlist = response.data.resultData.userList
+        // this.userlist.forEach(element => {
+        //     this.showuserObj[element["userId"]] = element["userName"]
+        // });
+        console.log(this.userlist)
+      })
+    },
     lookInfos(row){
       this.infos = []
       this.dialogFormVisible = true
@@ -263,6 +306,104 @@ export default {
         }
       })
     },
+    passPost(row) {
+          taskPassPost({taskId:row.taskId},this.header).then(response => {
+            var code = response.data.resultCode
+            if(code == 0){
+            this.$notify({
+              title: '成功',
+              message: '成功',
+              type: 'success',
+              duration: 2000
+            })
+            }else{
+              this.$notify({
+                title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
+            this.getdataList()
+          })
+    },
+    rejectPost(row) {
+      
+          taskRejectPost({taskId:row.taskId},this.header).then(response => {
+            var code = response.data.resultCode
+            if(code == 0){
+            this.$notify({
+              title: '成功',
+              message: '成功',
+              type: 'success',
+              duration: 2000
+            })
+            }else{
+              this.$notify({
+                title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
+            this.getdataList()
+          })
+    },
+    distributePost(row) {
+      this.resetdistributeQuery()
+      this.distributedialogFormVisible = true
+      this.getuserdataList()
+      this.distributeQuery.taskId = row.taskId
+    },
+    distributeSendPost() {
+      
+          taskDistributePost(this.distributeQuery,this.header).then(response => {
+            var code = response.data.resultCode
+            if(code == 0){
+            this.$notify({
+              title: '成功',
+              message: '成功',
+              type: 'success',
+              duration: 2000
+            })
+      this.distributedialogFormVisible = false
+            }else{
+              this.$notify({
+                title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
+            this.getdataList()
+          })
+    },
+    cancelPost(row) {
+      
+          taskCancelPost({taskId:row.taskId},this.header).then(response => {
+            var code = response.data.resultCode
+            if(code == 0){
+            this.$notify({
+              title: '成功',
+              message: '成功',
+              type: 'success',
+              duration: 2000
+            })
+            }else{
+              this.$notify({
+                title: '失败',
+                  message: response.data.resultMsg,
+                  type: 'warning',
+                  duration: 2000
+              })
+              
+            }
+            this.getdataList()
+          })
+    },
     getAllinfos() {
     },
     getexportList() {
@@ -276,6 +417,12 @@ export default {
     handleFilter() {
       this.listQuery.page = 1
       this.getdataList()
+    },
+    resetdistributeQuery() {
+      this.distributeQuery = {
+        taskId:"",
+        executeUserId:""
+      }
     },
     resetQuery() {
       this.listQuery = {
