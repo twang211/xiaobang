@@ -280,7 +280,6 @@ export default {
         // this.userlist.forEach(element => {
         //     this.showuserObj[element["userId"]] = element["userName"]
         // });
-        console.log(this.userlist)
       })
     },
     lookInfos(row){

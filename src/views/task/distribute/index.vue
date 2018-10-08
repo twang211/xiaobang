@@ -342,8 +342,6 @@ export default {
 
     },
     previewInfo(){
-      console.log(this.distributetemp.taskOnTime)
-      console.log(this.distributetemp.taskPeriodType)
       if(this.distributetemp.taskOnTime && this.distributetemp.taskPeriodType){
 
       var mul = this.multipleSelection
