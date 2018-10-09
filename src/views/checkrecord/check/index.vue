@@ -19,6 +19,7 @@
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
       <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" @click="sendInfo" :disabled="this.multipleSelection.length === 0">{{ $t('table.send') }}</el-button>
 
     </div>
 
@@ -29,7 +30,11 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;min-height:600px">
+      style="width: 100%;min-height:600px" @selection-change="handleSelectionChange">
+       <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
       <el-table-column :label="$t('table.apparatusName')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.apparatusName }}</span>
@@ -116,11 +121,33 @@
     </el-table>
        </div>
         </el-dialog>
+
+    <el-dialog title="短信发送" :visible.sync="senddialogFormVisible" width="50%">
+             <div class="app-container calendar-list-container">      
+    <div class="filter-container">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addPhoneNum">{{ $t('table.add') }}</el-button>
+    </div>
+              <el-form ref="form" label-width="80px">
+                <el-form-item label="手机号"
+                  :key="tag.numr"
+                  v-for="tag in phonenum">
+                  <el-input v-model="tag.num"></el-input>
+                </el-form-item>
+                <el-form-item label="短信内容">
+                  <el-tag>您好！${building}的${area}防火分区:${apparatus}(设备/区域) 已整改完毕！${code}</el-tag>
+                </el-form-item>
+              </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="senddialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="sendSmsInfos">{{ $t('table.send') }}</el-button>
+      </div>
+              </div>
+        </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchCheckRecordDataList,fetchCheckRecordData,fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList } from '@/api/article'
+import { fetchCheckRecordDataList,fetchCheckRecordData,fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList,sendInfoPost } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -139,6 +166,9 @@ export default {
       extime: '',
       list: null,
       infos: [],
+      phonenum: [],
+      postphone: [],
+        multipleSelection: [],
       unitlist: null,
       buildlist: null,
       userlist: null,
@@ -167,6 +197,7 @@ export default {
       exportQuery: {},
       infos: [],
       dialogFormVisible: false,
+      senddialogFormVisible: false,
       showReviewer: false
     }
   },
@@ -187,7 +218,7 @@ export default {
       this.listLoading = false
         }else{
           
-          this.$notify({
+          this.$message({
               title: '失败',
               message: response.data.resultMsg,
               type: 'warning',
@@ -215,6 +246,47 @@ export default {
     },
     getAllinfos() {
     },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+      sendInfo() {this.phonenum = []
+        if(this.multipleSelection.length > 0){
+          this.senddialogFormVisible = true
+      this.phonenum.push({"type":""})
+        }
+      },
+    addPhoneNum(){
+      this.phonenum.push({"type":""})
+    },
+    sendSmsInfos(){
+        console.log(this.phonenum,"this.phonenum")
+        this.postphone = []
+        this.phonenum.forEach(element => {
+          this.postphone.push(element.num)
+        });
+        console.log(this.multipleSelection,"this.multipleSelection")
+        this.multipleSelection.forEach(element => {
+      sendInfoPost({mobileNumberList:this.postphone,param:{building:element.buildingName,area:element.apparatusAddress,apparatus:element.apparatusName}},this.header).then(response => {
+        var code = response.data.resultCode
+        if(code == 0){
+        this.$message({
+          title: '成功',
+          message: '成功',
+          type: 'success',
+          duration: 2000
+        })
+        }else{
+          this.$message({
+            title: '失败',
+              message: response.data.resultMsg,
+              type: 'warning',
+              duration: 2000
+          })
+          
+        }
+      })
+        });
+      },
     getexportList() {
       // this.listLoading = true
       // fetchcuList(this.exportQuery).then(response => {
@@ -235,7 +307,7 @@ export default {
       this.listLoading = false
         }else{
           
-          this.$notify({
+          this.$message({
               title: '失败',
               message: response.data.resultMsg,
               type: 'warning',

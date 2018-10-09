@@ -191,7 +191,7 @@ export default {
       this.listLoading = false
         }else{
           
-    this.$notify({
+    this.$message({
         title: '失败',
         message: response.data.resultMsg,
         type: 'warning',
@@ -239,7 +239,7 @@ export default {
       this.listLoading = false
         }else{
           
-          this.$notify({
+          this.$message({
               title: '失败',
               message: response.data.resultMsg,
               type: 'warning',

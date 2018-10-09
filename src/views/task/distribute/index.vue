@@ -238,7 +238,7 @@ export default {
       this.listLoading = false
         }else{
           
-    this.$notify({
+    this.$message({
         title: '失败',
         message: response.data.resultMsg,
         type: 'warning',
@@ -347,7 +347,7 @@ export default {
       var mul = this.multipleSelection
       var len = this.multipleSelection.length
       if(len > parseInt(this.buildinfo.totalFloors)){
-        this.$notify({
+        this.$message({
           title: '失败',
               message: '人数多余楼层数',
               type: 'warning',
@@ -377,7 +377,7 @@ export default {
       }
       }else{
 
-        this.$notify({
+        this.$message({
           title: '失败',
               message: '派发时间/任务类型不能为空！',
               type: 'warning',
@@ -418,14 +418,14 @@ export default {
       createTaskAdd(row,this.header).then(response => {
         var code = response.data.resultCode
         if(code == 0){
-              this.$notify({
+              this.$message({
                   title: '成功',
                   message: '派发成功',
                   type: 'success',
                   duration: 2000
               })
         }else{
-        this.$notify({
+        this.$message({
           title: '失败',
               message: response.data.resultMsg,
               type: 'warning',

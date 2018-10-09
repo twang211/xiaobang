@@ -297,7 +297,7 @@ export default {
       this.listLoading = false
         }else{
           
-    this.$notify({
+    this.$message({
         title: '失败',
         message: response.data.resultMsg,
         type: 'warning',
@@ -393,14 +393,14 @@ export default {
             var code = response.data.resultCode
             if(code == 0){
             this.dialogFormVisible = false
-            this.$notify({
+            this.$message({
               title: '成功',
               message: '创建成功',
               type: 'success',
               duration: 2000
             })
             }else{
-              this.$notify({
+              this.$message({
                 title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',
@@ -437,14 +437,14 @@ export default {
             var code = response.data.resultCode
             if(code == 0){
             this.dialogFormVisible = false
-            this.$notify({
+            this.$message({
               title: '成功',
               message: '更新成功',
               type: 'success',
               duration: 2000
             })
             }else{
-              this.$notify({
+              this.$message({
                 title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',
@@ -504,7 +504,7 @@ export default {
               this.temp.apparatusImageId = ""
               this.dialogImageUrl = ""
             this.btnstatus = false;
-              this.$notify({
+              this.$message({
                   title: '失败',
                   message: response.resultMsg,
                   type: 'warning',
@@ -523,7 +523,7 @@ export default {
       this.temp.apparatusImageId = ""
       this.dialogImageUrl = ""
             }else{
-              this.$notify({
+              this.$message({
                   title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',

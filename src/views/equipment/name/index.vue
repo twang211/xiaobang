@@ -162,7 +162,7 @@ export default {
           createNameArticle(this.temp,this.header).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
-            this.$notify({
+            this.$message({
               title: '成功',
               message: '创建成功',
               type: 'success',
@@ -192,7 +192,7 @@ export default {
           updateUserData(this.uptemp,this.header).then( response => {
             if(response.data.resultCode == "0"){
             this.dialogFormVisible = false
-            this.$notify({
+            this.$message({
               title: '成功',
               message: '更新成功',
               type: 'success',

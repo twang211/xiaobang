@@ -237,7 +237,7 @@ export default {
       this.listLoading = false
         }else{
           
-    this.$notify({
+    this.$message({
         title: '失败',
         message: response.data.resultMsg,
         type: 'warning',
@@ -296,7 +296,7 @@ export default {
       this.listLoading = false
         }else{
           
-          this.$notify({
+          this.$message({
               title: '失败',
               message: response.data.resultMsg,
               type: 'warning',
@@ -309,14 +309,14 @@ export default {
           taskPassPost({taskId:row.taskId},this.header).then(response => {
             var code = response.data.resultCode
             if(code == 0){
-            this.$notify({
+            this.$message({
               title: '成功',
               message: '成功',
               type: 'success',
               duration: 2000
             })
             }else{
-              this.$notify({
+              this.$message({
                 title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',
@@ -332,14 +332,14 @@ export default {
           taskRejectPost({taskId:row.taskId},this.header).then(response => {
             var code = response.data.resultCode
             if(code == 0){
-            this.$notify({
+            this.$message({
               title: '成功',
               message: '成功',
               type: 'success',
               duration: 2000
             })
             }else{
-              this.$notify({
+              this.$message({
                 title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',
@@ -361,7 +361,7 @@ export default {
           taskDistributePost(this.distributeQuery,this.header).then(response => {
             var code = response.data.resultCode
             if(code == 0){
-            this.$notify({
+            this.$message({
               title: '成功',
               message: '成功',
               type: 'success',
@@ -369,7 +369,7 @@ export default {
             })
       this.distributedialogFormVisible = false
             }else{
-              this.$notify({
+              this.$message({
                 title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',
@@ -385,14 +385,14 @@ export default {
           taskCancelPost({taskId:row.taskId},this.header).then(response => {
             var code = response.data.resultCode
             if(code == 0){
-            this.$notify({
+            this.$message({
               title: '成功',
               message: '成功',
               type: 'success',
               duration: 2000
             })
             }else{
-              this.$notify({
+              this.$message({
                 title: '失败',
                   message: response.data.resultMsg,
                   type: 'warning',

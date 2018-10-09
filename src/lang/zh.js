@@ -264,6 +264,9 @@ export default {
         reject: '驳回',
         distribute: '转发',
         cancel: '取消',
+        send: '发送短信',
+        phonenum: '手机号',
+        sendmsg: '短信内容',
     },
     errorLog: {
         tips: '请点击右上角bug小图标',

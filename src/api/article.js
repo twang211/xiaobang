@@ -557,3 +557,15 @@ export function taskCancelPost(data, header) {
         }
     })
 }
+//发送短信
+export function sendInfoPost(data, header) {
+
+    return request({
+        url: '/fire-service/api/notify/sms/send',
+        method: 'post',
+        data,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
