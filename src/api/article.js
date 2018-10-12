@@ -145,6 +145,28 @@ export function createbuildArticle(data, header) {
         }
     })
 }
+//设备类型下拉
+export function fetchDownTypeList(query, header) {
+    return request({
+        url: '/fire-service/api/apparatus/site/type/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//设备类型下拉
+export function fetchDownNameList(query, header) {
+    return request({
+        url: '/fire-service/api/apparatus/site/name/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
 //人员下拉
 export function fetchUserDownDataList(query, header) {
     return request({

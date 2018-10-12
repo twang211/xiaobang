@@ -30,15 +30,10 @@
       </el-table-column>
       <el-table-column :label="$t('table.kind')" align="center" width="200">
         <template slot-scope="scope">
-          <span>{{ showkindObj[scope.row.kind] }}</span>
+          <span>{{ scope.row.kindName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.typeId')" align="center" width="200">
-        <template slot-scope="scope">
-          <span>{{ scope.row.typeId }}</span>
-        </template>
-      </el-table-column>
-      
+   
     </el-table>
     
     <div class="pagination-container">
@@ -227,21 +222,21 @@
       highlight-current-row
       style="width: 100%;">
       
-      <el-table-column :label="$t('table.checkPoint')" align="center" width="400">
+      <el-table-column :label="$t('table.checkPoint')" align="center" >
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
             <el-input v-model="scope.row.checkPoint" class="edit-input" size="small"/>
           </template>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.checkReminder')" align="center" width="400">
+      <el-table-column :label="$t('table.checkReminder')" align="center" >
         <template slot-scope="scope">
           <template>
             <el-input v-model="scope.row.checkReminder" class="edit-input" size="small"/>
           </template>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.periodType')" align="center" width="200">
+      <el-table-column :label="$t('table.periodType')" align="center" >
         <template slot-scope="scope">
           <template>
           <el-select v-model="scope.row.periodType" class="filter-item" placeholder="请选择">
@@ -250,7 +245,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.activeStatus')" align="center" width="200">
+      <el-table-column :label="$t('table.activeStatus')" align="center">
         <template slot-scope="scope">
           <template>
           <el-select v-model="scope.row.activeStatus" class="filter-item" placeholder="请选择">
@@ -530,7 +525,7 @@ export default {
               })
               
             }
-    this.getCheckPointList()
+      this.getCheckPointList()
           })
     },
     checkpointUpdate(row) {
@@ -565,18 +560,14 @@ export default {
         this.getCheckPointList()
     },
     getexportList() {
-      // this.listLoading = true
-      // fetchcuList(this.exportQuery).then(response => {
-      //   this.exportlist = response.data.data
-      //   this.handleDownloadInfo()
-      //   this.listLoading = false
-      // })
     },
     handleFilter() {
       this.getdataList()
     },
     resetQuery() {
       this.listQuery = {
+        page: 1,
+        pageSize: 10,
         apparatusTypeName: null,
         kind: null,
       }
@@ -645,7 +636,7 @@ export default {
                   duration: 2000
               })
             }
-    this.getdataList()
+        this.getdataList()
           })
         }
       })

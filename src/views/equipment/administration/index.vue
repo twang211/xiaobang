@@ -73,9 +73,11 @@
       <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize"  :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="50%" top="5px">
-      <el-form ref="dataForm" :rules="rules" label-width="200px" style="width: 100%;" :model="temp"  class="demo-form-inline">
+      <el-form ref="dataForm" :rules="rules" label-width="30%" style="width: 100%;" :model="temp"  class="demo-form-inline">
         
-      <el-form-item :label="$t('table.apparatusImageId')">         
+            <el-row>
+          <el-col :span="12">
+      <el-form-item :label="$t('table.apparatusImageId')" style="width: 100%;">         
           <!-- <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
         <el-upload class="upload-demo" ref="upload" :headers="myHeaders" action="http://47.92.165.114:8999/fire-service/api/file/upload" :auto-upload="false" :on-success="upSuccess" :on-remove="handleRemove">
               <el-button slot="trigger" size="medium" type="primary">选取文件</el-button>
@@ -91,18 +93,20 @@
             <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-              <el-button class="uploadBtn" style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
+              <el-button class="uploadBtn" style="margin-left: 55%;" size="medium" type="delete" @click="handleRemove">删除</el-button>
         </el-form-item>
         
+            </el-col>
+        </el-row>
             <el-row>
           <el-col :span="12">
-            <el-form-item :label="$t('table.apparatusUuid')">
+            <el-form-item :label="$t('table.apparatusUuid')" style="width: 100%;">
               <el-input v-model="temp.apparatusUuid"/>
             </el-form-item>
             </el-col>
           <el-col :span="12">
-          <el-form-item :label="$t('table.kind')">
-            <el-select v-model="temp.kind" class="filter-item" filterable placeholder="设备分类">
+          <el-form-item :label="$t('table.kind')" style="width: 100%;">
+            <el-select v-model="temp.kind" @change=" changeKind" class="filter-item" filterable placeholder="设备分类">
                   <el-option v-for="item in kindList" :key="item.key" :label="item.value" :value="item.key"/>
                 </el-select>
               </el-form-item>
@@ -111,14 +115,14 @@
 
             <el-row>
           <el-col :span="12">
-          <el-form-item :label="$t('table.apparatusTypeId')">
+          <el-form-item :label="$t('table.apparatusTypeId')" style="width: 100%;">
             <el-select v-model="temp.apparatusTypeId" @change="changeSystem" class="filter-item" filterable placeholder="设备类别">
-        <el-option v-for="item in systemlist" :key="item.typeId" :label="item.typeName" :value="item.typeId"/>
+        <el-option v-for="item in systemTypelist" :key="item.typeId" :label="item.typeName" :value="item.typeId"/>
       </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-          <el-form-item :label="$t('table.apparatusNameId')">
+          <el-form-item :label="$t('table.apparatusNameId')" style="width: 100%;">
    
       <el-select v-model="temp.apparatusNameId"  class="filter-item" filterable placeholder="设备名称">
         <el-option v-for="item in namelist" :key="item.nameId" :label="item.apparatusName" :value="item.nameId"/>
@@ -129,14 +133,14 @@
 
             <el-row>
           <el-col :span="12">
-          <el-form-item :label="$t('table.companyId')">
+          <el-form-item :label="$t('table.companyId')" style="width: 100%;">
     <el-select v-model="temp.companyId" @change="changeCompany" class="filter-item" filterable placeholder="关联单位">
         <el-option v-for="item in unitlist" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
       </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-          <el-form-item :label="$t('table.buildingId')">
+          <el-form-item :label="$t('table.buildingId')" style="width: 100%;">
       <el-select v-model="temp.buildingId" class="filter-item" filterable placeholder="关联建筑">
         <el-option v-for="item in buildlist" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId"/>
       </el-select>
@@ -146,12 +150,12 @@
 
             <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.buildingNo')" prop="buildingNo">
+        <el-form-item :label="$t('table.buildingNo')" prop="buildingNo" style="width: 100%;">
           <el-input v-model="temp.buildingNo"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.floor')" prop="floor">
+        <el-form-item :label="$t('table.floor')" prop="floor" style="width: 100%;">
           <el-input v-model="temp.floor"/>
         </el-form-item>
             </el-col>
@@ -159,12 +163,12 @@
 
             <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.fireAreaCode')" prop="fireAreaCode">
+        <el-form-item :label="$t('table.fireAreaCode')" prop="fireAreaCode" style="width: 100%;">
           <el-input v-model="temp.fireAreaCode"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.roomNo')" prop="roomNo">
+        <el-form-item :label="$t('table.roomNo')" prop="roomNo" style="width: 100%;">
           <el-input v-model="temp.roomNo"/>
         </el-form-item>
             </el-col>
@@ -172,12 +176,12 @@
 
             <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.apparatusAddress')" v-if="dialogStatus == 'update'">
+        <el-form-item :label="$t('table.apparatusAddress')" v-if="dialogStatus == 'update'" style="width: 100%;">
           <el-input v-model="temp.apparatusAddress"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.apparatusStatus')">
+        <el-form-item :label="$t('table.apparatusStatus')" style="width: 100%;">
           <el-input v-model="temp.apparatusStatus"/>
         </el-form-item>
             </el-col>
@@ -195,7 +199,7 @@
 
 <script>
 import { fetchAdminDataList,createAdminArticle,fetchAdminData,createAdminUpdate, fetchUnitDownDataList, fetchBuildDownDataList,
-fetchSystemDataList, fetchNameDataList, fetchDelImg, fetchTypeList } from '@/api/article'
+fetchSystemDataList, fetchNameDataList, fetchDelImg, fetchTypeList, fetchDownTypeList, fetchDownNameList } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -208,7 +212,6 @@ export default {
   },
   data() {
       var checkNum = (rule, value, callback) => {
-        console.log(Number.isInteger(parseInt(value)))
         setTimeout(() => {
           if (!Number.isInteger(parseInt(value))) {
             callback(new Error('请输入数字值'));
@@ -227,6 +230,7 @@ export default {
       unitlist: null,
       buildlist: null,
       systemlist: null,
+      systemTypelist: null,
       namelist: [],
       kindList:[],
       showkindObj:{},
@@ -329,15 +333,24 @@ export default {
         });
       })
     },
+    changeKind(value) {
+      this.systemTypelist = []
+      this.temp.apparatusTypeId = ""
+      this.temp.apparatusNameId = ""
+      fetchDownTypeList({kind:value},this.header).then(response => {
+        this.systemTypelist = response.data.resultData.typeList
+      })
+    },
     changeSystem(value) {
       this.namelist = []
-      fetchNameDataList({apparatusTypeId:value},this.header).then(response => {
+      fetchDownNameList({typeId:value},this.header).then(response => {
         this.namelist = response.data.resultData.nameList
       })
     },
     changeCompany(value) {
       
       this.buildlist = []
+      // this.temp.buildingId = ""
       fetchBuildDownDataList({companyId:value},this.header).then(response => {
         this.buildlist = response.data.resultData.buildingList
       })
@@ -375,6 +388,9 @@ export default {
     },
     handleCreate() {
       this.resetTemp()
+      this.systemTypelist = []
+      this.namelist = []
+      this.buildlist = []
       this.dialogStatus = 'create'
         this.dialogImageUrl = ""
       this.dialogFormVisible = true
@@ -423,6 +439,7 @@ export default {
       this.temp.floor = this.temp.floor.toString()
       this.temp.kind = this.temp.kind.toString()
       this.changeSystem(this.temp.apparatusTypeId)
+      this.changeKind(this.temp.kind)
       })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true

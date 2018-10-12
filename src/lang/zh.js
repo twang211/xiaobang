@@ -136,6 +136,7 @@ export default {
         checkUserType: '巡查人类型',
         upkeepPeriod: '保养周期',
         workUserName: '维修人',
+        print: '打印',
     },
     table: { //列表&&编辑内容文字描述
         companyCode: '单位编码',

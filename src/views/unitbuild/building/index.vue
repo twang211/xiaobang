@@ -87,20 +87,22 @@
       <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize"  :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="60%" top="5px">
-      <el-form ref="dataForm"   label-width="300px" style="width: 100%;" :model="temp"  class="demo-form-inline">
+      <el-form ref="dataForm"   label-width="20%" style="width: 100%;" :model="temp"  class="demo-form-inline">
       <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.buildingName')">
+        <el-form-item :label="$t('table.buildingName')" style="width: 100%;">
           <el-input v-model="temp.buildingName"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.buildingCode')" v-if="dialogStatus == 'update'">
+        <el-form-item :label="$t('table.buildingCode')" v-if="dialogStatus == 'update'" style="width: 100%;">
           <span>{{ temp.buildingCode }}</span>
         </el-form-item>
             </el-col>
         </el-row>
-        <el-form-item :label="$t('table.buildingImageId')">
+        <el-row>
+          <el-col :span="12">
+        <el-form-item :label="$t('table.buildingImageId')" style="width: 100%;">
           <el-upload
             class="avatar-uploader"
             action="http://47.92.165.114:8999/fire-service/api/file/upload"
@@ -110,7 +112,7 @@
             <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-              <el-button class="uploadBtn" style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
+              <el-button class="uploadBtn" style="margin-left: 30%;" size="medium" type="delete" @click="handleRemove">删除</el-button>
           <!-- <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
         <el-upload class="upload-demo" ref="upload" :headers="myHeaders" action="http://47.92.165.114:8999/fire-service/api/file/upload" :auto-upload="false" :on-success="upSuccess" :on-remove="handleRemove">
               <el-button slot="trigger" size="medium" type="primary">选取文件</el-button>
@@ -122,17 +124,19 @@
           <!-- <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="">
           </el-dialog> -->
-        </el-form-item>      
+        </el-form-item>     
+            </el-col> 
+        </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.companyName')">
+        <el-form-item :label="$t('table.companyName')" style="width: 100%;">
           <el-select v-model="temp.companyId" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in unitList" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.buildingType')">
+        <el-form-item :label="$t('table.buildingType')" style="width: 100%;">
           <el-select v-model="temp.buildingType" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in buildingTypeList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
@@ -140,37 +144,45 @@
             </el-col>
         </el-row>
         
-        <el-form-item :label="$t('table.province')">
+        <el-row>
+          <el-col :span="12">
+        <el-form-item :label="$t('table.province')" style="width: 100%;">
           <!-- <template v-if="dialogStatus == 'create'"> -->
-          <area-select style="line-height: 1;" type='text' :placeholders="placeholders" :level='2' v-model="selected" :data="pcaa">
+          <area-select style="line-height: 1;width: 200%;" type='text' :placeholders="placeholders" :level='2' v-model="selected" :data="pcaa">
 </area-select>
           <!-- </template>
           <span v-else>{{ temp.province }}-{{ temp.city }}-{{ temp.county }}</span> -->
         </el-form-item>
-        <el-form-item :label="$t('table.address')">
-          <el-input v-model="temp.address"/>
-        </el-form-item>
+            </el-col>
+        </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.upFloors')">
-          <el-input v-model="temp.upFloors" style="width: 20%"/>
+        <el-form-item :label="$t('table.address')" style="width: 100%;">
+          <el-input v-model="temp.address"/>
+        </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+        <el-form-item :label="$t('table.upFloors')" style="width: 100%;">
+          <el-input v-model="temp.upFloors" style="width: 100px"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.downFloors')">
-          <el-input v-model="temp.downFloors" style="width: 20%"/>
+        <el-form-item :label="$t('table.downFloors')" style="width: 100%;">
+          <el-input v-model="temp.downFloors" style="width: 100px"/>
         </el-form-item>
             </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
 
-        <el-form-item :label="$t('table.totalFloors')" v-if="dialogStatus == 'update'">
+        <el-form-item :label="$t('table.totalFloors')" v-if="dialogStatus == 'update'" style="width: 100%;">
           <span>{{ temp.totalFloors }}</span>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.floorsLv')">
+        <el-form-item :label="$t('table.floorsLv')" style="width: 100%;">
           <el-select v-model="temp.floorsLv" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in floorsLvList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
@@ -179,29 +191,29 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.tasks')" v-if="dialogStatus == 'update'">
+        <el-form-item :label="$t('table.tasks')" v-if="dialogStatus == 'update'" style="width: 100%;">
           <span>{{ temp.tasks }}</span>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.patrolAvgTime')">
+        <el-form-item :label="$t('table.patrolAvgTime')" style="width: 100%;">
           <el-input v-model="temp.patrolAvgTime" style="width: 20%"/>分钟
         </el-form-item>
             </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.patrolLastTime')" v-if="dialogStatus == 'update'">
+        <el-form-item :label="$t('table.patrolLastTime')" v-if="dialogStatus == 'update'" style="width: 100%;">
           <span>{{ temp.patrolLastTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.patrolNextTime')" v-if="dialogStatus == 'update'">
+        <el-form-item :label="$t('table.patrolNextTime')" v-if="dialogStatus == 'update'" style="width: 100%;">
           <span>{{ temp.patrolNextTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </el-form-item>
             </el-col>
         </el-row>
-        <el-form-item :label="$t('table.note')">
+        <el-form-item :label="$t('table.note')" style="width: 100%;">
           <el-input v-model="temp.note"/>
         </el-form-item>
 

@@ -76,27 +76,27 @@
       <el-pagination :current-page="listQuery.page" :page-size="listQuery.pageSize" :total="total" background layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange"/>
     </div>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="50%" top="5px">
-      <el-form ref="dataForm" label-width="200px" style="width: 100%;" :model="temp"  class="demo-form-inline">
+      <el-form ref="dataForm" label-width="20%" style="width: 100%;" :model="temp"  class="demo-form-inline">
            <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.loginAccount')">
+        <el-form-item :label="$t('table.loginAccount')" style="width: 100%;">
           <el-input v-model="temp.loginAccount"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.userName')">
+        <el-form-item :label="$t('table.userName')" style="width: 100%;">
           <el-input v-model="temp.userName"/>
         </el-form-item>
             </el-col>
         </el-row>
            <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.password')">
+        <el-form-item :label="$t('table.password')" style="width: 100%;">
           <el-input v-model="temp.password"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.department')">
+        <el-form-item :label="$t('table.department')" style="width: 100%;">
           <el-select v-model="temp.department" filterable class="filter-item" placeholder="请选择">
           <el-option v-for="item in departmentList" :key="item.key" :label="item.value" :value="item.value"/>
           </el-select>
@@ -105,14 +105,14 @@
         </el-row>
            <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.userType')">
+        <el-form-item :label="$t('table.userType')" style="width: 100%;">
           <el-select v-model="temp.userType" filterable class="filter-item" placeholder="请选择">
           <el-option v-for="item in userTypeList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.roleLevel')">
+        <el-form-item :label="$t('table.roleLevel')" style="width: 100%;">
           <el-select v-model="temp.roleLevel" filterable class="filter-item" placeholder="请选择">
           <el-option v-for="item in roleLevelList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
@@ -120,7 +120,9 @@
             </el-col>
         </el-row>
        
-        <el-form-item :label="$t('table.headImageId')">         
+        <el-row>
+          <el-col :span="12">
+        <el-form-item :label="$t('table.headImageId')" style="width: 100%;">         
           <!-- <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" @click="handlePictureCardPreview">
         <el-upload class="upload-demo" ref="upload" :headers="myHeaders" action="http://47.92.165.114:8999/fire-service/api/file/upload" :auto-upload="false" :on-success="upSuccess" :on-remove="handleRemove">
               <el-button slot="trigger" size="medium" type="primary">选取文件</el-button>
@@ -136,17 +138,19 @@
             <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-              <el-button class="uploadBtn" style="margin-left: 10px;" size="medium" type="delete" @click="handleRemove">删除</el-button>
+              <el-button class="uploadBtn" style="margin-left: 50%;" size="medium" type="delete" @click="handleRemove">删除</el-button>
         </el-form-item>
 
+            </el-col>
+        </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.nickName')">
+        <el-form-item :label="$t('table.nickName')" style="width: 100%;">
           <el-input v-model="temp.nickName"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.sex')">
+        <el-form-item :label="$t('table.sex')" style="width: 100%;">
           
           <el-select v-model="temp.sex" class="filter-item" placeholder="请选择">
           <el-option v-for="item in sexList" :key="item.key" :label="item.value" :value="item.key"/>
@@ -157,13 +161,13 @@
 
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.birthday')">   
+        <el-form-item :label="$t('table.birthday')" style="width: 100%;">   
           <el-date-picker v-model="temp.birthday" type="date" placeholder="请选择"/>
 
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.phone')">
+        <el-form-item :label="$t('table.phone')" style="width: 100%;">
           <el-input v-model="temp.phone"/>
         </el-form-item>
             </el-col>
@@ -171,17 +175,17 @@
 
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.wechat')">
+        <el-form-item :label="$t('table.wechat')" style="width: 100%;">
           <el-input v-model="temp.wechat"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.email')">
+        <el-form-item :label="$t('table.email')" style="width: 100%;">
           <el-input v-model="temp.email"/>
         </el-form-item>
             </el-col>
         </el-row>
-        <el-form-item :label="$t('table.companyId')">
+        <el-form-item :label="$t('table.companyId')" style="width: 100%;">
           <el-select v-model="companytemp.companyId" filterable class="filter-item" placeholder="请选择">
           <el-option v-for="item in unitList" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
           </el-select>

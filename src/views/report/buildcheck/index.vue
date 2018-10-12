@@ -24,6 +24,7 @@
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
       <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" @click="printInfos">{{ $t('querytable.print') }}</el-button>
 
     </div>
 
@@ -131,16 +132,30 @@
     </el-table>
              </div>
     </el-dialog>
+    <el-dialog title="打印预览" :visible.sync="printdialogFormVisible">
+     　<div id="printTest" >
+　　　　　　<p>锄禾日当午</p>
+　　　　　　<p>汗滴禾下土 </p>
+　　　　　　<p>谁知盘中餐</p>
+　　　　　　<p>粒粒皆辛苦</p>
+　　　　</div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="printdialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" v-print="'#printTest'">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 
 </template>
 
 <script>
+import Vue from 'vue'
 import { fetchCheckRecordDataList,fetchCheckRecordInfosData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
-
+import Print from 'vue-print-nb'
+Vue.use(Print); //注册
 export default {
   name: 'BuildCheck',
   directives: {
@@ -185,6 +200,7 @@ export default {
       exportQuery: {},
       infos: [],
       dialogFormVisible: false,
+      printdialogFormVisible: false,
       showReviewer: false,
       checkType:["否","是"],
       selectType: [{ label: '是', key: 1 }, { label: '否', key: 0 }],
@@ -348,6 +364,14 @@ export default {
           }
         })
       )
+    },
+    printInfos() {
+      
+      this.printdialogFormVisible = true
+    },
+    printInfosBtn() {
+      this.$print(this.$ref.print)
+      this.printdialogFormVisible = false
     },
   }
 }

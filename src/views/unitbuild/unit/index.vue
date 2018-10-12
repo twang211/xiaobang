@@ -78,15 +78,15 @@
       
     </div>
         <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="70%" top="5px">
-      <el-form ref="dataForm" :rules="rules" :inline="true"  label-width="300px" style="width: 100%;" :model="temp"  class="demo-form-inline">
+      <el-form ref="dataForm" :rules="rules" :inline="true"  label-width="30%" style="width: 100%;" :model="temp"  class="demo-form-inline">
         <el-row>
           <el-col :span="12">
-            <el-form-item :label="$t('table.companyCode')" v-if="dialogStatus == 'update'">
+            <el-form-item :label="$t('table.companyCode')" style="width: 100%;" v-if="dialogStatus == 'update'">
               <span>{{ temp.companyCode }}</span>
             </el-form-item>
             </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('table.companyName')" prop="companyName">
+            <el-form-item :label="$t('table.companyName')" prop="companyName" style="width: 100%;">
               <el-input v-model="temp.companyName"/>
             </el-form-item>
             </el-col>
@@ -94,12 +94,12 @@
         
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.companyCorporate')" prop="companyCorporate">
+        <el-form-item :label="$t('table.companyCorporate')" prop="companyCorporate" style="width: 100%;">
           <el-input v-model="temp.companyCorporate"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.safetyManager')" prop="safetyManager">
+        <el-form-item :label="$t('table.safetyManager')" prop="safetyManager" style="width: 100%;">
           <el-input v-model="temp.safetyManager"/>
         </el-form-item>
             </el-col>
@@ -107,13 +107,13 @@
         
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.controlRoomPhone')" prop="controlRoomPhone">
+        <el-form-item :label="$t('table.controlRoomPhone')" prop="controlRoomPhone" style="width: 100%;">
           <el-input v-model="temp.controlRoomPhone"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
             
-        <el-form-item :label="$t('table.companyAddress')" prop="companyAddress">
+        <el-form-item :label="$t('table.companyAddress')" prop="companyAddress" style="width: 100%;">
           <el-input v-model="temp.companyAddress"/>
         </el-form-item>
             </el-col>
@@ -121,12 +121,12 @@
         
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.referenceNumber')">
+        <el-form-item :label="$t('table.referenceNumber')" style="width: 100%;">
           <el-input v-model="temp.referenceNumber"/>
         </el-form-item>  
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.companyType')">
+        <el-form-item :label="$t('table.companyType')" style="width: 100%;">
           <el-select v-model="temp.companyType" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in companyTypeList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
@@ -135,14 +135,14 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.safetyLevel')">
+        <el-form-item :label="$t('table.safetyLevel')" style="width: 100%;">
           <el-select v-model="temp.safetyLevel" filterable class="filter-item" placeholder="请选择">
             <el-option v-for="item in safetyLevelList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.isDenselyPlace')">
+        <el-form-item :label="$t('table.isDenselyPlace')" style="width: 100%;">
           <el-select v-model="temp.isDenselyPlace" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -152,14 +152,14 @@
             
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.isPublicDenselyPlace')">
+        <el-form-item :label="$t('table.isPublicDenselyPlace')" style="width: 100%;">
           <el-select v-model="temp.isPublicDenselyPlace" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.isPublicRecreationPlace')">
+        <el-form-item :label="$t('table.isPublicRecreationPlace')" style="width: 100%;">
           <el-select v-model="temp.isPublicRecreationPlace" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -168,14 +168,14 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.isCheckPass')">
+        <el-form-item :label="$t('table.isCheckPass')" style="width: 100%;">
           <el-select v-model="temp.isCheckPass" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.usedStatus')">
+        <el-form-item :label="$t('table.usedStatus')" style="width: 100%;">
           <el-select v-model="temp.usedStatus" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -184,7 +184,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasSafetySystem')">
+        <el-form-item :label="$t('table.hasSafetySystem')" style="width: 100%;">
           <el-select v-model="temp.hasSafetySystem" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -192,7 +192,7 @@
             </el-col>
           <el-col :span="12">
             
-        <el-form-item :label="$t('table.hasContingencyPlan')">
+        <el-form-item :label="$t('table.hasContingencyPlan')" style="width: 100%;">
           <el-select v-model="temp.hasContingencyPlan" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -201,14 +201,14 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasCheckRecord')">
+        <el-form-item :label="$t('table.hasCheckRecord')" style="width: 100%;">
           <el-select v-model="temp.hasCheckRecord" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasRegularCheck')">
+        <el-form-item :label="$t('table.hasRegularCheck')" style="width: 100%;">
           <el-select v-model="temp.hasRegularCheck" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -217,14 +217,14 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasYearCheckRecord')">
+        <el-form-item :label="$t('table.hasYearCheckRecord')" style="width: 100%;">
           <el-select v-model="temp.hasYearCheckRecord" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasTrainRecord')">
+        <el-form-item :label="$t('table.hasTrainRecord')" style="width: 100%;">
           <el-select v-model="temp.hasTrainRecord" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -233,14 +233,14 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasManoeuvreRecord')">
+        <el-form-item :label="$t('table.hasManoeuvreRecord')" style="width: 100%;">
           <el-select v-model="temp.hasManoeuvreRecord" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasSafetyManager')">
+        <el-form-item :label="$t('table.hasSafetyManager')" style="width: 100%;">
           <el-select v-model="temp.hasSafetyManager" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -249,14 +249,14 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasSafetyFile')">
+        <el-form-item :label="$t('table.hasSafetyFile')" style="width: 100%;">
           <el-select v-model="temp.hasSafetyFile" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
         </el-form-item>
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.hasClearKeyPlace')">
+        <el-form-item :label="$t('table.hasClearKeyPlace')" style="width: 100%;">
           <el-select v-model="temp.hasClearKeyPlace" class="filter-item" placeholder="请选择">
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>
           </el-select>
@@ -319,30 +319,30 @@ export default {
         safetyLevel: null
       },
       temp: {
-        companyCode: "",
-        companyName: "",
-        companyCorporate: "",
-        safetyManager: "",
-        controlRoomPhone: "",
-        companyAddress: "",
-        companyType: "",
-        safetyLevel: "",
-        isDenselyPlace: "",
-        isPublicDenselyPlace: "",
-        isPublicRecreationPlace: "",
-        isCheckPass: "",
-        referenceNumber: "",
-        usedStatus: "",
-        hasSafetySystem: "",
-        hasContingencyPlan: "",
-        hasCheckRecord: "",
-        hasRegularCheck: "",
-        hasYearCheckRecord: "",
-        hasTrainRecord: "",
-        hasManoeuvreRecord: "",
-        hasSafetyManager: "",
-        hasSafetyFile: "",
-        hasClearKeyPlace: "",
+        companyCode: null,
+        companyName: null,
+        companyCorporate: null,
+        safetyManager: null,
+        controlRoomPhone: null,
+        companyAddress: null,
+        companyType: null,
+        safetyLevel: null,
+        isDenselyPlace: null,
+        isPublicDenselyPlace: null,
+        isPublicRecreationPlace: null,
+        isCheckPass: null,
+        referenceNumber: null,
+        usedStatus: null,
+        hasSafetySystem: null,
+        hasContingencyPlan: null,
+        hasCheckRecord: null,
+        hasRegularCheck: null,
+        hasYearCheckRecord: null,
+        hasTrainRecord: null,
+        hasManoeuvreRecord: null,
+        hasSafetyManager: null,
+        hasSafetyFile: null,
+        hasClearKeyPlace: null,
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -464,30 +464,30 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        companyCode: "",
-        companyName: "",
-        companyCorporate: "",
-        safetyManager: "",
-        controlRoomPhone: "",
-        companyAddress: "",
-        companyType: "",
-        safetyLevel: "",
-        isDenselyPlace: "",
-        isPublicDenselyPlace: "",
-        isPublicRecreationPlace: "",
-        isCheckPass: "",
-        referenceNumber: "",
-        usedStatus: "",
-        hasSafetySystem: "",
-        hasContingencyPlan: "",
-        hasCheckRecord: "",
-        hasRegularCheck: "",
-        hasYearCheckRecord: "",
-        hasTrainRecord: "",
-        hasManoeuvreRecord: "",
-        hasSafetyManager: "",
-        hasSafetyFile: "",
-        hasClearKeyPlace: "",
+        companyCode: null,
+        companyName: null,
+        companyCorporate: null,
+        safetyManager: null,
+        controlRoomPhone: null,
+        companyAddress: null,
+        companyType: null,
+        safetyLevel: null,
+        isDenselyPlace: null,
+        isPublicDenselyPlace: null,
+        isPublicRecreationPlace: null,
+        isCheckPass: null,
+        referenceNumber: null,
+        usedStatus: null,
+        hasSafetySystem: null,
+        hasContingencyPlan: null,
+        hasCheckRecord: null,
+        hasRegularCheck: null,
+        hasYearCheckRecord: null,
+        hasTrainRecord: null,
+        hasManoeuvreRecord: null,
+        hasSafetyManager: null,
+        hasSafetyFile: null,
+        hasClearKeyPlace: null,
       }
     },
     handleCreate() {
@@ -531,7 +531,11 @@ export default {
     handleUpdate(row) {
       fetchUnitData({},row.companyId,this.header).then(response => {
         this.temp = response.data.resultData.companyInfo
-        this.temp.usedStatus = parseInt(this.temp.usedStatus)
+        console.log(this.temp.usedStatus,"this.temp.usedStatus")
+        if(this.temp.usedStatus){
+
+          this.temp.usedStatus = parseInt(this.temp.usedStatus)
+        }
       })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
