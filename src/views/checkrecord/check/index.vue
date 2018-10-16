@@ -122,7 +122,7 @@
        </div>
         </el-dialog>
 
-    <el-dialog title="短信发送" :visible.sync="senddialogFormVisible" width="50%">
+    <el-dialog title="短信发送" :visible.sync="senddialogFormVisible" width="70%">
              <div class="app-container calendar-list-container">      
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addPhoneNum">{{ $t('table.add') }}</el-button>
@@ -137,10 +137,11 @@
                   
                   <el-tag
                   :key="item.apparatusId"
-                  v-for="(item, index) in multipleSelection">
-                  <span v-if="index < 10">您好！{{item.buildingName}}的{{item.apparatusAddress}}防火分区:{{item.apparatusName}}(设备/区域) 已整改完毕！[0{{index}}]
+                  v-for="(item, index) in multipleSelection"
+                  style="width:90%;height:auto">
+                  <span class="spanline" v-if="index < 10">您好！{{item.buildingName}}的{{item.apparatusAddress}}防火分区:{{item.apparatusName}}(设备/区域) 已整改完毕！[0{{index}}]
                     </span>
-                  <span v-else>您好！{{item.buildingName}}的{{item.apparatusAddress}}防火分区:{{item.apparatusName}}(设备/区域) 已整改完毕！[{{index}}]
+                  <span class="spanline" v-else>您好！{{item.buildingName}}的{{item.apparatusAddress}}防火分区:{{item.apparatusName}}(设备/区域) 已整改完毕！[{{index}}]
                     </span>
                   </el-tag>
                 </el-form-item>
@@ -384,3 +385,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.spanline{
+  word-break:normal; width:auto; display:block; white-space:pre-wrap;word-wrap : break-word ;overflow: hidden ;
+}
+</style>

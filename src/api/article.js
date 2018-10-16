@@ -602,3 +602,36 @@ export function sendInfoPost(data, header) {
         }
     })
 }
+// 维修表打印预览
+export function printWorkDataList(query, header) {
+    return request({
+        url: '/fire-service/api/print/work/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+// 保养表打印预览
+export function printUpkeepDataList(query, header) {
+    return request({
+        url: '/fire-service/api/print/upkeep/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+// 打印预览
+export function printCheckDataList(query, header) {
+    return request({
+        url: '/fire-service/api/print/check/list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}

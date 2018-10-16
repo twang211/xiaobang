@@ -12,6 +12,7 @@
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
       <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" @click="printInfos">{{ $t('querytable.print') }}</el-button>
 
     </div>
 
@@ -124,14 +125,66 @@
     </el-table>
              </div>
     </el-dialog>
+    <el-dialog title="打印预览" :visible.sync="printdialogFormVisible" width="80%">
+     　<div  id="printTest" class="app-container calendar-list-container"  style="padding:0">
+     <table border="1px" class="printTable">
+       <thead>
+         <tr>
+           <td style="width:75px">单位名称</td>
+           <td style="width:75px">建筑物名称</td>
+           <td style="width:75px">设备名称</td>
+           <td style="width:75px">设备编码</td>
+           <td style="width:75px">描述问题</td>
+           <td style="width:75px">发现人签名</td>
+           <td style="width:75px">发现时间</td>
+           <td style="width:75px">维修方法</td>
+           <td style="width:75px">安全措施</td>
+           <td style="width:70px">是否备案</td>
+           <td style="width:80px">是否停用系统</td>
+           <td style="width:75px">维修时间</td>
+           <td style="width:75px">签名图片</td>
+           <td style="width:75px">负责人签名</td>
+         </tr>
+       </thead>
+       <tbody>
+          <tr
+            :key="printinfo.apparatusId"
+            v-for="printinfo in printlist"
+          >
+            <td>{{printinfo.companyName}}</td>
+            <td>{{printinfo.buildingName}}</td>
+            <td>{{printinfo.apparatusName}}</td>
+            <td>{{printinfo.apparatusCode}}</td>
+            <td>{{printinfo.troubleDesc}}</td>
+            <td></td>
+            <td>{{printinfo.troubleTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</td>
+            <td>{{printinfo.workMethod}}</td>
+            <td>{{printinfo.safetyPrecautions}}</td>
+            <td>{{checkType[printinfo.isReference]}}</td>
+            <td>{{checkType[printinfo.isStopSystem]}}</td>
+            <td>{{printinfo.workTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</td>
+            <td><img  :src="printinfo.workUserAutographUri" class="printavatar"></td>
+            <td></td>
+          </tr>
+       </tbody>
+    </table>
+　　　　</div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="printdialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" v-print="'#printTest'">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 
 </template>
 
 <script>
-import { fetchWorkrecordDataList,fetchWorkRecordData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
+import Vue from 'vue'
+import { fetchWorkrecordDataList,fetchWorkRecordData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList, printWorkDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
+import Print from 'vue-print-nb'
+Vue.use(Print); //注册
 
 export default {
   name: 'Workrecord',
@@ -147,6 +200,7 @@ export default {
       myHeaders: {Authorization: getHeader()},
       extime: '',
       list: null,
+      printlist: null,
       unitlist: null,
       buildlist: null,
       userlist: null,
@@ -166,8 +220,11 @@ export default {
         buildingId: null,
         workUserName: null,
       },
+      printQuery: {
+      },
       exportQuery: {},
       showReviewer: false,
+      printdialogFormVisible: false,
       infos: [],
       dialogFormVisible: false,
       checkType:["否","是"],
@@ -320,6 +377,40 @@ export default {
         })
       )
     },
+    printInfos() {
+      
+      this.printdialogFormVisible = true
+      
+        this.printQuery.companyId =  this.listQuery.companyId,
+        this.printQuery.buildingId =  this.listQuery.buildingId,
+        this.printQuery.workUserName =  this.listQuery.workUserName,
+      this.listLoading = true
+      printWorkDataList(this.printQuery,this.header).then(response => {
+        var code = response.data.resultCode
+        if(code == 0){
+        this.printlist = response.data.resultData.recordList
+        this.printlist.forEach(element => {
+          if(element.workUserAutographUri){
+
+            element.workUserAutographUri = "http://47.92.165.114:8081"+element.workUserAutographUri
+          }
+        });
+      this.listLoading = false
+        }else{
+          
+    this.$message({
+        title: '失败',
+        message: response.data.resultMsg,
+        type: 'warning',
+        duration: 1500
+    })
+        }
+      })
+    },
+    printInfosBtn() {
+      this.$print(this.$ref.print)
+      this.printdialogFormVisible = false
+    },
   }
 }
 </script>
@@ -330,4 +421,19 @@ export default {
     display: block;
     margin: 0 auto;
   }
+  .printavatar {    
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+.printTable{
+  width: 100%;
+  border-spacing: 0;    
+  font-size: 12px;
+  table-layout:fixed;
+  text-align: center
+}
+.printTable tbody td{
+  word-wrap:break-word;
+}
 </style>

@@ -24,6 +24,7 @@
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
       <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" @click="printInfos">{{ $t('querytable.print') }}</el-button>
 
     </div>
  <el-table
@@ -131,15 +132,67 @@
     </el-table>
              </div>
     </el-dialog>
+    <el-dialog title="打印预览" :visible.sync="printdialogFormVisible" width="80%">
+     　<div  id="printTest" class="app-container calendar-list-container" style="padding:0">
+     <table border="1px" class="printTable">
+       <thead>
+         <tr>
+           <td style="width:100px">设备名称</td>
+           <td style="width:100px">设备编码</td>
+           <td style="width:100px">是否正常</td>
+           <td style="width:100px">巡查要点</td>
+           <td style="width:100px">故障描述</td>
+           <td style="width:100px">当时处理情况</td>
+           <td style="width:100px">保修情况</td>
+           <td style="width:100px">签名</td>
+           <td style="width:100px">负责人签名</td>
+         </tr>
+       </thead>
+       <tbody>
+          <tr
+            :key="printinfo.apparatusId"
+            v-for="printinfo in printlist"
+          >
+            <td style="">{{printinfo.apparatusName}}</td>
+            <td>{{printinfo.apparatusCode}}</td>
+            <td>{{checkType[printinfo.isPass]}}</td>
+            <td colspan="4">
+
+              <table class="infostable">
+                <tr 
+                  :key="infolist.apparatusId"
+                  v-for="infolist in printinfo.checkRecordList"
+                >
+                  <td style="width:25%;">{{infolist.checkPoint}}</td>
+                  <td style="width:25%;">{{infolist.errorDescription}}</td>
+                  <td style="width:25%;">{{infolist.spotHandling}}</td>
+                  <td style="width:25%;">{{infolist.reportingConditions}}</td>
+                </tr>
+              </table>
+            </td>
+            <td><img  :src="printinfo.checkUserAutographUri" class="printavatar"></td>
+            <td></td>
+          </tr>
+       </tbody>
+    </table>
+　　　　</div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="printdialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" v-print="'#printTest'">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 
 </template>
 
 <script>
-import { fetchCheckRecordDataList,fetchCheckRecordInfosData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList} from '@/api/article'
+import Vue from 'vue'
+import { fetchCheckRecordDataList,fetchCheckRecordInfosData, fetchTypeList, fetchUnitDownDataList, fetchBuildDownDataList, fetchUserDownDataList,printCheckDataList} from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
+import Print from 'vue-print-nb'
+Vue.use(Print); //注册
 
 export default {
   name: 'Testing',
@@ -155,6 +208,8 @@ export default {
       myHeaders: {Authorization: getHeader()},
       extime: '',
       list: null,
+      printlist: null,
+      printdialogFormVisible: false,
       unitlist: null,
       buildlist: null,
       userlist: null,
@@ -180,6 +235,8 @@ export default {
         isAmend: null,
         queryDateFrom: null,
         queryDateTo: null,
+      },
+      printQuery: {
       },
       exportQuery: {},
       showReviewer: false,
@@ -340,6 +397,48 @@ export default {
         })
       )
     },
+    printInfos() {
+      
+      this.printdialogFormVisible = true
+
+        
+        this.printQuery.apparatusCode =  this.listQuery.apparatusCode,
+        this.printQuery.apparatusUuId =  this.listQuery.apparatusUuId,
+        this.printQuery.apparatusName =  this.listQuery.apparatusName,
+        this.printQuery.companyId =  this.listQuery.companyId,
+        this.printQuery.buildingId =  this.listQuery.buildingId,
+        this.printQuery.checkUserId =  this.listQuery.checkUserId,
+        this.printQuery.isAmend =  this.listQuery.isAmend,
+        this.printQuery.queryDateFrom =  this.listQuery.queryDateFrom,
+        this.printQuery.queryDateTo =  this.listQuery.queryDateTo,
+        this.printQuery.checkUserType =  this.listQuery.checkUserType,
+      this.listLoading = true
+      printCheckDataList(this.printQuery,this.header).then(response => {
+        var code = response.data.resultCode
+        if(code == 0){
+        this.printlist = response.data.resultData.taskDetailList
+        this.printlist.forEach(element => {
+          if(element.checkUserAutographUri){
+
+            element.checkUserAutographUri = "http://47.92.165.114:8081"+element.checkUserAutographUri
+          }
+        });
+      this.listLoading = false
+        }else{
+          
+    this.$message({
+        title: '失败',
+        message: response.data.resultMsg,
+        type: 'warning',
+        duration: 1500
+    })
+        }
+      })
+    },
+    printInfosBtn() {
+      this.$print(this.$ref.print)
+      this.printdialogFormVisible = false
+    },
   }
 }
 </script>
@@ -350,4 +449,40 @@ export default {
     display: block;
     margin: 0 auto;
   }
+  .printavatar {    
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+  }
+.printTable{
+  width: 100%;
+  border-spacing: 0;    
+  font-size: 12px;
+  table-layout:fixed;
+  text-align: center
+}
+.printTable tbody td{
+  word-wrap:break-word;
+}
+.infostable{
+  border-spacing: 0;
+  width:100%;
+  height: 100%;
+  table-layout:fixed;
+      /* border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;*/
+    } 
+.infostable td{
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  height: 100%;
+}
+.infostable td:last-child{
+  border-right: 0;
+}
+.infostable tr:last-child td{
+  border-bottom: 0;
+}
 </style>

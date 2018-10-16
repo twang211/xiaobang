@@ -40,7 +40,8 @@ service.interceptors.response.use(
 
         const res = response.data
         if (!res) {
-            if (response.message.indexOf("500") != -1 || response.message.indexOf("400") != -1) {
+            console.log(response.message.indexOf("Network Error"))
+            if (response.message.indexOf("500") != -1 || response.message.indexOf("400") != -1 || response.message.indexOf("Network Error") != -1) {
                 Message({
                     message: "服务器异常",
                     type: 'error',
