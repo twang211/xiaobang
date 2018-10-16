@@ -10,8 +10,8 @@
       <el-select v-model="listQuery.buildingId" class="filter-item" filterable placeholder="建筑名称">
         <el-option v-for="item in buildlist" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId"/>
       </el-select>
-      <el-date-picker v-model="listQuery.queryDateFrom" type="date" placeholder="开始时间"/>
-      <el-date-picker v-model="listQuery.queryDateTo" type="date" placeholder="结束时间"/>
+      <el-date-picker v-model="listQuery.queryDateFrom" class="filter-item" type="date" placeholder="开始时间"/>
+      <el-date-picker v-model="listQuery.queryDateTo" class="filter-item" type="date" placeholder="结束时间"/>
 
        <el-select v-model="listQuery.isAmend" :placeholder="$t('querytable.isAmend')" clearable style="width: 120px" class="filter-item" placeholder="是否处理">
 
@@ -77,7 +77,7 @@
         </template>
       </el-table-column>
  
-      <el-table-column :label="$t('table.config')" align="center">
+      <el-table-column :label="$t('table.look')" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
@@ -134,7 +134,15 @@
                   <el-input v-model="tag.num"></el-input>
                 </el-form-item>
                 <el-form-item label="短信内容">
-                  <el-tag>您好！${building}的${area}防火分区:${apparatus}(设备/区域) 已整改完毕！${code}</el-tag>
+                  
+                  <el-tag
+                  :key="item.apparatusId"
+                  v-for="(item, index) in multipleSelection">
+                  <span v-if="index < 10">您好！{{item.buildingName}}的{{item.apparatusAddress}}防火分区:{{item.apparatusName}}(设备/区域) 已整改完毕！[0{{index}}]
+                    </span>
+                  <span v-else>您好！{{item.buildingName}}的{{item.apparatusAddress}}防火分区:{{item.apparatusName}}(设备/区域) 已整改完毕！[{{index}}]
+                    </span>
+                  </el-tag>
                 </el-form-item>
               </el-form>
       <div slot="footer" class="dialog-footer">
@@ -249,7 +257,9 @@ export default {
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      sendInfo() {this.phonenum = []
+      sendInfo() {
+        this.phonenum = []
+        console.log(this.multipleSelection,"multipleSelection")
         if(this.multipleSelection.length > 0){
           this.senddialogFormVisible = true
       this.phonenum.push({"type":""})
@@ -259,12 +269,10 @@ export default {
       this.phonenum.push({"type":""})
     },
     sendSmsInfos(){
-        console.log(this.phonenum,"this.phonenum")
         this.postphone = []
         this.phonenum.forEach(element => {
           this.postphone.push(element.num)
         });
-        console.log(this.multipleSelection,"this.multipleSelection")
         this.multipleSelection.forEach(element => {
       sendInfoPost({mobileNumberList:this.postphone,param:{building:element.buildingName,area:element.apparatusAddress,apparatus:element.apparatusName}},this.header).then(response => {
         var code = response.data.resultCode

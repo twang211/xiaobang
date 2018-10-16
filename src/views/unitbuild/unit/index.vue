@@ -531,7 +531,6 @@ export default {
     handleUpdate(row) {
       fetchUnitData({},row.companyId,this.header).then(response => {
         this.temp = response.data.resultData.companyInfo
-        console.log(this.temp.usedStatus,"this.temp.usedStatus")
         if(this.temp.usedStatus){
 
           this.temp.usedStatus = parseInt(this.temp.usedStatus)

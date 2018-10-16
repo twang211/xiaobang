@@ -92,7 +92,6 @@ export default {
   methods: {
     f(e){
       e.target.placeholder = ""
-      console.log(e.target.placeholder,"2222222222")
     },
     showPwd() {
       if (this.passwordType === 'password') {
@@ -106,14 +105,12 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('LoginByUsername', this.loginForm).then(response => {
-            console.log(response,"response")
             
             var code = response.resultCode
             if (code == 0) {
               this.loading = false
               this.$router.push({ path: '/' })
             }else{
-              console.log(response.resultMsg)
               this.$message({
                 message: response.resultMsg,
                 type: 'warning'

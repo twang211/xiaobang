@@ -64,21 +64,18 @@
           <span>{{ scope.row.aboutFloors }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.auditing')" align="center" width="320">
+ 
+      <el-table-column :label="$t('table.setting')" align="center" width="400">
         <template slot-scope="scope">
           <el-button v-if="scope.row.taskStatus == 5" type="primary" size="mini" @click="passPost(scope.row)">{{ $t('table.pass') }}</el-button>
-          <el-tag type="info" v-if="scope.row.taskStatus != 5">{{ $t('table.pass') }}</el-tag>
+          <el-button v-if="scope.row.taskStatus != 5" size="mini" disabled>{{ $t('table.pass') }}</el-button>
           <el-button v-if="scope.row.taskStatus == 5" type="primary" size="mini" @click="rejectPost(scope.row)">{{ $t('table.reject') }}</el-button>
-          <el-tag type="info" v-if="scope.row.taskStatus != 5">{{ $t('table.reject') }}</el-tag>
+          <el-button v-if="scope.row.taskStatus != 5" size="mini" disabled>{{ $t('table.reject') }}</el-button>
           <el-button v-if="scope.row.taskStatus == 6" type="primary" size="mini" @click="distributePost(scope.row)">{{ $t('table.distribute') }}</el-button>
-          <el-tag type="info" v-if="scope.row.taskStatus != 6">{{ $t('table.distribute') }}</el-tag>
+          <el-button v-if="scope.row.taskStatus != 6" size="mini" disabled>{{ $t('table.distribute') }}</el-button>
           <el-button v-if="scope.row.taskStatus == 0" type="primary" size="mini" @click="cancelPost(scope.row)">{{ $t('table.cancel') }}</el-button>
-          <el-tag type="info" v-if="scope.row.taskStatus != 0">{{ $t('table.cancel') }}</el-tag>
+          <el-button v-if="scope.row.taskStatus != 0" size="mini" disabled>{{ $t('table.cancel') }}</el-button>
+          <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -274,8 +271,8 @@ export default {
         this.buildlist = response.data.resultData.buildingList
       })
     },
-    getuserdataList() {
-      fetchUserDownDataList({},this.header).then(response => {
+    getuserdataList(row) {
+      fetchUserDownDataList({buildingId:row.buildingId},this.header).then(response => {
         this.userlist = response.data.resultData.userList
         // this.userlist.forEach(element => {
         //     this.showuserObj[element["userId"]] = element["userName"]
@@ -351,9 +348,10 @@ export default {
           })
     },
     distributePost(row) {
+      console.log(row,"1111111111")
       this.resetdistributeQuery()
       this.distributedialogFormVisible = true
-      this.getuserdataList()
+      this.getuserdataList(row)
       this.distributeQuery.taskId = row.taskId
     },
     distributeSendPost() {

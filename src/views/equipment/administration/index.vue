@@ -106,7 +106,7 @@
             </el-col>
           <el-col :span="12">
           <el-form-item :label="$t('table.kind')" style="width: 100%;">
-            <el-select v-model="temp.kind" @change=" changeKind" class="filter-item" filterable placeholder="设备分类">
+            <el-select v-model="temp.kind" @change="changeKind" class="filter-item" filterable placeholder="设备分类">
                   <el-option v-for="item in kindList" :key="item.key" :label="item.value" :value="item.key"/>
                 </el-select>
               </el-form-item>
@@ -180,11 +180,6 @@
           <el-input v-model="temp.apparatusAddress"/>
         </el-form-item>
             </el-col>
-          <el-col :span="12">
-        <el-form-item :label="$t('table.apparatusStatus')" style="width: 100%;">
-          <el-input v-model="temp.apparatusStatus"/>
-        </el-form-item>
-            </el-col>
         </el-row>
       </el-form>        
       <div slot="footer" class="dialog-footer">
@@ -199,7 +194,7 @@
 
 <script>
 import { fetchAdminDataList,createAdminArticle,fetchAdminData,createAdminUpdate, fetchUnitDownDataList, fetchBuildDownDataList,
-fetchSystemDataList, fetchNameDataList, fetchDelImg, fetchTypeList, fetchDownTypeList, fetchDownNameList } from '@/api/article'
+fetchSystemDataList, fetchNameDataList, fetchDelImg, fetchTypeList, fetchDownTypeList, fetchDownNameList,fetchDownSystemDataList } from '@/api/article'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime, checkToken, getHeader } from '@/utils'
 
@@ -321,7 +316,7 @@ export default {
     //   })
     // },
     getsystemdataList() {
-      fetchSystemDataList({},this.header).then(response => {
+      fetchDownSystemDataList({},this.header).then(response => {
         this.systemlist = response.data.resultData.typeList
       })
     },
@@ -335,8 +330,7 @@ export default {
     },
     changeKind(value) {
       this.systemTypelist = []
-      this.temp.apparatusTypeId = ""
-      this.temp.apparatusNameId = ""
+      this.temp.apparatusTypeId = value
       fetchDownTypeList({kind:value},this.header).then(response => {
         this.systemTypelist = response.data.resultData.typeList
       })
@@ -345,12 +339,16 @@ export default {
       this.namelist = []
       fetchDownNameList({typeId:value},this.header).then(response => {
         this.namelist = response.data.resultData.nameList
+        this.namelist.forEach(element => {
+          if(element.typeId == value){
+            this.temp.apparatusNameId = element.nameId
+          }
+        });
       })
     },
     changeCompany(value) {
-      
       this.buildlist = []
-      // this.temp.buildingId = ""
+      this.temp.buildingId = value
       fetchBuildDownDataList({companyId:value},this.header).then(response => {
         this.buildlist = response.data.resultData.buildingList
       })
@@ -440,6 +438,7 @@ export default {
       this.temp.kind = this.temp.kind.toString()
       this.changeSystem(this.temp.apparatusTypeId)
       this.changeKind(this.temp.kind)
+      this.changeCompany(this.temp.buildingId)
       })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true

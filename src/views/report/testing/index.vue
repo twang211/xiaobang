@@ -14,8 +14,8 @@
         <el-option v-for="item in userlist" :key="item.userId" :label="item.userName" :value="item.userId"/>
       </el-select>
       
-      <el-date-picker v-model="listQuery.queryDateFrom" type="date" placeholder="开始时间"/>
-      <el-date-picker v-model="listQuery.queryDateTo" type="date" placeholder="结束时间"/>
+      <el-date-picker v-model="listQuery.queryDateFrom" class="filter-item" type="date" placeholder="开始时间"/>
+      <el-date-picker v-model="listQuery.queryDateTo" class="filter-item" type="date" placeholder="结束时间"/>
        <el-select v-model="listQuery.isPass" :placeholder="$t('querytable.isPass')" clearable style="width: 120px" class="filter-item" placeholder="是否合格">
 
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      </el-select>
@@ -75,7 +75,7 @@
           <img  :src="scope.row.checkUserAutographUri" class="avatar">
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" >
+      <el-table-column :label="$t('table.look')" align="center" >
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>

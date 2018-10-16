@@ -72,7 +72,7 @@
           <img  :src="scope.row.upkeepUserAutographUri" class="avatar">
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" >
+      <el-table-column :label="$t('table.look')" align="center" >
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>

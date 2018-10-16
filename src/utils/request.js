@@ -37,14 +37,23 @@ service.interceptors.response.use(
      * 以下代码均为样例，请结合自生需求加以修改，若不需要，则可删除
      */
     response => {
+
         const res = response.data
-        console.log(response, "response")
         if (!res) {
-            Message({
-                message: "服务器异常",
-                type: 'error',
-                duration: 5 * 1000
-            })
+            if (response.message.indexOf("500") != -1 || response.message.indexOf("400") != -1) {
+                Message({
+                    message: "服务器异常",
+                    type: 'error',
+                    duration: 5 * 1000
+                })
+            }
+            if (response.message.indexOf("401") != -1) {
+                Message({
+                    message: "Token超时",
+                    type: 'error',
+                    duration: 5 * 1000
+                })
+            }
             removeToken()
             setTimeout(() => {
                     location.reload()
@@ -69,6 +78,7 @@ service.interceptors.response.use(
         }
     },
     error => {
+
         Message({
             message: error.message,
             type: 'error',

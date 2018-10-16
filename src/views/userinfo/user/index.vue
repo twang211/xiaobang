@@ -91,8 +91,8 @@
         </el-row>
            <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.password')" style="width: 100%;">
-          <el-input v-model="temp.password"/>
+        <el-form-item :label="$t('table.password')" style="width: 100%;" v-if="dialogStatus == 'create'">
+          <el-input type="password" v-model="temp.password"/>
         </el-form-item>
             </el-col>
           <el-col :span="12">
@@ -110,12 +110,22 @@
           <el-option v-for="item in userTypeList" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
+        <!-- <el-form-item :label="$t('table.userType')" style="width: 100%;" v-if="dialogStatus == 'update'">
+  
+          <el-tag style="margin-left:5px">
+            {{temp.userTypeName}}
+          </el-tag>
+        </el-form-item> -->
             </el-col>
           <el-col :span="12">
-        <el-form-item :label="$t('table.roleLevel')" style="width: 100%;">
-          <el-select v-model="temp.roleLevel" filterable class="filter-item" placeholder="请选择">
+        <el-form-item :label="$t('table.roleLevel')" style="width: 100%;" v-if="dialogStatus == 'update'">
+          <!-- <el-select v-model="temp.roleLevel" filterable class="filter-item" placeholder="请选择">
           <el-option v-for="item in roleLevelList" :key="item.key" :label="item.value" :value="item.key"/>
-          </el-select>
+          </el-select> -->
+          <el-tag style="margin-left:5px">
+            {{temp.roleLevelName}}
+          </el-tag>
+          
         </el-form-item>
             </el-col>
         </el-row>
@@ -185,22 +195,30 @@
         </el-form-item>
             </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="12">
         <el-form-item :label="$t('table.companyId')" style="width: 100%;">
-          <el-select v-model="companytemp.companyId" filterable class="filter-item" placeholder="请选择">
+          <!-- <el-select v-model="companytemp.type" filterable class="filter-item" placeholder="请选择">
           <el-option v-for="item in unitList" :key="item.companyId" :label="item.companyName" :value="item.companyId"/>
+          </el-select> -->
+            <el-select v-model="companytemp" multiple placeholder="请选择">
+            <el-option
+              v-for="item in unitList"
+              :key="item.companyId"
+              :label="item.companyName"
+              :value="item.companyId">
+            </el-option>
           </el-select>
-              <el-button style="margin-left: 10px;" size="medium" type="success" @click="companyAdd">添加</el-button>
         </el-form-item>
         <el-form-item>
           <el-tag
             :key="tag.companyId"
-            v-for="tag in companyList"
-            closable
-            :disable-transitions="false"
-            @close="handleClose(tag)" style="margin-left:5px">
+            v-for="tag in companyList" style="margin-left:5px">
             {{tag.companyName}}
           </el-tag>
         </el-form-item>
+            </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -232,7 +250,8 @@ export default {
       tableKey: 0,
       header: getHeader(),
       myHeaders: {Authorization: getHeader()},
-      companyList:null,
+      companyGetList:[],
+      companyList:[],
       departmentList:[],
       roleLevelList:[],
       userTypeList:[],
@@ -273,10 +292,7 @@ export default {
         userType: null,
         roleLevel: null
       },
-      companytemp: {
-        companyId:"",
-        userId:"",
-      },
+      companytemp: [],
       temp: {
         loginAccount:"",
         userName:"",
@@ -291,6 +307,7 @@ export default {
         phone:"",
         wechat:"",
         email:"",
+        queryCompanyIds:[]
       },
       uptemp: {
         userId:"",
@@ -303,6 +320,7 @@ export default {
         phone:"",
         wechat:"",
         email:"",
+        queryCompanyIds:[]
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -378,18 +396,12 @@ export default {
         this.companyList = response.data.resultData.companyList
       })
     },
-    companyAdd() {
-      this.companytemp.userId = this.temp.userId
-      companyAddApi(this.companytemp,this.header).then(response => {
-        this.getcompanyinfo()
-      })
-    },
     handleClose(row) {
-      this.companytemp.companyId = row.companyId
-      this.companytemp.userId = this.temp.userId
-      companyDelApi(this.companytemp,this.header).then(response => {
-        this.getcompanyinfo()
-      })
+      // this.companytemp.companyId = row.companyId
+      // this.companytemp.userId = this.temp.userId
+      // companyDelApi(this.companytemp,this.header).then(response => {
+      //   this.getcompanyinfo()
+      // })
     },
     getAllinfos() {
     },
@@ -431,13 +443,19 @@ export default {
         phone:"",
         wechat:"",
         email:"",
+        queryCompanyIds:[]
       }
+    },
+    resetcompanytemp() {
+      this.companytemp = []
     },
     handleCreate() {
       this.resetTemp()
+      this.resetcompanytemp()
       this.dialogStatus = 'create'
         this.dialogImageUrl =""
       this.dialogFormVisible = true
+      this.companyList = []
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -447,13 +465,12 @@ export default {
 
         this.temp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
       }
+      this.temp.queryCompanyIds = this.companytemp
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           createUserArticle(this.temp,this.header).then(response => {
             this.list.unshift(this.temp)
             var code = response.data.resultCode
-            console.log(response.data,"22222")
-            console.log(code,"22222")
             if(code == 0){
             this.dialogFormVisible = false
             this.$message({
@@ -477,17 +494,29 @@ export default {
       })
     },
     handleUpdate(row) {
+      this.resetcompanytemp()
+      this.companytemp = []
       fetchUserData({},row.userId,this.header).then(response => {
         this.dialogImageUrl =""
         if(response.data.resultData.userInfo.headImageUri){
           this.dialogImageUrl = "http://47.92.165.114:8081"+response.data.resultData.userInfo.headImageUri
         }
         this.temp = response.data.resultData.userInfo
-        this.temp.sex = this.temp.sex.toString()
+
+        if(typeof this.temp.sex == "number"){
+          this.temp.sex = this.temp.sex.toString()
+        }
         this.temp.userType = this.temp.userType.toString()
         this.temp.roleLevel = this.temp.roleLevel.toString()
-        this.getcompanyinfo()
+        this.companyList = this.temp.companyUserRelationList
+        if(this.companyList.length > 0){
+        this.companyList.forEach(element => {
+          this.companytemp.push(element.companyId)
+        });
+        console.log()
+      }
       })
+      
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -502,12 +531,12 @@ export default {
       this.uptemp.department = this.temp.department
       this.uptemp.sex = this.temp.sex
       if(this.uptemp.birthday){
-
         this.uptemp.birthday = parseTime(this.temp.birthday,'{y}-{m}-{d}')
       }
       this.uptemp.phone = this.temp.phone
       this.uptemp.wechat = this.temp.wechat
       this.uptemp.email = this.temp.email
+        this.uptemp.queryCompanyIds = this.companytemp
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           updateUserData(this.uptemp,this.header).then( response => {

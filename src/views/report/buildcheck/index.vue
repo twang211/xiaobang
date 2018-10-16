@@ -14,8 +14,8 @@
         <el-option v-for="item in userlist" :key="item.userId" :label="item.userName" :value="item.userId"/>
       </el-select>
       
-      <el-date-picker v-model="listQuery.queryDateFrom" type="date" placeholder="开始时间"/>
-      <el-date-picker v-model="listQuery.queryDateTo" type="date" placeholder="结束时间"/>
+      <el-date-picker v-model="listQuery.queryDateFrom" class="filter-item" type="date" placeholder="开始时间"/>
+      <el-date-picker v-model="listQuery.queryDateTo" class="filter-item" type="date" placeholder="结束时间"/>
        <el-select v-model="listQuery.isPass" :placeholder="$t('querytable.isPass')" clearable style="width: 120px" class="filter-item" placeholder="是否合格">
 
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      </el-select>
@@ -24,7 +24,7 @@
             <el-option v-for="item in selectType" :key="item.key" :label="item.label" :value="item.key"/>      </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('querytable.search') }}</el-button>
       <el-button v-waves class="filter-item" type="primary" @click="resetQuery">{{ $t('querytable.resetsearch') }}</el-button>
-      <el-button v-waves class="filter-item" type="primary" @click="printInfos">{{ $t('querytable.print') }}</el-button>
+      <!-- <el-button v-waves class="filter-item" type="primary" @click="printInfos">{{ $t('querytable.print') }}</el-button> -->
 
     </div>
 
@@ -77,7 +77,7 @@
           <img  :src="scope.row.checkUserAutographUri" class="avatar">
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center" >
+      <el-table-column :label="$t('table.look')" align="center" >
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
@@ -133,11 +133,41 @@
              </div>
     </el-dialog>
     <el-dialog title="打印预览" :visible.sync="printdialogFormVisible">
-     　<div id="printTest" >
-　　　　　　<p>锄禾日当午</p>
-　　　　　　<p>汗滴禾下土 </p>
-　　　　　　<p>谁知盘中餐</p>
-　　　　　　<p>粒粒皆辛苦</p>
+     　<div id="printTest" class="app-container calendar-list-container">
+        <table class="tableStyle">
+          <thead>
+            <tr>
+              <th style="width:14%">设备名称</th>
+              <th style="width:14%">设备编码</th>
+              <th style="width:14%">巡查要点</th>
+              <th style="width:14%">故障描述</th>
+              <th style="width:14%">当时处理情况</th>
+              <th style="width:14%">保修情况</th>
+              <th style="width:14%">签名</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="1">设备1</td>
+              <td colspan="1">DSDSDSDF</td>
+              <td colspan="4">
+                <tr >
+                  <td colspan="4">要点1</td>
+                  <td colspan="4">1111111</td>
+                  <td colspan="4">完成</td>
+                  <td colspan="4">有效</td>
+                </tr>
+                <tr>
+                  <td>要点2</td>
+                  <td>1111111</td>
+                  <td>完成</td>
+                  <td>有效</td>
+                </tr>
+              </td>
+              <td colspan="1">张三</td>
+            </tr>
+          </tbody>
+        </table>
 　　　　</div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="printdialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -383,4 +413,5 @@ export default {
     display: block;
     margin: 0 auto;
   }
+  .tableStyle{    width: 100%;}
 </style>

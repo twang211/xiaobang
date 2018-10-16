@@ -1,7 +1,7 @@
 <template>
 
   <el-tabs v-model="activeName" type="card">
-    <el-tab-pane label="设备系统" name="system">
+    <el-tab-pane label="设备系统" name="system" disabled>
   <div class="app-container calendar-list-container">
     <div class="filter-container">   
       <el-input :placeholder="$t('querytable.typeName')" v-model="listQuery.apparatusTypeName" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
@@ -60,7 +60,7 @@
 
   </div>
     </el-tab-pane>
-    <el-tab-pane label="设备名称" name="name">
+    <el-tab-pane label="设备名称" name="name" disabled>
         <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-input :placeholder="$t('querytable.apparatusName')" v-model="namelistQuery.apparatusName" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
@@ -68,6 +68,8 @@
             <el-button v-waves class="filter-item" type="primary" @click="resetnameQuery">{{ $t('querytable.resetsearch') }}</el-button>
 
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="namehandleCreate">{{ $t('table.add') }}</el-button>
+    
+      <el-button v-waves class="filter-item" type="primary" @click="goBack">{{ $t('table.goback') }}</el-button>
     </div>
 
     <el-table
@@ -118,7 +120,7 @@
 
   </div>
     </el-tab-pane>
-    <el-tab-pane label="巡查要点" name="checkpoint">
+    <el-tab-pane label="巡查要点" name="checkpoint" disabled>
        <div class="app-container calendar-list-container">
     <div class="filter-container">   
       <el-select v-model="checkpointQuery.periodType" class="filter-item" filterable placeholder="请选择分类">
@@ -128,6 +130,8 @@
             <el-button v-waves class="filter-item" type="primary" @click="resetcheckpointQuery">{{ $t('querytable.resetsearch') }}</el-button>
 
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="checkpointhandleCreate">{{ $t('table.add') }}</el-button>
+    
+      <el-button v-waves class="filter-item" type="primary" @click="goBack">{{ $t('table.goback') }}</el-button>
     </div>
 
     <el-table
@@ -139,7 +143,7 @@
       highlight-current-row
       style="width: 100%;">
       
-      <el-table-column :label="$t('table.checkPoint')" align="center" width="400">
+      <el-table-column :label="$t('table.checkPoint')" align="center" >
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
             <el-input v-model="scope.row.checkPoint" class="edit-input" size="small"/>
@@ -147,7 +151,7 @@
           <span v-else>{{ scope.row.checkPoint }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.checkReminder')" align="center" width="400">
+      <el-table-column :label="$t('table.checkReminder')" align="center" >
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
             <el-input v-model="scope.row.checkReminder" class="edit-input" size="small"/>
@@ -155,7 +159,7 @@
           <span v-else>{{ scope.row.checkReminder }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.periodType')" align="center" width="200">
+      <el-table-column :label="$t('table.periodType')" align="center" >
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
           <el-select v-model="scope.row.periodType" class="filter-item" placeholder="请选择">
@@ -165,7 +169,7 @@
           <span v-else>{{ showperiodTypeObj[scope.row.periodType] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.activeStatus')" align="center" width="200">
+      <el-table-column :label="$t('table.activeStatus')" align="center" >
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
           <el-select v-model="scope.row.activeStatus" class="filter-item" placeholder="请选择">
@@ -175,7 +179,7 @@
           <span v-else>{{ showselectType[scope.row.activeStatus] }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Actions" width="400">
+      <el-table-column align="center" :label="$t('table.config')" >
         <template slot-scope="scope">            
           <el-button type="primary" size="small" icon="el-icon-edit" @click="checkpointUpdate(scope.row)">修改</el-button>
         </template>
@@ -664,6 +668,11 @@ export default {
           filename: '客户基础信息-' + this.extime
         })
       })
+    },
+    goBack() {
+      
+      this.activeName = "system"
+      this.created()
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>

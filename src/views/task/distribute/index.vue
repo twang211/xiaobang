@@ -1,6 +1,6 @@
 <template>
-  <el-tabs v-model="activeName" type="card">
-    <el-tab-pane label="建筑列表" name="building">
+  <el-tabs v-model="activeName" type="card" >
+    <el-tab-pane label="建筑列表" name="building" disabled>
         <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-input :placeholder="$t('querytable.buildingName')" v-model="listQuery.buildingName" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter"/>
@@ -54,15 +54,6 @@
           <span>{{ scope.row.patrolAvgTime }}</span>
         </template>
       </el-table-column>
-       <el-table-column :label="$t('table.patrolNextTime')" align="center" width="200">
-        <template slot-scope="scope">
-            <template v-if="scope.row.patrolNextTime">
-
-              <span>{{ scope.row.patrolNextTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-          </template>
-          <span v-else>--</span>
-        </template>
-      </el-table-column>
     </el-table>
 
  
@@ -72,15 +63,16 @@
 
   </div>
     </el-tab-pane>
-    <el-tab-pane label="派发任务" name="distribute">
+    <el-tab-pane label="派发任务" name="distribute" disabled>
               <div class="app-container calendar-list-container">
     <div class="filter-container">
 
-      <el-date-picker v-model="distributetemp.taskOnTime" type="datetime" placeholder="派发时间"/>
+      <el-date-picker v-model="distributetemp.taskOnTime"  class="filter-item" type="datetime" placeholder="派发时间"/>
             <el-select v-model="distributetemp.taskPeriodType" class="filter-item" filterable placeholder="任务类型">
         <el-option v-for="item in periodTypeList" :key="item.key" :label="item.value" :value="item.key"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" @click="previewInfo">{{ $t('table.confirm') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" @click="goBack">{{ $t('table.goback') }}</el-button>
 
     </div>
 
@@ -116,10 +108,11 @@
     </el-table>
   </div>
     </el-tab-pane>
-    <el-tab-pane label="楼层展示" name="floors">
+    <el-tab-pane label="楼层展示" name="floors" disabled>
         <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-button v-waves class="filter-item" type="primary" @click="postInfo">{{ $t('table.confirm') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" @click="goBack">{{ $t('table.goback') }}</el-button>
     </div>
       <ul id="v-for-object" class="demo">
       <li v-for="value in AllArr">
@@ -128,15 +121,16 @@
         {{ value.key }}层：
     </el-tag>
       <el-select v-model="value.value" class="filter-item" filterable placeholder="任务类型">
-        <el-option v-for="item in userlist" :key="item.userId" :label="item.userName" :value="item.userId"/>
+        <el-option v-for="item in multipleSelection" :key="item.userId" :label="item.userName" :value="item.userId"/>
       </el-select>
   </li>
 </ul></div>
     </el-tab-pane>
-    <el-tab-pane label="确认派送" name="over">
+    <el-tab-pane label="确认派送" name="over" disabled>
               <div class="app-container calendar-list-container">
     <div class="filter-container">
 
+      <el-button v-waves class="filter-item" type="primary" @click="goBack">{{ $t('table.goback') }}</el-button>
     </div>
     <el-table
       v-loading="listLoading"
@@ -189,6 +183,7 @@ export default {
       extime: '',
       list: null,
       userlist: null,
+      useuserlist: null,
       showuserObj: {},
       AllArr:[],
       PostArr:[],
@@ -246,6 +241,13 @@ export default {
     })
         }
       })
+    },
+    goBack() {
+      
+      this.activeName = "building"
+      this.created()
+      this.userlist = null
+      this.AllArr = []
     },
     getAllinfos() {
     },
@@ -322,7 +324,9 @@ export default {
       }
     },
     getuserdataList() {
-      fetchUserDownDataList({},this.header).then(response => {
+      console.log(this.buildinfo)
+      this.userlist = null
+      fetchUserDownDataList({buildingId:this.buildinfo.buildingId},this.header).then(response => {
         this.userlist = response.data.resultData.userList
         this.userlist.forEach(element => {
             this.showuserObj[element["userId"]] = element["userName"]
@@ -342,6 +346,7 @@ export default {
 
     },
     previewInfo(){
+      this.AllArr = []
       if(this.distributetemp.taskOnTime && this.distributetemp.taskPeriodType){
 
       var mul = this.multipleSelection
@@ -391,7 +396,7 @@ export default {
       var pArr = []
 
    
-        this.userlist.forEach((uitem, uindex, array) => {
+        this.multipleSelection.forEach((uitem, uindex, array) => {
             uitem.aboutFloors = null
             this.AllArr.forEach(function(Aitem, Aindex, array) {
               if(uitem.userId == Aitem.value){
@@ -410,7 +415,7 @@ export default {
             uitem.buildingId = this.buildinfo.buildingId
             uitem.taskExecuteUserId = uitem.userId
         });      
-        this.PostArr = this.userlist
+        this.PostArr = this.multipleSelection
         this.activeName = "over"
           
     },

@@ -148,7 +148,7 @@
           <el-col :span="12">
         <el-form-item :label="$t('table.province')" style="width: 100%;">
           <!-- <template v-if="dialogStatus == 'create'"> -->
-          <area-select style="line-height: 1;width: 200%;" type='text' :placeholders="placeholders" :level='2' v-model="selected" :data="pcaa">
+          <area-select  style="line-height: 1;width: 200%;" type='text' :placeholders="placeholders" :level='2' v-model="selected" :data="pcaa">
 </area-select>
           <!-- </template>
           <span v-else>{{ temp.province }}-{{ temp.city }}-{{ temp.county }}</span> -->
@@ -203,19 +203,11 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-        <el-form-item :label="$t('table.patrolLastTime')" v-if="dialogStatus == 'update'" style="width: 100%;">
-          <span>{{ temp.patrolLastTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-        </el-form-item>
-            </el-col>
-          <el-col :span="12">
-        <el-form-item :label="$t('table.patrolNextTime')" v-if="dialogStatus == 'update'" style="width: 100%;">
-          <span>{{ temp.patrolNextTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-        </el-form-item>
-            </el-col>
-        </el-row>
         <el-form-item :label="$t('table.note')" style="width: 100%;">
           <el-input v-model="temp.note"/>
         </el-form-item>
+            </el-col>
+        </el-row>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -252,7 +244,7 @@ export default {
         dialogImageUrl: '',
         dialogVisible: false,
       pca: pca,
-      pcaa: pcaa,
+      pcaa: null,
       selected: [],
       placeholders: ["请选择", "请选择", "请选择"],
       tableKey: 0,
@@ -269,6 +261,7 @@ export default {
       exportlist: null,
       total: null,
       listLoading: true,
+      cityType: true,
       buildingTypeQuery: {
         name:"buildingTypeMap",
         type:"list"
@@ -375,10 +368,9 @@ export default {
       }
     },
     handleCreate() {
+      this.pcaa = pcaa
       this.resetTemp()
       this.dialogImageUrl = ""
-      this.placeholders = ["请选择", "请选择", "请选择"]
-      this.selected = []
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -417,6 +409,7 @@ export default {
       })
     },
     handleUpdate(row) {
+      this.pcaa = pcaa
       fetchBuildData({},row.buildingId,this.header).then(response => {
         this.dialogImageUrl = ""
         if(response.data.resultData.buildingInfo.buildingImageUri){

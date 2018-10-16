@@ -46,7 +46,8 @@
       </el-table-column>
       <el-table-column :label="$t('table.lookTime')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span v-if="scope.row.troubleTime">{{ scope.row.troubleTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span v-else>--</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.troubleDesc')" align="center" >
@@ -64,7 +65,7 @@
           <img  :src="scope.row.workUserAutographUri" class="avatar">
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.config')" align="center">
+      <el-table-column :label="$t('table.look')" align="center">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="lookInfos(scope.row)">{{ $t('table.look') }}</el-button>
         </template>
@@ -88,11 +89,7 @@
       highlight-current-row
       style="width: 100%">
       
-      <el-table-column :label="$t('table.workRecordId')" align="center" >
-        <template slot-scope="scope">
-          <span>{{ scope.row.workRecordId }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column :label="$t('table.workMethod')" align="center" >
         <template slot-scope="scope">
           <span>{{ scope.row.workMethod }}</span>
@@ -103,9 +100,20 @@
           <span>{{ scope.row.safetyPrecautions }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('table.isReference')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ checkType[scope.row.isReference] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.isStopSystem')" align="center" >
+        <template slot-scope="scope">
+          <span>{{ checkType[scope.row.isStopSystem] }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.lookTime')" align="center" >
         <template slot-scope="scope">
-          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span v-if="scope.row.troubleTime">{{ scope.row.troubleTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span v-else>--</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.workTime')" align="center" >

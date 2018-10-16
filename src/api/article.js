@@ -146,6 +146,17 @@ export function createbuildArticle(data, header) {
     })
 }
 //设备类型下拉
+export function fetchDownSystemDataList(query, header) {
+    return request({
+        url: '/fire-service/api/apparatus/backend/type/down-list',
+        method: 'get',
+        params: query,
+        headers: {
+            'Authorization': header
+        }
+    })
+}
+//设备类型下拉
 export function fetchDownTypeList(query, header) {
     return request({
         url: '/fire-service/api/apparatus/site/type/list',
